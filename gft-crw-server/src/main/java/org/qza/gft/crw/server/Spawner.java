@@ -1,0 +1,77 @@
+package org.qza.gft.crw.server;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.qza.gft.crw.address.ServerAddress;
+import org.qza.gft.crw.server.spawn.Server;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * @author gft
+ */
+public class Spawner {
+
+	final private Logger log;
+
+	final private Context context;
+
+	final private Map<ServerAddress, Server> serverMap;
+	
+	final private Integer duration;
+
+	public Spawner(final Context context) {
+		this.log = LoggerFactory.getLogger(Spawner.class);
+		this.context = context;
+		this.serverMap = new HashMap<>(context.getServerList().size());
+		this.duration = context.getProps().getServerDuration();
+	}
+
+	public void spawn() {
+		context.start();
+		initializeServers();
+		wait(duration, TimeUnit.MINUTES);
+		terminateServers();
+		context.end();
+	}
+
+	private void initializeServers() {
+		for (Iterator<ServerAddress> iterator = context.getServerList()
+				.iterator(); iterator.hasNext();) {
+			ServerAddress serverAddress = iterator.next();
+			Server server = new Server(context, serverAddress);
+			serverMap.put(serverAddress, server);
+			context.execute(server);
+		}
+		log.info(String.format("%d servers initialized", serverMap.size()));
+	}
+
+	private void wait(long time, TimeUnit unit) {
+		try {
+			executor().awaitTermination(time, unit);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	private void terminateServers() {
+		try {
+			executor().shutdown();
+			executor().awaitTermination(1, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		log.info(String.format("Servers terminated. Active %d",
+				serverMap.size()));
+	}
+
+	private ExecutorService executor() {
+		return context.getExecutor();
+	}
+
+}
