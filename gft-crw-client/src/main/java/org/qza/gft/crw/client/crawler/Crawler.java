@@ -6,7 +6,7 @@ package org.qza.gft.crw.client.crawler;
 public interface Crawler {
 
 	/**
-	 * Crawl for related link
+	 * Crawl for related links
 	 * 
 	 * @param link
 	 *            URL to crawl

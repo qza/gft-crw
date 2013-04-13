@@ -8,10 +8,12 @@ import java.net.SocketAddress;
 import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.qza.gft.crw.address.ServerAddress;
+import org.qza.gft.crw.ServerAddress;
 import org.qza.gft.crw.server.Context;
 
 import org.slf4j.Logger;
@@ -22,23 +24,22 @@ import org.slf4j.LoggerFactory;
  */
 public class Server implements Runnable {
 
-	final Context context;
+	final private Logger log;
 
-	final AsynchronousServerSocketChannel server;
+	final private Context context;
 
-	final Logger log = LoggerFactory.getLogger(Server.class);
+	final private ServerAddress address;
+
+	final private List<ServerWorker> workers;
+
+	private AsynchronousServerSocketChannel server;
 
 	public Server(final Context context, final ServerAddress address) {
 		this.context = context;
-		try {
-			SocketAddress sAddress = new InetSocketAddress(address.getHost(),
-					address.getPort());
-			server = AsynchronousServerSocketChannel.open().bind(sAddress);
-			log.info(String.format("Started @ %s : %d", address.getHost(),
-					address.getPort()));
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		this.address = address;
+		this.log = LoggerFactory.getLogger(Server.class);
+		this.workers = new ArrayList<>();
+		this.restartServer();
 	}
 
 	@Override
@@ -51,22 +52,34 @@ public class Server implements Runnable {
 	}
 
 	private void startup() {
-		try {
-			while (true) {
-				Future<AsynchronousSocketChannel> future = server.accept();
-				AsynchronousSocketChannel worker = future.get();
-				log.info("Connection established");
-				initWorker(worker);
+		while (true) {
+			try {
+				if (isNotMaxClients()) {
+					Future<AsynchronousSocketChannel> future = server.accept();
+					AsynchronousSocketChannel socket = future.get();
+					log.info("Connection established");
+					initWorker(socket);
+				} else {
+					log.warn("Max clients reached");
+					Thread.sleep(10000);
+				}
+			} catch (InterruptedException | ExecutionException e) {
+				log.warn("Unexpected server termination ", e.getMessage());
+				restartServer();
 			}
-		} catch (InterruptedException | ExecutionException e) {
-			log.warn("Unexpected server termination ", e.getMessage());
 		}
 	}
 
-	private void initWorker(AsynchronousSocketChannel worker)
-			throws InterruptedException {
-		Thread wThread = new Thread(new ServerWorker(context, worker));
-		wThread.start();
+	private void restartServer() {
+		try {
+			SocketAddress sAddress = new InetSocketAddress(address.getHost(),
+					address.getPort());
+			server = AsynchronousServerSocketChannel.open().bind(sAddress);
+			log.info(String.format("Started @ %s : %d", address.getHost(),
+					address.getPort()));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public void shutdown() {
@@ -75,6 +88,16 @@ public class Server implements Runnable {
 		} catch (IOException e) {
 			log.error("Error:", e.getMessage());
 		}
+	}
+
+	private boolean isNotMaxClients() {
+		return workers.size() <= context.getProps().getServerMaxclients();
+	}
+
+	private void initWorker(AsynchronousSocketChannel socket) {
+		ServerWorker instance = new ServerWorker(context, workers, socket);
+		workers.add(instance);
+		context.execute(instance);
 	}
 
 }

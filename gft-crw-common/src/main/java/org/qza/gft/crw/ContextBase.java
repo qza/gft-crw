@@ -34,8 +34,4 @@ public class ContextBase {
 		return endNanos - startNanos;
 	}
 
-	public long getDurationInMilis() {
-		return getDurationInNanos() / 1000000;
-	}
-
 }

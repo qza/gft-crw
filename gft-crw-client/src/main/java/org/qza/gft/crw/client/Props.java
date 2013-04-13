@@ -2,8 +2,8 @@ package org.qza.gft.crw.client;
 
 import java.util.List;
 
-import org.qza.gft.crw.address.ServerAddress;
-import org.qza.gft.crw.address.ServerAddresses;
+import org.qza.gft.crw.ServerAddress;
+import org.qza.gft.crw.ServerAddresses;
 
 /**
  * @author gft

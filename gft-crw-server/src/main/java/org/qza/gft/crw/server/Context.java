@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import org.qza.gft.crw.ContextBase;
-import org.qza.gft.crw.address.ServerAddress;
+import org.qza.gft.crw.ServerAddress;
 
 /**
  * @author gft
@@ -22,12 +23,16 @@ public class Context extends ContextBase {
 
 	final private ExecutorService executor;
 
+	final private ScheduledExecutorService scheduler;
+
 	public Context(final Props props, final Set<String> visited,
-			final BlockingQueue<String> queue, final ExecutorService executor) {
+			final BlockingQueue<String> queue, final ExecutorService executor,
+			final ScheduledExecutorService scheduler) {
 		this.props = props;
 		this.visited = visited;
 		this.queue = queue;
 		this.executor = executor;
+		this.scheduler = scheduler;
 	}
 
 	public synchronized void addLink(String link) {
@@ -68,16 +73,35 @@ public class Context extends ContextBase {
 	}
 
 	public ExecutorService getExecutor() {
-		return this.executor;
+		return executor;
+	}
+
+	public ScheduledExecutorService getScheduler() {
+		return scheduler;
 	}
 
 	public int activeTasksCount() {
 		int active = -1;
-		if (executor instanceof ThreadPoolExecutor) {
-			active = ((ThreadPoolExecutor) executor).getActiveCount();
+		if (isThreadPool()) {
+			active = getThreadPool().getActiveCount();
 		}
 		return active;
+	}
 
+	public long completedTasksCount() {
+		long completed = -1;
+		if (isThreadPool()) {
+			completed = getThreadPool().getCompletedTaskCount();
+		}
+		return completed;
+	}
+
+	private boolean isThreadPool() {
+		return executor instanceof ThreadPoolExecutor;
+	}
+
+	private ThreadPoolExecutor getThreadPool() {
+		return (ThreadPoolExecutor) executor;
 	}
 
 }

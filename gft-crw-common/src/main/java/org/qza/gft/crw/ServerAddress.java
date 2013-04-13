@@ -1,4 +1,4 @@
-package org.qza.gft.crw.address;
+package org.qza.gft.crw;
 
 /**
  * @author gft

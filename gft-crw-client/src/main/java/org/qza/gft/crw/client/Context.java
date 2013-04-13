@@ -3,7 +3,7 @@ package org.qza.gft.crw.client;
 import java.util.List;
 
 import org.qza.gft.crw.ContextBase;
-import org.qza.gft.crw.address.ServerAddress;
+import org.qza.gft.crw.ServerAddress;
 
 /**
  * @author gft

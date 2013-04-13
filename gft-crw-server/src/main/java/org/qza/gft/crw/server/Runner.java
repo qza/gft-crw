@@ -26,7 +26,7 @@ public class Runner {
 	}
 
 	/**
-	 * Starts the crawling
+	 * Starts crawling servers
 	 */
 	public void start() {
 		try {

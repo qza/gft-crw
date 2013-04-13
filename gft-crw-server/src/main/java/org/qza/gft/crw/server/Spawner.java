@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.qza.gft.crw.address.ServerAddress;
+import org.qza.gft.crw.ServerAddress;
 import org.qza.gft.crw.server.spawn.Server;
 
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public class Spawner {
 	final private Context context;
 
 	final private Map<ServerAddress, Server> serverMap;
-	
+
 	final private Integer duration;
 
 	public Spawner(final Context context) {
@@ -34,8 +34,9 @@ public class Spawner {
 
 	public void spawn() {
 		context.start();
+		initializeReporter();
 		initializeServers();
-		wait(duration, TimeUnit.MINUTES);
+		work(duration, TimeUnit.MINUTES);
 		terminateServers();
 		context.end();
 	}
@@ -51,7 +52,18 @@ public class Spawner {
 		log.info(String.format("%d servers initialized", serverMap.size()));
 	}
 
-	private void wait(long time, TimeUnit unit) {
+	private void initializeReporter() {
+		int interval = context.getProps().getReportLogInterval();
+		if (interval > 0) {
+			Reporter reporter = new Reporter(context);
+			context.getScheduler().scheduleWithFixedDelay(reporter, 1,
+					interval, TimeUnit.SECONDS);
+			log.info("Reporter scheduled");
+		}
+
+	}
+
+	private void work(long time, TimeUnit unit) {
 		try {
 			executor().awaitTermination(time, unit);
 		} catch (InterruptedException e1) {
@@ -61,6 +73,10 @@ public class Spawner {
 
 	private void terminateServers() {
 		try {
+			Iterator<Server> servers = serverMap.values().iterator();
+			while (servers.hasNext()) {
+				servers.next().shutdown();
+			}
 			executor().shutdown();
 			executor().awaitTermination(1, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException e1) {

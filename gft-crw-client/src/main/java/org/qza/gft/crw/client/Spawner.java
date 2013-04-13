@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.qza.gft.crw.address.ServerAddress;
+import org.qza.gft.crw.ServerAddress;
 import org.qza.gft.crw.client.crawler.Client;
 import org.qza.gft.crw.client.crawler.Crawler;
 import org.qza.gft.crw.client.crawler.impl.JsoupCrawler;
@@ -45,11 +45,12 @@ public class Spawner {
 	}
 
 	private void initializeClients() {
+		Integer spawnPerServer = context.getProps().getSpawnPerserver();
 		Crawler crawler = new JsoupCrawler(context);
 		for (Iterator<ServerAddress> it = context.getServerList().iterator(); it
 				.hasNext();) {
 			ServerAddress address = it.next();
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < spawnPerServer; i++) {
 				Client worker = new Client("C" + i, context, address, crawler);
 				clients.add(worker);
 				executor.execute(worker);

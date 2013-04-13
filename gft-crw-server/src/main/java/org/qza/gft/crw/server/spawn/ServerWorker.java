@@ -3,6 +3,7 @@ package org.qza.gft.crw.server.spawn;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -18,16 +19,21 @@ import org.slf4j.LoggerFactory;
  */
 public class ServerWorker implements Runnable {
 
-	final AsynchronousSocketChannel worker;
+	final private Logger log;
 
-	final Context context;
+	final private Context context;
 
-	final Logger log = LoggerFactory.getLogger(ServerWorker.class);
+	final private List<ServerWorker> workers;
+
+	final private AsynchronousSocketChannel socket;
 
 	public ServerWorker(final Context context,
-			final AsynchronousSocketChannel worker) {
+			final List<ServerWorker> workers,
+			final AsynchronousSocketChannel socket) {
 		this.context = context;
-		this.worker = worker;
+		this.socket = socket;
+		this.workers = workers;
+		this.log = LoggerFactory.getLogger(ServerWorker.class);
 	}
 
 	@Override
@@ -35,20 +41,13 @@ public class ServerWorker implements Runnable {
 		while (true) {
 			try {
 				String message = context.getQueue().take();
-				if (writeMessage(worker, message)) {
-					// log.info("Message sent");
+				if (writeMessage(socket, message)) {
+					readMessage(socket);
 				}
-				if (readMessage(worker)) {
-					// log.info("Message received");
-				}
-				log.info("Visited: " + context.visitedSize());
 			} catch (InterruptedException | ExecutionException e) {
 				log.warn("Client disconected");
-				try {
-					worker.close();
-				} catch (IOException ioe) {
-					log.warn("Can't close worker", ioe);
-				}
+				shutdown();
+				break;
 			}
 		}
 	}
@@ -60,19 +59,24 @@ public class ServerWorker implements Runnable {
 		try {
 			if (worker.isOpen()) {
 				Future<Integer> readData = worker.read(readBuffer);
-				readData.get(1, TimeUnit.MINUTES);
+				readData.get(context.getProps().getServerTimeout(),
+						TimeUnit.SECONDS);
 				String message = new String(readBuffer.array()).trim();
-				message = message.replaceAll("\\[", "").replaceAll("\\]", "");
-				String[] links = message.split(",");
-				for (int i = 0; i < links.length; i++) {
-					context.addLink(links[i].trim());
-				}
+				processMessage(message);
 				success = true;
 			}
 		} catch (TimeoutException e) {
-			log.error("Client didn't respond in time");
+			log.warn("Client didn't respond in time");
 		}
 		return success;
+	}
+
+	private void processMessage(String message) {
+		message = message.replaceAll("\\[", "").replaceAll("\\]", "");
+		String[] links = message.split(",");
+		for (int i = 0; i < links.length; i++) {
+			context.addLink(links[i].trim());
+		}
 	}
 
 	private boolean writeMessage(AsynchronousSocketChannel worker,
@@ -85,6 +89,15 @@ public class ServerWorker implements Runnable {
 			success = true;
 		}
 		return success;
+	}
+
+	public void shutdown() {
+		try {
+			socket.close();
+			workers.remove(this);
+		} catch (IOException ioe) {
+			log.warn("Can't close worker", ioe);
+		}
 	}
 
 }

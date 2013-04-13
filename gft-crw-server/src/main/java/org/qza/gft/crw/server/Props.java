@@ -2,8 +2,8 @@ package org.qza.gft.crw.server;
 
 import java.util.List;
 
-import org.qza.gft.crw.address.ServerAddress;
-import org.qza.gft.crw.address.ServerAddresses;
+import org.qza.gft.crw.ServerAddress;
+import org.qza.gft.crw.ServerAddresses;
 
 /**
  * @author gft
@@ -21,7 +21,7 @@ public class Props {
 	private Boolean logCompleted;
 
 	private Integer serverTimeout;
-	
+
 	private Integer serverDuration;
 
 	private String serverHost;
@@ -32,7 +32,17 @@ public class Props {
 
 	private Integer tpoolMaxsize;
 
+	private String reportFileMain;
+
+	private String reportFileQueue;
+
+	private String reportFileVisited;
+
+	private Integer reportLogInterval;
+
 	private ServerAddresses servers;
+
+	private Integer serverMaxclients;
 
 	public Boolean getLogTime() {
 		return logTime;
@@ -81,11 +91,11 @@ public class Props {
 	public void setServerTimeout(String serverTimeout) {
 		this.serverTimeout = Integer.valueOf(serverTimeout);
 	}
-	
+
 	public Integer getServerDuration() {
 		return serverDuration;
 	}
-	
+
 	public void setServerDuration(String serverDuration) {
 		this.serverDuration = Integer.valueOf(serverDuration);
 	}
@@ -127,6 +137,46 @@ public class Props {
 
 	public void setTpoolMaxsize(String tpoolMaxsize) {
 		this.tpoolMaxsize = Integer.valueOf(tpoolMaxsize);
+	}
+
+	public String getReportFileMain() {
+		return reportFileMain;
+	}
+
+	public String getReportFileQueue() {
+		return reportFileQueue;
+	}
+
+	public String getReportFileVisited() {
+		return reportFileVisited;
+	}
+
+	public void setReportFileMain(String reportFileMain) {
+		this.reportFileMain = reportFileMain;
+	}
+
+	public void setReportFileQueue(String reportFileQueue) {
+		this.reportFileQueue = reportFileQueue;
+	}
+
+	public void setReportFileVisited(String reportFileVisited) {
+		this.reportFileVisited = reportFileVisited;
+	}
+
+	public Integer getReportLogInterval() {
+		return reportLogInterval;
+	}
+
+	public void setReportLogInterval(String reportLogInterval) {
+		this.reportLogInterval = Integer.valueOf(reportLogInterval);
+	}
+
+	public Integer getServerMaxclients() {
+		return serverMaxclients;
+	}
+
+	public void setServerMaxclients(String serverMaxclients) {
+		this.serverMaxclients = Integer.valueOf(serverMaxclients);
 	}
 
 }
