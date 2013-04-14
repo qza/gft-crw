@@ -7,6 +7,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -57,6 +58,19 @@ public class Config {
 		props.setServerMaxclients(getProperty("crawler.server.maxclients"));
 		return props;
 	}
+	
+	@Bean
+	@Scope(BeanDefinition.SCOPE_SINGLETON)
+	public ThreadFactory threadFactory() {
+		return new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				Thread t = new Thread(r);
+				t.setName("Server thread");
+				return t;
+			}
+		};
+	}
 
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
@@ -66,14 +80,15 @@ public class Config {
 		BlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<Runnable>(
 				maxSize);
 		ExecutorService tpool = new ThreadPoolExecutor(initSize, maxSize,
-				10000, TimeUnit.MILLISECONDS, blockingQueue);
+				10000, TimeUnit.MILLISECONDS, blockingQueue, threadFactory());
 		return tpool;
 	}
-	
+
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public ScheduledExecutorService scheduler() {
-		ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+		ScheduledExecutorService scheduler = Executors
+				.newSingleThreadScheduledExecutor();
 		return scheduler;
 	}
 
@@ -96,7 +111,8 @@ public class Config {
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public Context context() {
-		Context context = new Context(props(), visited(), queue(), executor(), scheduler());
+		Context context = new Context(props(), visited(), queue(), executor(),
+				scheduler());
 		return context;
 	}
 
@@ -106,7 +122,7 @@ public class Config {
 		Spawner spawner = new Spawner(context());
 		return spawner;
 	}
-	
+
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public Reporter reporter() {

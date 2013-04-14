@@ -43,9 +43,8 @@ public class ServerWorker implements Runnable {
 				log.warn("Can't read queue");
 			}
 			try {
-				if (writeMessage(socket, message)) {
-					readMessage(socket);
-				}
+				writeMessage(socket, message);
+				readMessage(socket);
 			} catch (RuntimeException e) {
 				log.warn("Client disconected");
 				shutdown();

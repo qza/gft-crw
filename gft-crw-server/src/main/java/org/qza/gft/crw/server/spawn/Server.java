@@ -10,8 +10,15 @@ import java.nio.channels.AsynchronousSocketChannel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.qza.gft.crw.ServerAddress;
 import org.qza.gft.crw.server.Context;
@@ -32,6 +39,10 @@ public class Server implements Runnable {
 
 	final private List<ServerWorker> workers;
 
+	final private AtomicInteger workerCount;
+
+	final private ExecutorService tpool;
+
 	private AsynchronousServerSocketChannel server;
 
 	public Server(final Context context, final ServerAddress address) {
@@ -39,6 +50,13 @@ public class Server implements Runnable {
 		this.address = address;
 		this.log = LoggerFactory.getLogger(Server.class);
 		this.workers = new ArrayList<>();
+		this.workerCount = new AtomicInteger();
+		Integer initSize = context.getProps().getServerMaxclients();
+		Integer maxSize = context.getProps().getServerMaxclients();
+		BlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<Runnable>(
+				maxSize);
+		tpool = new ThreadPoolExecutor(initSize, maxSize, 10000,
+				TimeUnit.MILLISECONDS, blockingQueue, threadFactory());
 		this.restartServer();
 	}
 
@@ -97,7 +115,21 @@ public class Server implements Runnable {
 	private void initWorker(AsynchronousSocketChannel socket) {
 		ServerWorker instance = new ServerWorker(context, workers, socket);
 		workers.add(instance);
-		context.execute(instance);
+		tpool.execute(instance);
+	}
+
+	private ThreadFactory threadFactory() {
+		return new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable r) {
+				Thread t = new Thread(r);
+				String name = String.format("Server %s deamon %d",
+						address.getPort(), workerCount.incrementAndGet());
+				t.setName(name);
+				t.setDaemon(true);
+				return t;
+			}
+		};
 	}
 
 }
