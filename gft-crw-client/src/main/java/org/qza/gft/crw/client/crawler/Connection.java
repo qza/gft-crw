@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
+import java.nio.channels.ReadPendingException;
 
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
@@ -83,7 +84,7 @@ public class Connection {
 
 	public String readMessage() throws InterruptedException,
 			ExecutionException, TimeoutException {
-		String message = getText(readData(100));
+		String message = getText(readData(128));
 		return message;
 	}
 
@@ -105,9 +106,10 @@ public class Connection {
 	}
 
 	private ByteBuffer readData(int size) throws InterruptedException,
-			ExecutionException, TimeoutException {
+			ExecutionException, TimeoutException, ReadPendingException {
 		ByteBuffer readBuffer = ByteBuffer.allocate(size);
-		socket.read(readBuffer).get(timeout, TimeUnit.SECONDS);
+//		socket.read(readBuffer).get(timeout, TimeUnit.SECONDS);
+		socket.read(readBuffer).get();
 		return readBuffer;
 	}
 

@@ -5,9 +5,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.qza.gft.crw.server.Context;
 
@@ -39,12 +36,17 @@ public class ServerWorker implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
+			String message = null;
 			try {
-				String message = context.getQueue().take();
+				message = context.getQueue().take();
+			} catch (InterruptedException e) {
+				log.warn("Can't read queue");
+			}
+			try {
 				if (writeMessage(socket, message)) {
 					readMessage(socket);
 				}
-			} catch (InterruptedException | ExecutionException e) {
+			} catch (RuntimeException e) {
 				log.warn("Client disconected");
 				shutdown();
 				break;
@@ -52,21 +54,21 @@ public class ServerWorker implements Runnable {
 		}
 	}
 
-	private boolean readMessage(AsynchronousSocketChannel worker)
-			throws InterruptedException, ExecutionException {
+	private boolean readMessage(AsynchronousSocketChannel socket) {
 		boolean success = false;
-		ByteBuffer readBuffer = ByteBuffer.allocate(4096);
-		try {
-			if (worker.isOpen()) {
-				Future<Integer> readData = worker.read(readBuffer);
-				readData.get(context.getProps().getServerTimeout(),
-						TimeUnit.SECONDS);
-				String message = new String(readBuffer.array()).trim();
+		ByteBuffer readBuffer = ByteBuffer.allocate(1024);
+		if (socket.isOpen()) {
+			try {
+				socket.read(readBuffer).get();
+			} catch (InterruptedException | ExecutionException e) {
+				readBuffer = null;
+				throw new RuntimeException("Interupted");
+			}
+			String message = new String(readBuffer.array()).trim();
+			if (message != null && !message.equals("null")) {
 				processMessage(message);
 				success = true;
 			}
-		} catch (TimeoutException e) {
-			log.warn("Client didn't respond in time");
 		}
 		return success;
 	}
@@ -80,13 +82,18 @@ public class ServerWorker implements Runnable {
 	}
 
 	private boolean writeMessage(AsynchronousSocketChannel worker,
-			String message) throws InterruptedException, ExecutionException {
+			String message) {
 		boolean success = false;
 		byte[] databytes = message.getBytes();
 		ByteBuffer data = ByteBuffer.wrap(databytes);
 		if (worker.isOpen()) {
-			worker.write(data).get();
-			success = true;
+			try {
+				worker.write(data).get();
+				success = true;
+			} catch (InterruptedException | ExecutionException e) {
+				data = null;
+				throw new RuntimeException("Interupted");
+			}
 		}
 		return success;
 	}

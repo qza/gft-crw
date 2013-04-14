@@ -1,5 +1,6 @@
 package org.qza.gft.crw.client.crawler;
 
+import java.nio.channels.ReadPendingException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -33,10 +34,15 @@ public class Client implements Runnable {
 			while (true) {
 				try {
 					String link = connection.readMessage();
-					if(link!=null) {
+					if (link != null && !link.equals("null")) {
 						String[] results = crawler.crawlResults(link);
 						connection.writeMessages(results);
+					} else {
+						log.warn("Bad link : " + link);
 					}
+				} catch (ReadPendingException e) {
+					log.warn("Pending read!");
+					reconnect();
 				} catch (TimeoutException e) {
 					log.error("No server response");
 				} catch (InterruptedException | ExecutionException e) {
@@ -49,9 +55,21 @@ public class Client implements Runnable {
 			}
 		}
 	}
-
+	
+	public void reconnect(){
+		
+	}
+	
 	public void shutdown() {
 		connection.shutdown();
+	}
+	
+	private void zzz(long time) {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

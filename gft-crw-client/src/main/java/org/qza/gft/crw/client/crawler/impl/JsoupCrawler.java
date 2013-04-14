@@ -46,7 +46,7 @@ public class JsoupCrawler implements Crawler {
 			for (int i = 0; i < results.length; i++) {
 				results[i] = links.next().attr("href");
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			log.error(String.format("Problem with link %s", link));
 		}
 		return results;
