@@ -74,6 +74,7 @@ public class JsoupCrawler implements Crawler {
 			log.error(String.format("Link %s not found", link));
 		} catch (Exception e) {
 			log.error(String.format("Problem with link %s", link), e);
+			throw new RuntimeException(e);
 		}
 		return null;
 	}
