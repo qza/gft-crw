@@ -5,13 +5,16 @@ import java.util.Set;
 
 public class Message {
 
-	private final String name;
-	private final String category;
-	private final String price;
-	private final String rating;
-	private final String url;
-	private final Set<String> related;
+	private String name;
+	private String category;
+	private String price;
+	private String rating;
+	private String url;
+	private Set<String> related;
 
+	public Message() {
+	}
+	
 	public Message(String name, String category, String price, String rating,
 			String url) {
 		this.name = name;
@@ -49,5 +52,29 @@ public class Message {
 	public void addRelated(Set<String> related) {
 		this.related.addAll(related);
 	}
-
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
+	public void setPrice(String price) {
+		this.price = price;
+	}
+	
+	public void setRating(String rating) {
+		this.rating = rating;
+	}
+	
+	public void setRelated(Set<String> related) {
+		this.related = related;
+	}
+	
 }

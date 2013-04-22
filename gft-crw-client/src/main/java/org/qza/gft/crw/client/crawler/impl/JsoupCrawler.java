@@ -81,12 +81,4 @@ public class JsoupCrawler implements Crawler {
 		return null;
 	}
 
-	private double getDoubleFromText(Document doc, String selector) {
-		String val = getText(doc, selector);
-		if (val != null) {
-			return Double.valueOf(val).doubleValue();
-		}
-		return 0;
-	}
-
 }
