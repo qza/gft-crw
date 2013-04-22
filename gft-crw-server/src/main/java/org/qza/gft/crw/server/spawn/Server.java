@@ -1,7 +1,5 @@
 package org.qza.gft.crw.server.spawn;
 
-import java.io.IOException;
-
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
@@ -9,6 +7,7 @@ import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -103,7 +102,15 @@ public class Server implements Runnable {
 	public void shutdown() {
 		try {
 			server.close();
-		} catch (IOException e) {
+			for (Iterator<ServerWorker> iterator = workers.iterator(); iterator
+					.hasNext();) {
+				ServerWorker worker = iterator.next();
+				worker.shutdown();
+			}
+			workers.clear();
+			tpool.shutdown();
+			tpool.awaitTermination(500, TimeUnit.MILLISECONDS);
+		} catch (Exception e) {
 			log.error("Error:", e.getMessage());
 		}
 	}

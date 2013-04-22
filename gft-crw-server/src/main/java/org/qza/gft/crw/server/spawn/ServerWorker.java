@@ -24,8 +24,6 @@ public class ServerWorker implements Runnable {
 
 	final private MessageConverter converter;
 
-	final private List<ServerWorker> workers;
-
 	final private AsynchronousSocketChannel socket;
 
 	public ServerWorker(final Context context,
@@ -33,7 +31,6 @@ public class ServerWorker implements Runnable {
 			final AsynchronousSocketChannel socket) {
 		this.context = context;
 		this.socket = socket;
-		this.workers = workers;
 		this.converter = new MessageConverter();
 		this.log = LoggerFactory.getLogger(ServerWorker.class);
 	}
@@ -106,7 +103,6 @@ public class ServerWorker implements Runnable {
 	public void shutdown() {
 		try {
 			socket.close();
-			workers.remove(this);
 		} catch (IOException ioe) {
 			log.warn("Can't close worker", ioe);
 		}
