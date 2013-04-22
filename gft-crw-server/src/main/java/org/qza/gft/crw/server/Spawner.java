@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.qza.gft.crw.ServerAddress;
@@ -21,9 +22,9 @@ public class Spawner {
 
 	final private Context context;
 
-	final private Map<ServerAddress, Server> serverMap;
-
 	final private Integer duration;
+
+	final private Map<ServerAddress, Server> serverMap;
 
 	public Spawner(final Context context) {
 		this.log = LoggerFactory.getLogger(Spawner.class);
@@ -38,7 +39,8 @@ public class Spawner {
 		initializeReporter();
 		work(duration, TimeUnit.MINUTES);
 		terminateServers();
-		parsistData();
+		terminateScheduler();
+		persistData();
 		context.end();
 	}
 
@@ -57,13 +59,13 @@ public class Spawner {
 		int interval = context.getProps().getReportLogInterval();
 		if (interval > 0) {
 			Reporter reporter = new Reporter(context);
-			context.getScheduler().scheduleWithFixedDelay(reporter, 1,
-					interval, TimeUnit.SECONDS);
+			scheduler().scheduleWithFixedDelay(reporter, 1, interval,
+					TimeUnit.SECONDS);
 			log.info("Reporter scheduled");
 		}
 	}
 
-	private void parsistData() {
+	private void persistData() {
 		Persister persister = new Persister(context);
 		persister.persist();
 	}
@@ -72,7 +74,7 @@ public class Spawner {
 		try {
 			executor().awaitTermination(time, unit);
 		} catch (InterruptedException e1) {
-			e1.printStackTrace();
+			log.error("Spawner interupted during work");
 		}
 	}
 
@@ -83,16 +85,30 @@ public class Spawner {
 				servers.next().shutdown();
 			}
 			executor().shutdown();
-			executor().awaitTermination(10, TimeUnit.SECONDS);
+			executor().awaitTermination(5, TimeUnit.SECONDS);
 		} catch (InterruptedException e1) {
-			e1.printStackTrace();
+			log.error("Server termination interupted");
 		}
 		log.info(String.format("Servers terminated. Active %d",
 				serverMap.size()));
 	}
 
+	private void terminateScheduler() {
+		try {
+			scheduler().shutdown();
+			scheduler().awaitTermination(1, TimeUnit.SECONDS);
+		} catch (InterruptedException e1) {
+			log.error("Scheduler termination interupted");
+		}
+		log.info("Scheduler terminated");
+	}
+
 	private ExecutorService executor() {
 		return context.getExecutor();
+	}
+
+	private ScheduledExecutorService scheduler() {
+		return context.getScheduler();
 	}
 
 }

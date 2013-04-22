@@ -11,8 +11,8 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.qza.gft.crw.FileUtils;
 import org.qza.gft.crw.Message;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
@@ -98,7 +98,6 @@ public class Config {
 	public BlockingQueue<String> queue() {
 		BlockingQueue<String> queue = new ArrayBlockingQueue<String>(props()
 				.getQueueMaxsize());
-		FileUtils.loadData(props().getDataFileQueue(), queue);
 		return queue;
 	}
 
@@ -106,7 +105,6 @@ public class Config {
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public Set<String> visited() {
 		Set<String> visited = new HashSet<>(props().getVisitedMaxsize());
-		FileUtils.loadData(props().getDataFileVisited(), visited);
 		return visited;
 	}
 
