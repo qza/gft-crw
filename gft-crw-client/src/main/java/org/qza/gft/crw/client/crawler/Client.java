@@ -43,7 +43,7 @@ public class Client implements Runnable {
 			work();
 		}
 	}
-	
+
 	public void shutdown() {
 		connection.shutdown();
 	}
@@ -76,13 +76,18 @@ public class Client implements Runnable {
 				connection.writeMessage(messageData);
 			} else {
 				log.warn("No crawler message: " + link);
-				if (errorCount.incrementAndGet() > 3) {
-					log.error("Too many bad messages. Shuting down...");
-					throw new InterruptedException();
-				}
+				checkExit();
 			}
 		} else {
 			log.warn("Bad link : " + link);
+			checkExit();
+		}
+	}
+
+	private void checkExit() throws InterruptedException {
+		if (errorCount.incrementAndGet() > 3) {
+			log.error("Too many bad messages. Shuting down...");
+			throw new InterruptedException();
 		}
 	}
 
