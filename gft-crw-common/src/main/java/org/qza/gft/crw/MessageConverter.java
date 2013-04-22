@@ -48,7 +48,7 @@ public class MessageConverter {
 	}
 	
 	public static void main(String[] args) {
-		Message m = new Message("bla","fun/happy",4.52, "4", "http://www.amazon.com/GOOD_OLD_WILLEY_BOY/B823211");
+		Message m = new Message("bla","fun/happy", "4.52", "4", "http://www.amazon.com/GOOD_OLD_WILLEY_BOY/B823211");
 		m.getRelated().add("http://www.amazon.com/BLABLA");
 		m.getRelated().add("http://www.amazon.com/BLABLA22222");
 		System.out.println(new String(new MessageConverter().write(m)));

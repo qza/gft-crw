@@ -52,7 +52,7 @@ public class JsoupCrawler implements Crawler {
 			Document doc = Jsoup.parse(res.body());
 			String name = getText(doc, cssName);
 			String category = getText(doc, cssCategory);
-			double price = getDoubleFromText(doc, cssPrice);
+			String price = getText(doc, cssPrice);
 			String rating = getText(doc, cssRating);
 			Elements elems = doc.select(cssRelated);
 			Set<String> related = new HashSet<>(elems.size());

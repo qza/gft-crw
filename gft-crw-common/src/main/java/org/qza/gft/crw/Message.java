@@ -7,12 +7,12 @@ public class Message {
 
 	private final String name;
 	private final String category;
-	private final double price;
+	private final String price;
 	private final String rating;
 	private final String url;
 	private final Set<String> related;
 
-	public Message(String name, String category, double price, String rating,
+	public Message(String name, String category, String price, String rating,
 			String url) {
 		this.name = name;
 		this.category = category;
@@ -30,7 +30,7 @@ public class Message {
 		return category;
 	}
 
-	public double getPrice() {
+	public String getPrice() {
 		return price;
 	}
 
@@ -44,6 +44,10 @@ public class Message {
 
 	public Set<String> getRelated() {
 		return related;
+	}
+
+	public void addRelated(Set<String> related) {
+		this.related.addAll(related);
 	}
 
 }
