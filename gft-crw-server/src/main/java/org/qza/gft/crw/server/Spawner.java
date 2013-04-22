@@ -37,8 +37,8 @@ public class Spawner {
 		initializeServers();
 		initializeReporter();
 		work(duration, TimeUnit.MINUTES);
-		parsistData();
 		terminateServers();
+		parsistData();
 		context.end();
 	}
 
