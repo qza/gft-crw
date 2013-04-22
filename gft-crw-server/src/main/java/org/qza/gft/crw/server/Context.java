@@ -1,5 +1,7 @@
 package org.qza.gft.crw.server;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
@@ -8,6 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import org.qza.gft.crw.ContextBase;
+import org.qza.gft.crw.Message;
 import org.qza.gft.crw.ServerAddress;
 
 /**
@@ -18,6 +21,8 @@ public class Context extends ContextBase {
 	final private Props props;
 
 	final private Set<String> visited;
+
+	final private Set<Message> productData;
 
 	final private BlockingQueue<String> queue;
 
@@ -33,11 +38,18 @@ public class Context extends ContextBase {
 		this.queue = queue;
 		this.executor = executor;
 		this.scheduler = scheduler;
+		this.productData = new HashSet<>();
 	}
 
-	public synchronized void addLink(String link) {
-		if (visited.add(link))
-			queue.add(link);
+	public synchronized void addMessage(Message message) {
+		productData.add(message);
+		for (Iterator<String> iterator = message.getRelated().iterator(); iterator
+				.hasNext();) {
+			String link = iterator.next();
+			if (visited.add(link)) {
+				queue.add(link);
+			}
+		}
 	}
 
 	public Set<String> getVisited() {

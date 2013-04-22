@@ -10,7 +10,6 @@ import java.nio.channels.ReadPendingException;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.qza.gft.crw.ServerAddress;
@@ -28,8 +27,6 @@ public class Connection {
 
 	final private ServerAddress address;
 
-	final private Integer timeout;
-
 	final private Future<Void> connectFuture;
 
 	final private AsynchronousSocketChannel socket;
@@ -37,7 +34,6 @@ public class Connection {
 	public Connection(final Context context, final ServerAddress address) {
 		this.log = LoggerFactory.getLogger(Connection.class);
 		this.address = address;
-		this.timeout = context.getProps().getClientTimeout();
 		try {
 			socket = AsynchronousSocketChannel.open();
 			connectFuture = socket.connect(new InetSocketAddress(address
@@ -54,7 +50,7 @@ public class Connection {
 					address.getHost(), address.getPort()));
 			connected = true;
 		} else {
-			log.error(String.format("Not connection to -> %s : %d",
+			log.error(String.format("Not connected to -> %s : %d",
 					address.getHost(), address.getPort()));
 			connectFuture.cancel(true);
 		}
@@ -88,6 +84,12 @@ public class Connection {
 		return message;
 	}
 
+	public void writeMessage(byte[] message) throws InterruptedException,
+			ExecutionException {
+		ByteBuffer data = ByteBuffer.wrap(message);
+		writeData(data);
+	}
+
 	public void writeMessage(String message) throws InterruptedException,
 			ExecutionException {
 		ByteBuffer data = ByteBuffer.wrap(message.getBytes());
@@ -108,7 +110,6 @@ public class Connection {
 	private ByteBuffer readData(int size) throws InterruptedException,
 			ExecutionException, TimeoutException, ReadPendingException {
 		ByteBuffer readBuffer = ByteBuffer.allocate(size);
-//		socket.read(readBuffer).get(timeout, TimeUnit.SECONDS);
 		socket.read(readBuffer).get();
 		return readBuffer;
 	}

@@ -4,6 +4,8 @@ import java.nio.channels.ReadPendingException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import org.qza.gft.crw.Message;
+import org.qza.gft.crw.MessageConverter;
 import org.qza.gft.crw.ServerAddress;
 import org.qza.gft.crw.client.Context;
 
@@ -21,11 +23,14 @@ public class Client implements Runnable {
 
 	final private Connection connection;
 
+	final private MessageConverter converter;
+
 	public Client(String name, final Context context,
 			final ServerAddress address, final Crawler crawler) {
 		this.crawler = crawler;
 		this.connection = new Connection(context, address);
 		this.log = LoggerFactory.getLogger(name);
+		this.converter = new MessageConverter();
 	}
 
 	@Override
@@ -35,14 +40,18 @@ public class Client implements Runnable {
 				try {
 					String link = connection.readMessage();
 					if (link != null && !link.equals("null")) {
-						String[] results = crawler.crawlResults(link);
-						connection.writeMessages(results);
+						Message message = crawler.crawlResults(link);
+						if (message != null) {
+							byte[] messageData = converter.write(message);
+							connection.writeMessage(messageData);
+						} else {
+							log.warn("No crawler message: " + link);
+						}
 					} else {
 						log.warn("Bad link : " + link);
 					}
 				} catch (ReadPendingException e) {
 					log.warn("Pending read!");
-					reconnect();
 				} catch (TimeoutException e) {
 					log.error("No server response");
 				} catch (InterruptedException | ExecutionException e) {
@@ -55,21 +64,9 @@ public class Client implements Runnable {
 			}
 		}
 	}
-	
-	public void reconnect(){
-		
-	}
-	
+
 	public void shutdown() {
 		connection.shutdown();
-	}
-	
-	private void zzz(long time) {
-		try {
-			Thread.sleep(time);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

@@ -32,7 +32,6 @@ public class Config {
 		Props props = new Props();
 		props.setLogTime(env.getProperty("crawler.log.time"));
 		props.setLogCompleted(env.getProperty("crawler.log.completed"));
-		props.setParserCss(env.getProperty("crawler.parser.css"));
 		props.setParserTimeout(env.getProperty("crawler.parser.timeout"));
 		props.setParserMaxbytes(env.getProperty("crawler.parser.maxbytes"));
 		props.setServerList(env.getProperty("crawler.server.list"));
@@ -42,6 +41,11 @@ public class Config {
 		props.setSpawnPerserver(env.getProperty("crawler.spawn.perserver"));
 		props.setTpoolInitsize(env.getProperty("crawler.spawn.tpool.initsize"));
 		props.setTpoolMaxsize(env.getProperty("crawler.spawn.tpool.maxsize"));
+		props.setParserCssName(env.getProperty("crawler.parser.css.name"));
+		props.setParserCssCategory(env.getProperty("crawler.parser.css.category"));
+		props.setParserCssPrice(env.getProperty("crawler.parser.css.price"));
+		props.setParserCssRating(env.getProperty("crawler.parser.css.rating"));
+		props.setParserCssRelated(env.getProperty("crawler.parser.css.related"));
 		return props;
 	}
 

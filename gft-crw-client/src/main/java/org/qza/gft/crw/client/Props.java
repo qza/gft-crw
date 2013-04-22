@@ -14,8 +14,6 @@ public class Props {
 
 	private Boolean logCompleted;
 
-	private String parserCss;
-
 	private Integer parserTimeout;
 
 	private Integer parserMaxbytes;
@@ -29,10 +27,20 @@ public class Props {
 	private Integer tpoolMaxsize;
 
 	private Integer clientTimeout;
-	
+
 	private Integer clientDuration;
 
 	private ServerAddresses servers;
+
+	private String parserCssName;
+
+	private String parserCssCategory;
+
+	private String parserCssPrice;
+
+	private String parserCssRating;
+
+	private String parserCssRelated;
 
 	public Boolean getLogTime() {
 		return logTime;
@@ -48,14 +56,6 @@ public class Props {
 
 	public void setLogCompleted(String logCompleted) {
 		this.logCompleted = Boolean.valueOf(logCompleted);
-	}
-
-	public String getParserCss() {
-		return parserCss;
-	}
-
-	public void setParserCss(String parserCss) {
-		this.parserCss = parserCss;
 	}
 
 	public Integer getParserTimeout() {
@@ -121,12 +121,53 @@ public class Props {
 	public void setClientTimeout(String clientTimeout) {
 		this.clientTimeout = Integer.valueOf(clientTimeout);
 	}
-	
+
 	public Integer getClientDuration() {
 		return clientDuration;
 	}
-	
+
 	public void setClientDuration(String clientDuration) {
 		this.clientDuration = Integer.valueOf(clientDuration);
 	}
+
+	public String getParserCssName() {
+		return parserCssName;
+	}
+
+	public String getParserCssCategory() {
+		return parserCssCategory;
+	}
+
+	public String getParserCssPrice() {
+		return parserCssPrice;
+	}
+
+	public String getParserCssRating() {
+		return parserCssRating;
+	}
+
+	public String getParserCssRelated() {
+		return parserCssRelated;
+	}
+
+	public void setParserCssName(String parserCssName) {
+		this.parserCssName = parserCssName;
+	}
+
+	public void setParserCssCategory(String parserCssCategory) {
+		this.parserCssCategory = parserCssCategory;
+	}
+
+	public void setParserCssPrice(String parserCssPrice) {
+		this.parserCssPrice = parserCssPrice;
+	}
+
+	public void setParserCssRating(String parserCssRating) {
+		this.parserCssRating = parserCssRating;
+	}
+
+	public void setParserCssRelated(String parserCssRelated) {
+		this.parserCssRelated = parserCssRelated;
+	}
+
 }

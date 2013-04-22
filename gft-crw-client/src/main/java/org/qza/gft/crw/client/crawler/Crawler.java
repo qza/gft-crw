@@ -1,5 +1,7 @@
 package org.qza.gft.crw.client.crawler;
 
+import org.qza.gft.crw.Message;
+
 /**
  * @author gft
  */
@@ -10,8 +12,8 @@ public interface Crawler {
 	 * 
 	 * @param link
 	 *            URL to crawl
-	 * @return Array of related URLs as strings
+	 * @return Crawler message
 	 */
-	String[] crawlResults(String link);
+	Message crawlResults(String link);
 
 }

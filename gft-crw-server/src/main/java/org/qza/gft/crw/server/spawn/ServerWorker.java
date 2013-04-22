@@ -6,6 +6,8 @@ import java.nio.channels.AsynchronousSocketChannel;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import org.qza.gft.crw.Message;
+import org.qza.gft.crw.MessageConverter;
 import org.qza.gft.crw.server.Context;
 
 import org.slf4j.Logger;
@@ -20,6 +22,8 @@ public class ServerWorker implements Runnable {
 
 	final private Context context;
 
+	final private MessageConverter converter;
+
 	final private List<ServerWorker> workers;
 
 	final private AsynchronousSocketChannel socket;
@@ -30,6 +34,7 @@ public class ServerWorker implements Runnable {
 		this.context = context;
 		this.socket = socket;
 		this.workers = workers;
+		this.converter = new MessageConverter();
 		this.log = LoggerFactory.getLogger(ServerWorker.class);
 	}
 
@@ -63,20 +68,21 @@ public class ServerWorker implements Runnable {
 				readBuffer = null;
 				throw new RuntimeException("Interupted");
 			}
-			String message = new String(readBuffer.array()).trim();
-			if (message != null && !message.equals("null")) {
-				processMessage(message);
+			byte[] data = readBuffer.array();
+			if(data!=null && data.length > 0) {
+				processData(data);
 				success = true;
 			}
 		}
 		return success;
 	}
 
-	private void processMessage(String message) {
-		message = message.replaceAll("\\[", "").replaceAll("\\]", "");
-		String[] links = message.split(",");
-		for (int i = 0; i < links.length; i++) {
-			context.addLink(links[i].trim());
+	private void processData(byte[] data) {
+		Message message = converter.read(data);
+		if(message!=null) {
+			context.addMessage(message);
+		} else {
+			log.error("BAD MESSAGE");
 		}
 	}
 
