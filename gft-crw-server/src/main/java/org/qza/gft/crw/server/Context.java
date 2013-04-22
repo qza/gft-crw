@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -117,25 +118,25 @@ public class Context extends ContextBase {
 	private ThreadPoolExecutor getThreadPool() {
 		return (ThreadPoolExecutor) executor;
 	}
-	
+
 	public Set<Message> getProductData() {
 		return productData;
 	}
-	
+
 	public void addProductData(Message data) {
 		getProductData().add(data);
 	}
-	
-	public Set<Message> getProductDataClone(){
-		return Collections.unmodifiableSet(getProductData());
+
+	public List<Message> getProductDataClone() {
+		return new CopyOnWriteArrayList<>(getProductData());
 	}
-	
-	public Collection<String> getQueueClone(){
-		return Collections.unmodifiableCollection(getQueue());
+
+	public List<String> getQueueClone() {
+		return new CopyOnWriteArrayList<>(getQueue());
 	}
-	
-	public Collection<String> getVisitedClone(){
-		return Collections.unmodifiableCollection(getVisited());
+
+	public List<String> getVisitedClone() {
+		return new CopyOnWriteArrayList<>(getVisited());
 	}
 
 }

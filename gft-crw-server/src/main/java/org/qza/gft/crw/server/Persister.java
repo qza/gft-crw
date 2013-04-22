@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.qza.gft.crw.Message;
@@ -34,7 +35,7 @@ public class Persister {
 	}
 
 	public void persist() {
-		Set<Message> messages = this.context.getProductDataClone();
+		List<Message> messages = this.context.getProductDataClone();
 		persistData(dataFileProducts, messages);
 		persistStringCollection(dataFileQueue, this.context.getQueueClone());
 		persistStringCollection(dataFileVisited, this.context.getVisitedClone());
