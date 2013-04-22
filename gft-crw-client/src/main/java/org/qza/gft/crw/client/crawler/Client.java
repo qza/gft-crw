@@ -43,6 +43,7 @@ public class Client implements Runnable {
 						Message message = crawler.crawlResults(link);
 						if (message != null) {
 							byte[] messageData = converter.write(message);
+							log.info("Sending to server : " + new String(messageData));
 							connection.writeMessage(messageData);
 						} else {
 							log.warn("No crawler message: " + link);
