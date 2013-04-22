@@ -61,7 +61,7 @@ public class ServerWorker implements Runnable {
 
 	private boolean readMessage(AsynchronousSocketChannel socket) {
 		boolean success = false;
-		ByteBuffer readBuffer = ByteBuffer.allocate(512);
+		ByteBuffer readBuffer = ByteBuffer.allocate(4096);
 		if (socket.isOpen()) {
 			try {
 				socket.read(readBuffer).get();
