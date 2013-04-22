@@ -3,6 +3,7 @@ package org.qza.gft.crw.client.crawler;
 import java.nio.channels.ReadPendingException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.MessageConverter;
@@ -25,12 +26,15 @@ public class Client implements Runnable {
 
 	final private MessageConverter converter;
 
+	final private AtomicInteger errorCount;
+
 	public Client(String name, final Context context,
 			final ServerAddress address, final Crawler crawler) {
 		this.crawler = crawler;
 		this.connection = new Connection(context, address);
 		this.log = LoggerFactory.getLogger(name);
 		this.converter = new MessageConverter();
+		this.errorCount = new AtomicInteger(0);
 	}
 
 	@Override
@@ -46,6 +50,10 @@ public class Client implements Runnable {
 							connection.writeMessage(messageData);
 						} else {
 							log.warn("No crawler message: " + link);
+							if (errorCount.incrementAndGet() > 10) {
+								log.error("Too many bad messages. Shuting down...");
+								break;
+							}
 						}
 					} else {
 						log.warn("Bad link : " + link);
