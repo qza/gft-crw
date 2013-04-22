@@ -83,7 +83,7 @@ public class Spawner {
 				servers.next().shutdown();
 			}
 			executor().shutdown();
-			executor().awaitTermination(1, TimeUnit.MILLISECONDS);
+			executor().awaitTermination(5, TimeUnit.SECONDS);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
