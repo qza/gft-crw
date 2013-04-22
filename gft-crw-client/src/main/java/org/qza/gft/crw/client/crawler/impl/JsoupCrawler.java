@@ -65,6 +65,7 @@ public class JsoupCrawler implements Crawler {
 			return m;
 		} catch (Exception e) {
 			log.error(String.format("Problem with link %s", link));
+			e.printStackTrace();
 		}
 		return null;
 	}
