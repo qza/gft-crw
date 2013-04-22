@@ -22,19 +22,23 @@ public class Spawner {
 
 	final private Context context;
 
+	final private Initializer initializer;
+
 	final private Integer duration;
 
 	final private Map<ServerAddress, Server> serverMap;
 
-	public Spawner(final Context context) {
+	public Spawner(final Context context, final Initializer initializer) {
 		this.log = LoggerFactory.getLogger(Spawner.class);
 		this.context = context;
+		this.initializer = initializer;
 		this.serverMap = new HashMap<>(context.getServerList().size());
 		this.duration = context.getProps().getServerDuration();
 	}
 
 	public void spawn() {
 		context.start();
+		initializeState();
 		initializeServers();
 		initializeReporter();
 		work(duration, TimeUnit.MINUTES);
@@ -42,6 +46,10 @@ public class Spawner {
 		terminateScheduler();
 		persistData();
 		context.end();
+	}
+
+	private void initializeState() {
+		initializer.initServerState();
 	}
 
 	private void initializeServers() {

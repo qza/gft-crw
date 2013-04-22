@@ -125,8 +125,15 @@ public class Config {
 
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
+	public Initializer initializer() {
+		Initializer initializer = new Initializer(context());
+		return initializer;
+	}
+
+	@Bean
+	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public Spawner spawner() {
-		Spawner spawner = new Spawner(context());
+		Spawner spawner = new Spawner(context(), initializer());
 		return spawner;
 	}
 

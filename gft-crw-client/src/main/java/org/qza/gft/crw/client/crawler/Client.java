@@ -76,7 +76,7 @@ public class Client implements Runnable {
 				connection.writeMessage(messageData);
 			} else {
 				log.warn("No crawler message: " + link);
-				if (errorCount.incrementAndGet() > 5) {
+				if (errorCount.incrementAndGet() > 3) {
 					log.error("Too many bad messages. Shuting down...");
 					throw new InterruptedException();
 				}

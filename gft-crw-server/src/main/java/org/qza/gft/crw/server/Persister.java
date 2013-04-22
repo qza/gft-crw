@@ -1,15 +1,11 @@
 package org.qza.gft.crw.server;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
+import org.qza.gft.crw.FileUtils;
 import org.qza.gft.crw.Message;
-import org.qza.gft.crw.MessageConverter;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,45 +29,22 @@ public class Persister {
 	}
 
 	public void persist() {
-		List<Message> messages = this.context.getProductDataClone();
-		persistData(dataFileProducts, messages);
-		persistStringCollection(dataFileQueue, this.context.getQueueClone());
-		persistStringCollection(dataFileVisited, this.context.getVisitedClone());
-		log.info("All data persisted. " + new Date());
-	}
-	
-	public void persistStringCollection(String fileName, Collection<String> data) {
-		FileWriter writer;
-		try {
-			File file = new File(fileName);
-			writer = new FileWriter(file);
-			for (Iterator<String> iterator = data.iterator(); iterator
-					.hasNext();) {
-				writer.write(iterator.next());
-				writer.write("\r\n");
-			}
-			writer.close();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public void persistData(String fileName, Collection<Message> data) {
-		FileWriter writer;
-		try {
-			File file = new File(fileName);
-			writer = new FileWriter(file);
-			for (Iterator<Message> iterator = data.iterator(); iterator
-					.hasNext();) {
-				Message message = iterator.next();
-				String text = new String(new MessageConverter().write(message));
-				writer.write(text);
-				writer.write("\r\n");
-			}
-			writer.close();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		log.info("Persisting product data");
+		List<Message> messages = context.getProductDataClone();
+		context.getProductData().clear();
+		FileUtils.writeMessagesGzip(dataFileProducts, messages);
+		messages.clear();
+		log.info("Persisting queue");
+		List<String> queue = context.getQueueClone();
+		context.getQueue().clear();
+		FileUtils.writeTextGzip(dataFileQueue, queue);
+		queue.clear();
+		log.info("Persisting visited links");
+		List<String> visited = context.getVisitedClone();
+		context.getVisited().clear();
+		FileUtils.writeTextGzip(dataFileVisited, visited);
+		visited.clear();
+		log.info("Server state persisted. " + new Date());
 	}
 
 }
