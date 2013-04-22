@@ -65,8 +65,8 @@ public class Spawner {
 
 	private void initializePersister() {
 		Persister persister = new Persister(context);
-		context.getScheduler().scheduleWithFixedDelay(persister, 0, 60,
-				TimeUnit.SECONDS);
+		context.getScheduler().scheduleWithFixedDelay(persister, 0, 1,
+				TimeUnit.MINUTES);
 		log.info("Persister scheduled");
 	}
 

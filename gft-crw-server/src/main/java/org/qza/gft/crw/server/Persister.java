@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -37,7 +38,7 @@ public class Persister implements Runnable {
 		persistData(dataFileProducts, messages);
 		persistStringCollection(dataFileQueue, this.context.getQueue());
 		persistStringCollection(dataFileVisited, this.context.getVisited());
-		log.info("All data persisted.");
+		log.info("All data persisted. " + new Date());
 	}
 
 	public void persistStringCollection(String fileName, Collection<String> data) {
@@ -48,6 +49,7 @@ public class Persister implements Runnable {
 			for (Iterator<String> iterator = data.iterator(); iterator
 					.hasNext();) {
 				writer.write(iterator.next());
+				writer.write("\r\n");
 			}
 			writer.close();
 		} catch (IOException e) {
@@ -65,6 +67,7 @@ public class Persister implements Runnable {
 				Message message = iterator.next();
 				String text = new String(new MessageConverter().write(message));
 				writer.write(text);
+				writer.write("\r\n");
 			}
 			writer.close();
 		} catch (IOException e) {
