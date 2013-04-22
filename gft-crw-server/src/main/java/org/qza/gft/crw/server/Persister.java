@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
@@ -33,10 +34,10 @@ public class Persister {
 	}
 
 	public void persist() {
-		Set<Message> messages = this.context.getProductData();
+		Set<Message> messages = this.context.getProductDataClone();
 		persistData(dataFileProducts, messages);
-		persistStringCollection(dataFileQueue, this.context.getQueue());
-		persistStringCollection(dataFileVisited, this.context.getVisited());
+		persistStringCollection(dataFileQueue, this.context.getQueueClone());
+		persistStringCollection(dataFileVisited, this.context.getVisitedClone());
 		log.info("All data persisted. " + new Date());
 	}
 	

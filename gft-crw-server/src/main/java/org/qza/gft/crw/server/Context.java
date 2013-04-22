@@ -1,5 +1,7 @@
 package org.qza.gft.crw.server;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -122,6 +124,18 @@ public class Context extends ContextBase {
 	
 	public void addProductData(Message data) {
 		getProductData().add(data);
+	}
+	
+	public Set<Message> getProductDataClone(){
+		return Collections.unmodifiableSet(getProductData());
+	}
+	
+	public Collection<String> getQueueClone(){
+		return Collections.unmodifiableCollection(getQueue());
+	}
+	
+	public Collection<String> getVisitedClone(){
+		return Collections.unmodifiableCollection(getVisited());
 	}
 
 }
