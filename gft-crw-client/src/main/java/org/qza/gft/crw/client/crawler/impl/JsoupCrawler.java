@@ -56,7 +56,7 @@ public class JsoupCrawler implements Crawler {
 			String category = getText(doc, cssCategory);
 			String price = getText(doc, cssPrice);
 			String rating = getText(doc, cssRating);
-			String image = getText(doc, cssImage);
+			String image = getAttr(doc, cssImage, "src");
 			Elements elems = doc.select(cssRelated);
 			Set<String> related = new HashSet<>(elems.size());
 			Iterator<Element> links = elems.iterator();
@@ -66,22 +66,43 @@ public class JsoupCrawler implements Crawler {
 			Message m = new Message(name, category, price, rating, link, image);
 			m.getRelated().addAll(related);
 			return m;
+		} catch (java.net.SocketTimeoutException tex) {
+			log.error(String.format("Timeout for link %s", link));
 		} catch (Exception e) {
-			log.error(String.format("Problem with link %s", link));
-			e.printStackTrace();
+			log.error(String.format("Problem with link %s", link), e);
+		}
+		return null;
+	}
+
+	private String getAttr(Document doc, String selector, String attr) {
+		Elements elems = getElements(doc, selector);
+		if (checkElems(elems)) {
+			return elems.iterator().next().attr(attr).trim();
 		}
 		return null;
 	}
 
 	private String getText(Document doc, String selector) {
+		Elements elems = getElements(doc, selector);
+		if (checkElems(elems)) {
+			return elems.iterator().next().text().trim();
+		}
+		return null;
+	}
+
+	private Elements getElements(Document doc, String selector) {
 		String[] selectors = selector.split(",");
 		for (int i = 0; i < selectors.length; i++) {
 			Elements elems = doc.select(selectors[i].trim());
-			if (elems != null && elems.size() > 0) {
-				return elems.iterator().next().text().trim();
+			if (checkElems(elems)) {
+				return elems;
 			}
 		}
 		return null;
+	}
+
+	private boolean checkElems(Elements elems) {
+		return (elems != null && elems.size() > 0);
 	}
 
 }

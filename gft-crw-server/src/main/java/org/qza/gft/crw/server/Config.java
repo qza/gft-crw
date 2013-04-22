@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.qza.gft.crw.FileUtils;
+import org.qza.gft.crw.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
@@ -111,9 +112,16 @@ public class Config {
 
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
+	public Set<Message> products() {
+		Set<Message> products = new HashSet<>();
+		return products;
+	}
+
+	@Bean
+	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public Context context() {
 		Context context = new Context(props(), visited(), queue(), executor(),
-				scheduler());
+				scheduler(), products());
 		return context;
 	}
 

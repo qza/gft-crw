@@ -1,6 +1,5 @@
 package org.qza.gft.crw.server;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -33,13 +32,14 @@ public class Context extends ContextBase {
 
 	public Context(final Props props, final Set<String> visited,
 			final BlockingQueue<String> queue, final ExecutorService executor,
-			final ScheduledExecutorService scheduler) {
+			final ScheduledExecutorService scheduler,
+			final Set<Message> products) {
 		this.props = props;
 		this.visited = visited;
 		this.queue = queue;
 		this.executor = executor;
 		this.scheduler = scheduler;
-		this.productData = new HashSet<>();
+		this.productData = products;
 	}
 
 	public void addMessage(Message message) {

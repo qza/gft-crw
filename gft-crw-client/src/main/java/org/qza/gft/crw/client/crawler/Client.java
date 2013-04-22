@@ -43,26 +43,16 @@ public class Client implements Runnable {
 			work();
 		}
 	}
+	
+	public void shutdown() {
+		connection.shutdown();
+	}
 
-	public void work() {
+	private void work() {
 		while (true) {
 			try {
 				String link = connection.readMessage();
-				if (link != null && !link.equals("null")) {
-					Message message = crawler.crawlResults(link);
-					if (message != null) {
-						byte[] messageData = converter.write(message);
-						connection.writeMessage(messageData);
-					} else {
-						log.warn("No crawler message: " + link);
-						if (errorCount.incrementAndGet() > 10) {
-							log.error("Too many bad messages. Shuting down...");
-							break;
-						}
-					}
-				} else {
-					log.warn("Bad link : " + link);
-				}
+				processLink(link);
 			} catch (ReadPendingException e) {
 				log.warn("Pending read!");
 			} catch (TimeoutException e) {
@@ -77,8 +67,23 @@ public class Client implements Runnable {
 		}
 	}
 
-	public void shutdown() {
-		connection.shutdown();
+	private void processLink(String link) throws InterruptedException,
+			ExecutionException {
+		if (link != null && !link.equals("") && !link.equals("null")) {
+			Message message = crawler.crawlResults(link);
+			if (message != null) {
+				byte[] messageData = converter.write(message);
+				connection.writeMessage(messageData);
+			} else {
+				log.warn("No crawler message: " + link);
+				if (errorCount.incrementAndGet() > 5) {
+					log.error("Too many bad messages. Shuting down...");
+					throw new InterruptedException();
+				}
+			}
+		} else {
+			log.warn("Bad link : " + link);
+		}
 	}
 
 }
