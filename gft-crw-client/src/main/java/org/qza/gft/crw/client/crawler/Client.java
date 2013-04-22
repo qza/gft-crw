@@ -40,35 +40,39 @@ public class Client implements Runnable {
 	@Override
 	public void run() {
 		if (connection.check()) {
-			while (true) {
-				try {
-					String link = connection.readMessage();
-					if (link != null && !link.equals("null")) {
-						Message message = crawler.crawlResults(link);
-						if (message != null) {
-							byte[] messageData = converter.write(message);
-							connection.writeMessage(messageData);
-						} else {
-							log.warn("No crawler message: " + link);
-							if (errorCount.incrementAndGet() > 10) {
-								log.error("Too many bad messages. Shuting down...");
-								break;
-							}
-						}
+			work();
+		}
+	}
+
+	public void work() {
+		while (true) {
+			try {
+				String link = connection.readMessage();
+				if (link != null && !link.equals("null")) {
+					Message message = crawler.crawlResults(link);
+					if (message != null) {
+						byte[] messageData = converter.write(message);
+						connection.writeMessage(messageData);
 					} else {
-						log.warn("Bad link : " + link);
+						log.warn("No crawler message: " + link);
+						if (errorCount.incrementAndGet() > 10) {
+							log.error("Too many bad messages. Shuting down...");
+							break;
+						}
 					}
-				} catch (ReadPendingException e) {
-					log.warn("Pending read!");
-				} catch (TimeoutException e) {
-					log.error("No server response");
-				} catch (InterruptedException | ExecutionException e) {
-					log.error("Connection interupted");
-					break;
-				} catch (Exception e) {
-					log.error("Error:", e);
-					break;
+				} else {
+					log.warn("Bad link : " + link);
 				}
+			} catch (ReadPendingException e) {
+				log.warn("Pending read!");
+			} catch (TimeoutException e) {
+				log.error("No server response");
+			} catch (InterruptedException | ExecutionException e) {
+				log.error("Connection interupted");
+				break;
+			} catch (Exception e) {
+				log.error("Error:", e);
+				break;
 			}
 		}
 	}

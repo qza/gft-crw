@@ -18,15 +18,17 @@ import org.slf4j.LoggerFactory;
  */
 public class Spawner {
 
+	final private Logger log;
+
 	final private Context context;
 
-	final private ExecutorService executor;
+	final private Integer duration;
 
-	final private Logger log;
+	final private Integer perServer;
 
 	final private List<Client> clients;
 
-	final private Integer duration;
+	final private ExecutorService executor;
 
 	public Spawner(final Context context, final ExecutorService executor) {
 		this.log = LoggerFactory.getLogger(Spawner.class);
@@ -34,36 +36,40 @@ public class Spawner {
 		this.executor = executor;
 		this.clients = new ArrayList<>();
 		this.duration = context.getProps().getClientDuration();
+		this.perServer = context.getProps().getSpawnPerserver();
 	}
 
 	public void spawn() throws InterruptedException {
 		context.start();
 		initializeClients();
-		wait(duration, TimeUnit.MINUTES);
+		work(duration, TimeUnit.MINUTES);
 		terminateClients();
+		terminateExecuton();
 		context.end();
 	}
 
 	private void initializeClients() {
-		Integer spawnPerServer = context.getProps().getSpawnPerserver();
 		Crawler crawler = new JsoupCrawler(context);
-		for (Iterator<ServerAddress> it = context.getServerList().iterator(); it
-				.hasNext();) {
-			ServerAddress address = it.next();
-			for (int i = 0; i < spawnPerServer; i++) {
-				Client worker = new Client("C" + i, context, address, crawler);
-				clients.add(worker);
-				executor.execute(worker);
-			}
+		Iterator<ServerAddress> it = context.getServerList().iterator();
+		while (it.hasNext()) {
+			connectToServer(it.next(), crawler);
 		}
 		log.info(String.format("%d clients initialized", clients.size()));
 	}
 
-	private void wait(long time, TimeUnit unit) {
+	private void connectToServer(ServerAddress address, Crawler crawler) {
+		for (int i = 0; i < perServer; i++) {
+			Client worker = new Client("C" + i, context, address, crawler);
+			clients.add(worker);
+			executor.execute(worker);
+		}
+	}
+
+	private void work(long time, TimeUnit unit) {
 		try {
 			executor.awaitTermination(time, unit);
 		} catch (InterruptedException e1) {
-			e1.printStackTrace();
+			log.warn("Spawner interupted");
 		}
 	}
 
@@ -72,13 +78,17 @@ public class Spawner {
 			Client client = iterator.next();
 			client.shutdown();
 		}
+		log.info("Clients terminated");
+	}
+
+	private void terminateExecuton() {
 		try {
 			executor.shutdown();
-			executor.awaitTermination(1, TimeUnit.MILLISECONDS);
+			executor.awaitTermination(1, TimeUnit.SECONDS);
 		} catch (InterruptedException e1) {
-			e1.printStackTrace();
+			log.warn("Termination interupted");
 		}
-		log.info("Clients terminated");
+		log.info("Execution completed");
 	}
 
 }

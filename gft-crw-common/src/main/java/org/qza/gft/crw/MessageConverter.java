@@ -30,7 +30,7 @@ public class MessageConverter {
 		}
 		return null;
 	}
-	
+
 	public Message read(byte[] value) {
 		try {
 			return mapper.readValue(value, Message.class);
@@ -46,9 +46,11 @@ public class MessageConverter {
 		}
 		return null;
 	}
-	
+
 	public static void main(String[] args) {
-		Message m = new Message("bla","fun/happy", "4.52", "4", "http://www.amazon.com/GOOD_OLD_WILLEY_BOY/B823211");
+		String url = "http://www.amazon.com/GOOD_OLD_WILLEY_BOY/B823211";
+		String image = "http://ecx.images-amazon.com/images/I/51GjZekBmWL._SX385_.jpg";
+		Message m = new Message("bla", "fun/happy", "4.52", "4", url, image);
 		m.getRelated().add("http://www.amazon.com/BLABLA");
 		m.getRelated().add("http://www.amazon.com/BLABLA22222");
 		System.out.println(new String(new MessageConverter().write(m)));

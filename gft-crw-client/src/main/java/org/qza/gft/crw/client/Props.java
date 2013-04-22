@@ -41,6 +41,8 @@ public class Props {
 	private String parserCssRating;
 
 	private String parserCssRelated;
+	
+	private String parserCssImage;
 
 	public Boolean getLogTime() {
 		return logTime;
@@ -168,6 +170,14 @@ public class Props {
 
 	public void setParserCssRelated(String parserCssRelated) {
 		this.parserCssRelated = parserCssRelated;
+	}
+	
+	public String getParserCssImage() {
+		return parserCssImage;
+	}
+	
+	public void setParserCssImage(String parserCssImage) {
+		this.parserCssImage = parserCssImage;
 	}
 
 }

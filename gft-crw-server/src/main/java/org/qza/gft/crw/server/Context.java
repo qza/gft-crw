@@ -1,7 +1,5 @@
 package org.qza.gft.crw.server;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -44,13 +42,15 @@ public class Context extends ContextBase {
 		this.productData = new HashSet<>();
 	}
 
-	public synchronized void addMessage(Message message) {
-		productData.add(message);
+	public void addMessage(Message message) {
 		for (Iterator<String> iterator = message.getRelated().iterator(); iterator
 				.hasNext();) {
 			String link = iterator.next();
-			if (visited.add(link)) {
-				queue.add(link);
+			synchronized (this) {
+				if (visited.add(link)) {
+					productData.add(message);
+					queue.add(link);
+				}
 			}
 		}
 	}

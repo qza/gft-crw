@@ -29,6 +29,7 @@ public class JsoupCrawler implements Crawler {
 	final private String cssPrice;
 	final private String cssRating;
 	final private String cssRelated;
+	final private String cssImage;
 
 	final private Integer parserTimeout;
 	final private Integer parserMaxbytes;
@@ -42,6 +43,7 @@ public class JsoupCrawler implements Crawler {
 		this.cssRelated = context.getProps().getParserCssRelated();
 		this.parserTimeout = context.getProps().getParserTimeout();
 		this.parserMaxbytes = context.getProps().getParserMaxbytes();
+		this.cssImage = context.getProps().getParserCssImage();
 	}
 
 	@Override
@@ -54,13 +56,14 @@ public class JsoupCrawler implements Crawler {
 			String category = getText(doc, cssCategory);
 			String price = getText(doc, cssPrice);
 			String rating = getText(doc, cssRating);
+			String image = getText(doc, cssImage);
 			Elements elems = doc.select(cssRelated);
 			Set<String> related = new HashSet<>(elems.size());
 			Iterator<Element> links = elems.iterator();
 			while (links.hasNext()) {
 				related.add(links.next().attr("href"));
 			}
-			Message m = new Message(name, category, price, rating, link);
+			Message m = new Message(name, category, price, rating, link, image);
 			m.getRelated().addAll(related);
 			return m;
 		} catch (Exception e) {
