@@ -41,7 +41,6 @@ public class Config {
 	public Props props() {
 		Props props = new Props();
 		props.setQueueMaxsize(getProperty("crawler.queue.maxsize"));
-		props.setQueueInitfile(getProperty("crawler.queue.initfile"));
 		props.setVisitedMaxsize(getProperty("crawler.visited.maxsize"));
 		props.setLogTime(getProperty("crawler.log.time"));
 		props.setLogCompleted(getProperty("crawler.log.completed"));
@@ -51,14 +50,15 @@ public class Config {
 		props.setServerPorts(getProperty("crawler.server.ports"));
 		props.setTpoolInitsize(getProperty("crawler.spawn.tpool.initsize"));
 		props.setTpoolMaxsize(getProperty("crawler.spawn.tpool.maxsize"));
-		props.setReportFileMain(getProperty("crawler.report.file.main"));
-		props.setReportFileQueue(getProperty("crawler.report.file.queue"));
-		props.setReportFileVisited(getProperty("crawler.report.file.visited"));
+		props.setReportFilename(getProperty("crawler.report.filename"));
+		props.setDataFileQueue(getProperty("crawler.data.file.queue"));
+		props.setDataFileVisited(getProperty("crawler.data.file.visited"));
+		props.setDataFileProducts(getProperty("crawler.data.file.main"));
 		props.setReportLogInterval(getProperty("crawler.report.log.interval"));
 		props.setServerMaxclients(getProperty("crawler.server.maxclients"));
 		return props;
 	}
-	
+
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public ThreadFactory threadFactory() {
@@ -97,7 +97,7 @@ public class Config {
 	public BlockingQueue<String> queue() {
 		BlockingQueue<String> queue = new ArrayBlockingQueue<String>(props()
 				.getQueueMaxsize());
-		FileUtils.loadData(props().getQueueInitfile(), queue);
+		FileUtils.loadData(props().getDataFileQueue(), queue);
 		return queue;
 	}
 
@@ -105,6 +105,7 @@ public class Config {
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public Set<String> visited() {
 		Set<String> visited = new HashSet<>(props().getVisitedMaxsize());
+		FileUtils.loadData(props().getDataFileVisited(), visited);
 		return visited;
 	}
 

@@ -12,8 +12,6 @@ public class Props {
 
 	private Integer queueMaxsize;
 
-	private String queueInitfile;
-
 	private Integer visitedMaxsize;
 
 	private Boolean logTime;
@@ -32,17 +30,19 @@ public class Props {
 
 	private Integer tpoolMaxsize;
 
-	private String reportFileMain;
-
-	private String reportFileQueue;
-
-	private String reportFileVisited;
+	private String reportFilename;
 
 	private Integer reportLogInterval;
 
 	private ServerAddresses servers;
 
 	private Integer serverMaxclients;
+	
+	private String dataFileQueue;
+	
+	private String dataFileVisited;
+	
+	private String dataFileProducts;
 
 	public Boolean getLogTime() {
 		return logTime;
@@ -54,14 +54,6 @@ public class Props {
 
 	public void setQueueMaxsize(String queueMaxsize) {
 		this.queueMaxsize = Integer.valueOf(queueMaxsize);
-	}
-
-	public String getQueueInitfile() {
-		return queueInitfile;
-	}
-
-	public void setQueueInitfile(String queueInitfile) {
-		this.queueInitfile = queueInitfile;
 	}
 
 	public Integer getVisitedMaxsize() {
@@ -139,28 +131,12 @@ public class Props {
 		this.tpoolMaxsize = Integer.valueOf(tpoolMaxsize);
 	}
 
-	public String getReportFileMain() {
-		return reportFileMain;
+	public String getReportFilename() {
+		return reportFilename;
 	}
 
-	public String getReportFileQueue() {
-		return reportFileQueue;
-	}
-
-	public String getReportFileVisited() {
-		return reportFileVisited;
-	}
-
-	public void setReportFileMain(String reportFileMain) {
-		this.reportFileMain = reportFileMain;
-	}
-
-	public void setReportFileQueue(String reportFileQueue) {
-		this.reportFileQueue = reportFileQueue;
-	}
-
-	public void setReportFileVisited(String reportFileVisited) {
-		this.reportFileVisited = reportFileVisited;
+	public void setReportFilename(String reportFilename) {
+		this.reportFilename = reportFilename;
 	}
 
 	public Integer getReportLogInterval() {
@@ -177,6 +153,30 @@ public class Props {
 
 	public void setServerMaxclients(String serverMaxclients) {
 		this.serverMaxclients = Integer.valueOf(serverMaxclients);
+	}
+	
+	public String getDataFileVisited() {
+		return dataFileVisited;
+	}
+	
+	public String getDataFileQueue() {
+		return dataFileQueue;
+	}
+	
+	public String getDataFileProducts() {
+		return dataFileProducts;
+	}
+	
+	public void setDataFileVisited(String dataFileVisited) {
+		this.dataFileVisited = dataFileVisited;
+	}
+	
+	public void setDataFileQueue(String dataFileQueue) {
+		this.dataFileQueue = dataFileQueue;
+	}
+	
+	public void setDataFileProducts(String dataFileProducts) {
+		this.dataFileProducts = dataFileProducts;
 	}
 
 }

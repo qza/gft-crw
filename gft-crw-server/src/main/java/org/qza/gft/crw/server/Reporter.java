@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
  */
 public class Reporter implements Runnable {
 
-	final Context context;
-	final Props props;
-	final Logger log;
+	private final Context context;
+	private final Props props;
+	private final Logger log;
 
 	public Reporter(final Context context) {
 		this.context = context;
@@ -36,7 +36,7 @@ public class Reporter implements Runnable {
 	public void writeReport() {
 		FileWriter writer;
 		try {
-			File file = new File(props.getReportFileMain());
+			File file = new File(props.getReportFilename());
 			writer = new FileWriter(file);
 			String report = makeReport();
 			writer.write(report);

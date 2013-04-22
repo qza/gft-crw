@@ -115,5 +115,13 @@ public class Context extends ContextBase {
 	private ThreadPoolExecutor getThreadPool() {
 		return (ThreadPoolExecutor) executor;
 	}
+	
+	public Set<Message> getProductData() {
+		return productData;
+	}
+	
+	public void addProductData(Message data) {
+		getProductData().add(data);
+	}
 
 }
