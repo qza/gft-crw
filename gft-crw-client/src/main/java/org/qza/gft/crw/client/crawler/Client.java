@@ -70,8 +70,6 @@ public class Client implements Runnable {
 			if (message != null) {
 				byte[] messageData = converter.write(message);
 				connection.writeMessage(messageData);
-			} else {
-				throw new InterruptedException();
 			}
 		} else {
 			log.warn("Bad link : " + link);

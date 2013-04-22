@@ -33,6 +33,8 @@ public class Builder {
 		template.padNumber("Visited");
 		template.padText("Visited / Second");
 		template.newLine();
+		template.padNumber("Free memory");
+		template.newLine();
 		template.line("******************************************************");
 		template.newLine();
 		return template.get();

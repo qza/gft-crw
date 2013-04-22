@@ -62,7 +62,7 @@ public class Reporter implements Runnable {
 				duration);
 		String report = String.format(template, queueMax, poolInit, poolMax,
 				durationStr, completedTasks, remainedTasks, queueSize,
-				visitedSize, visitedInSecond);
+				visitedSize, visitedInSecond, (int) Runtime.getRuntime().freeMemory()/(1024*1024));
 		return report;
 	}
 
