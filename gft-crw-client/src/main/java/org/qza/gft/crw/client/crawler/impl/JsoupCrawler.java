@@ -71,12 +71,22 @@ public class JsoupCrawler implements Crawler {
 	}
 
 	private String getText(Document doc, String selector) {
-		return doc.select(selector).iterator().next().text().trim();
+		String[] selectors = selector.split(",");
+		for (int i = 0; i < selectors.length; i++) {
+			Elements elems = doc.select(selectors[i].trim());
+			if (elems != null && elems.size() > 0) {
+				return elems.iterator().next().text().trim();
+			}
+		}
+		return null;
 	}
 
 	private double getDoubleFromText(Document doc, String selector) {
 		String val = getText(doc, selector);
-		return Double.valueOf(val).doubleValue();
+		if (val != null) {
+			return Double.valueOf(val).doubleValue();
+		}
+		return 0;
 	}
 
 }
