@@ -66,6 +66,8 @@ public class JsoupCrawler implements Crawler {
 			Message m = new Message(name, category, price, rating, link, image);
 			m.getRelated().addAll(related);
 			return m;
+		} catch (java.net.SocketException tex) {
+			log.error(String.format("Socket exception for link %s", link));
 		} catch (java.net.SocketTimeoutException tex) {
 			log.error(String.format("Timeout for link %s", link));
 		} catch (org.jsoup.HttpStatusException notFound) {
