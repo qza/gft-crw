@@ -36,8 +36,8 @@ public class Spawner {
 		context.start();
 		initializeServers();
 		initializeReporter();
-		initializePersister();
 		work(duration, TimeUnit.MINUTES);
+		parsistData();
 		terminateServers();
 		context.end();
 	}
@@ -63,11 +63,9 @@ public class Spawner {
 		}
 	}
 
-	private void initializePersister() {
+	private void parsistData() {
 		Persister persister = new Persister(context);
-		context.getScheduler().scheduleWithFixedDelay(persister, 0, 1,
-				TimeUnit.MINUTES);
-		log.info("Persister scheduled");
+		persister.persist();
 	}
 
 	private void work(long time, TimeUnit unit) {

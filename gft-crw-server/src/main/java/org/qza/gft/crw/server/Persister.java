@@ -13,7 +13,7 @@ import org.qza.gft.crw.MessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Persister implements Runnable {
+public class Persister {
 
 	private final Context context;
 	private final Props props;
@@ -32,15 +32,14 @@ public class Persister implements Runnable {
 		this.log = LoggerFactory.getLogger(Reporter.class);
 	}
 
-	@Override
-	public void run() {
+	public void persist() {
 		Set<Message> messages = this.context.getProductData();
 		persistData(dataFileProducts, messages);
 		persistStringCollection(dataFileQueue, this.context.getQueue());
 		persistStringCollection(dataFileVisited, this.context.getVisited());
 		log.info("All data persisted. " + new Date());
 	}
-
+	
 	public void persistStringCollection(String fileName, Collection<String> data) {
 		FileWriter writer;
 		try {
