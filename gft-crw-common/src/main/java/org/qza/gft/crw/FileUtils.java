@@ -81,10 +81,9 @@ public class FileUtils {
 		try {
 			out = new FileOutputStream(file);
 			gzip = new GZIPOutputStream(out);
-			for (Iterator<String> iterator = data.iterator(); iterator
+			for (Iterator iterator = data.iterator(); iterator
 					.hasNext();) {
-				String string = iterator.next();
-				gzipper.write(gzip, string);
+				gzipper.write(gzip, iterator.next());
 			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
