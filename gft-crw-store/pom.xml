@@ -23,5 +23,10 @@
 			<artifactId>spring-data-mongodb</artifactId>
 			<version>${spring.data.mongodb.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.qza</groupId>
+			<artifactId>gft-crw-common</artifactId>
+			<version>${version}</version>
+		</dependency>
 	</dependencies>
 </project>
