@@ -4,21 +4,17 @@ import java.util.Set;
 
 public class Product {
 
-	private String id;
+	private Object _id;
 	private String name;
 	private String category;
 	private String price;
 	private String rating;
 	private String url;
 	private String image;
-	private Set<Product> related;
-	private Set<Tag> tags;
+	private Set<String> related;
+	private Set<String> tags;
 
 	public Product() {
-	}
-
-	public String getId() {
-		return id;
 	}
 
 	public String getName() {
@@ -41,15 +37,15 @@ public class Product {
 		return url;
 	}
 
-	public Set<Product> getRelated() {
+	public Set<String> getRelated() {
 		return related;
 	}
 
-	public void addRelated(Set<Product> related) {
+	public void addRelated(Set<String> related) {
 		this.related.addAll(related);
 	}
 
-	public void setRelated(Set<Product> related) {
+	public void setRelated(Set<String> related) {
 		this.related = related;
 	}
 
@@ -81,15 +77,23 @@ public class Product {
 		this.image = image;
 	}
 
-	public Set<Tag> getTags() {
+	public Set<String> getTags() {
 		return tags;
 	}
 
-	public void setTags(Set<Tag> tags) {
+	public void setTags(Set<String> tags) {
 		this.tags = tags;
 	}
 
-	public void addTag(Tag tag) {
+	public void addTag(String tag) {
 		getTags().add(tag);
+	}
+	
+	public Object get_id() {
+		return _id;
+	}
+	
+	public void set_id(Object _id) {
+		this._id = _id;
 	}
 }

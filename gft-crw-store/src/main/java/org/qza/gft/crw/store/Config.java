@@ -6,7 +6,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 
@@ -77,12 +76,6 @@ public class Config {
 		} catch (MongoException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	@Bean(name="mongoTemplate")
-	@Scope(BeanDefinition.SCOPE_PROTOTYPE)
-	public MongoTemplate mongoTemplate() {
-		return new MongoTemplate(mongo(), db().getName());
 	}
 
 	@Bean

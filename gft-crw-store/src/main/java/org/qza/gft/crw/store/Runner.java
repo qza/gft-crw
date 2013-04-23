@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  * @author gft
@@ -26,8 +26,7 @@ public class Runner {
 	 * Creates new Runner instance
 	 */
 	public Runner() {
-		String config = "classpath:/**/config.xml";
-		ac = new ClassPathXmlApplicationContext(config);
+		ac = new AnnotationConfigApplicationContext(Config.class);
 		importer = ac.getBean(DataImport.class);
 	}
 

@@ -9,7 +9,6 @@
 	<artifactId>gft-crw-store</artifactId>
 	<name>gft-crw-store</name>
 	<properties>
-		<spring.data.mongodb.version>1.0.0.RELEASE</spring.data.mongodb.version>
 		<mongodb.driver.version>2.7.2</mongodb.driver.version>
 	</properties>
 	<dependencies>
@@ -17,11 +16,6 @@
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
 			<version>${mongodb.driver.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-mongodb</artifactId>
-			<version>${spring.data.mongodb.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.qza</groupId>
