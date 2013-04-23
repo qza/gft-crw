@@ -26,7 +26,7 @@
 		<dependency>
 			<groupId>org.qza</groupId>
 			<artifactId>gft-crw-common</artifactId>
-			<version>${version}</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 </project>
