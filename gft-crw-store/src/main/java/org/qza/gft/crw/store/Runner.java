@@ -4,12 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.qza.gft.crw.FileUtils;
-import org.qza.gft.crw.store.impexp.DataImport;
+import org.qza.gft.crw.store.impo.DataImport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author gft
@@ -26,7 +26,8 @@ public class Runner {
 	 * Creates new Runner instance
 	 */
 	public Runner() {
-		ac = new AnnotationConfigApplicationContext(Config.class);
+		String config = "classpath:/**/config.xml";
+		ac = new ClassPathXmlApplicationContext(config);
 		importer = ac.getBean(DataImport.class);
 	}
 
@@ -39,7 +40,7 @@ public class Runner {
 			log.info("Loading data");
 			FileUtils.loadData("src/main/resources/data/test_data.txt", data);
 			log.info("Persisting data");
-			importer.persist(data);
+			importer.importCollection(data);
 			log.info("Completed");
 		} catch (Exception e) {
 			log.error("Error: ", e);

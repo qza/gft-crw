@@ -1,5 +1,8 @@
 package org.qza.gft.crw.store;
 
+/**
+ * @author gft
+ */
 public class Props {
 
 	private Boolean logTime;
@@ -40,19 +43,19 @@ public class Props {
 	public void setMaxClients(String maxClients) {
 		this.maxClients = Integer.valueOf(maxClients);
 	}
-	
+
 	public String getStoreName() {
 		return storeName;
 	}
-	
+
 	public void setStoreName(String storeName) {
 		this.storeName = storeName;
 	}
-	
+
 	public String getCollectionProducts() {
 		return collectionProducts;
 	}
-	
+
 	public void setCollectionProducts(String collectionProducts) {
 		this.collectionProducts = collectionProducts;
 	}

@@ -5,8 +5,15 @@ import java.util.List;
 import org.qza.gft.crw.store.entity.Product;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+/**
+ * @author gft
+ */
 public interface ProductRepo extends MongoRepository<Product, String> {
-	
+
 	List<Product> findByName(String name);
+
+	List<Product> findByCategory(String category);
+
+	List<Product> findByPrice(String price);
 
 }

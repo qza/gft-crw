@@ -8,6 +8,9 @@ import org.qza.gft.crw.store.repo.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author gft
+ */
 @Service
 public class ProductStoreService implements StoreService<Product> {
 

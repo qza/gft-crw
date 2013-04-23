@@ -2,15 +2,9 @@ package org.qza.gft.crw.store.entity;
 
 import java.util.Set;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document
 public class Product {
 
-	@Id
 	private String id;
-
 	private String name;
 	private String category;
 	private String price;
@@ -18,6 +12,7 @@ public class Product {
 	private String url;
 	private String image;
 	private Set<Product> related;
+	private Set<Tag> tags;
 
 	public Product() {
 	}
@@ -86,4 +81,15 @@ public class Product {
 		this.image = image;
 	}
 
+	public Set<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(Set<Tag> tags) {
+		this.tags = tags;
+	}
+
+	public void addTag(Tag tag) {
+		getTags().add(tag);
+	}
 }
