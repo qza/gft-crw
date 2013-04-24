@@ -17,7 +17,7 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>org.qza.gft.crw.store.web.Config</param-value>
+		<param-value>org.qza.gft.crw.store.web.AppConfig</param-value>
 	</context-param>
 
 	<listener>

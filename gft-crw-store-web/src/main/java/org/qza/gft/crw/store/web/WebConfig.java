@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("org.qza.gft.crw.store.web")
+@ComponentScan("org.qza.gft.crw.store")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
 	@Override

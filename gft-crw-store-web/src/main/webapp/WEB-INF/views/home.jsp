@@ -6,17 +6,18 @@
 <link rel='stylesheet' type='text/css' media='screen'
 	href='<c:url value="/resources/css/style.css"/>' />
 <link rel="stylesheet" type="text/css" media="screen"
-	href="<c:url value="/resources/css/jquery-ui-custom.css"/>" />
+	href="<c:url value="/resources/css/jquery-ui.css"/>" />
 
 <script type='text/javascript'
 	src='<c:url value="/resources/js/script.js"/>'></script>
 <script type='text/javascript'
 	src='<c:url value="/resources/js/jquery.js"/>'></script>
 <script type='text/javascript'
-	src='<c:url value="/resources/js/jquery-ui-custom.min.js"/>'></script>
+	src='<c:url value="/resources/js/jquery-ui.min.js"/>'></script>
+<script type='text/javascript'
+	src='<c:url value="/resources/js/grid.locale-en.js"/>'></script>
 <script type='text/javascript'
 	src='<c:url value="/resources/js/jquery.jqGrid.js"/>'></script>
-
 
 <title>Products</title>
 </head>
@@ -33,32 +34,25 @@
 				{
 					url : 'products',
 					datatype : "json",
-					colNames : [ 'Name', 'Category', 'Price', 'Rating', 'Url', 'Related', 'Tags'],
+					colNames : [ 'Name', 'Category', 'Price', 'Rating', 'Tags'],
 					colModel : [ {
 						name : 'name',
 						index : 'name',
-						width : 100
+						width : 500
 					}, {
 						name : 'category',
 						index : 'category',
-						width : 70
+						width : 300
 					}, {
 						name : 'price',
 						index : 'price',
-						width : 50,
-						align : "right"
+						width : 100,
+						align : "center"
 					}, {
 						name : 'rating',
 						index : 'rating',
-						width : 50
-					}, {
-						name : 'url',
-						index : 'url',
-						width : 100
-					}, {
-						name : 'related',
-						index : 'related',
-						width : 100
+						width : 200,
+						align : "center"
 					}, {
 						name : 'tags',
 						index : 'tags',
