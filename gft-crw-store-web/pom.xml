@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.qza</groupId>
+		<artifactId>gft-crw</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>gft-crw-store-web</artifactId>
+	<packaging>war</packaging>
+	<name>gft-crw-store-web</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.qza</groupId>
+			<artifactId>gft-crw-store</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>gft-crw-store-web</finalName>
+	</build>
+</project>
