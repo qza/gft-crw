@@ -12,8 +12,12 @@ public interface StoreService<C> {
 
 	void persist(C data);
 
-	List<C> findByName(String name);
-
-	List<C> fetchAll();
+	List<C> fetchAll(Page page);
+	
+	List<C> findByName(String name, Page page);
+	
+	void updateAll(int[] ids, String key, Object value);
+	
+	void deleteAll(int[] ids);
 
 }

@@ -5,14 +5,18 @@ import java.util.Set;
 public class Product {
 
 	private Object _id;
+	
 	private String name;
 	private String category;
 	private String price;
 	private String rating;
 	private String url;
 	private String image;
+	
 	private Set<String> related;
 	private Set<String> tags;
+	
+	private boolean for_gift;
 
 	public Product() {
 	}
@@ -89,6 +93,14 @@ public class Product {
 		getTags().add(tag);
 	}
 	
+	public void setFor_gift(boolean for_gift) {
+		this.for_gift = for_gift;
+	}
+	
+	public boolean isFor_gift() {
+		return for_gift;
+	}
+	
 	public Object get_id() {
 		return _id;
 	}
@@ -96,4 +108,5 @@ public class Product {
 	public void set_id(Object _id) {
 		this._id = _id;
 	}
+	
 }

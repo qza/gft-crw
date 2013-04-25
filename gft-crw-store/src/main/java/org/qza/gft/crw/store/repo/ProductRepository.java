@@ -51,6 +51,24 @@ public class ProductRepository implements Repository<Product> {
 	public boolean delete(Product entity) {
 		return false;
 	}
+	
+	@Override
+	public boolean delete(int[] ids) {
+		for (int i = 0; i < ids.length; i++) {
+			productCollection.remove(new BasicDBObject("_id", ids[i]));
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean batchUpdate(int[] ids, String key, Object value) {
+		for (int i = 0; i < ids.length; i++) {
+			BasicDBObject search = new BasicDBObject().append("_id", ids[i]);
+			BasicDBObject update = new BasicDBObject("$set", new BasicDBObject(key, value));
+			productCollection.update(search, update);
+		}
+		return true;
+	}
 
 	private BasicDBObject buildQuery(Map<String, Object> conditions) {
 		BasicDBObject andQuery = null;
@@ -72,9 +90,13 @@ public class ProductRepository implements Repository<Product> {
 	private void cursorToList(DBCursor cursor, List<Product> list, int page,
 			int perpage) {
 		cursor = cursor.skip((page - 1) * perpage).limit(perpage);
-		while (cursor.hasNext()) {
-			String row_data = JSON.serialize(cursor.next());
-			list.add(mapper.read(row_data));
+		try {
+			while (cursor.hasNext()) {
+				String row_data = JSON.serialize(cursor.next());
+				list.add(mapper.read(row_data));
+			}
+		} finally {
+			cursor.close();
 		}
 	}
 

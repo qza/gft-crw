@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.qza.gft.crw.store.Config;
 import org.qza.gft.crw.store.entity.Product;
+import org.qza.gft.crw.store.service.Page;
 import org.qza.gft.crw.store.service.ProductStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -44,14 +45,15 @@ public class ProductStoreServiceTest {
 
 	@Test
 	public void testFetchAll() {
-		List<Product> products = service.fetchAll();
+		List<Product> products = service.fetchAll(new Page(1));
 		assertNotNull(products);
 		assertTrue(products.size() > 0);
+		assertTrue(products.iterator().next().get_id()!=null);
 	}
 
 	@Test
 	public void testFindByName() {
-		List<Product> products = service.findByName("aaaa");
+		List<Product> products = service.findByName("aaaa", new Page(1));
 		assertNotNull(products);
 		assertTrue(products.size() > 0);
 	}

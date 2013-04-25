@@ -23,13 +23,24 @@ public class ProductStoreService implements StoreService<Product> {
 	}
 
 	@Override
-	public List<Product> fetchAll() {
-		return repo.fetchAll(null, 1, 1000000); // TODO
+	public List<Product> fetchAll(Page page) {
+		return repo.fetchAll(null, page.getNumber(), page.getSize());
 	}
 
 	@Override
-	public List<Product> findByName(String name) {
-		return repo.findByAttribute("name", name, 1, 1000000); // TODO
+	public List<Product> findByName(String name, Page page) {
+		return repo.findByAttribute("name", name, page.getNumber(), page.getSize());
+	}
+
+	@Override
+	public void updateAll(int[] ids, String key, Object value) {
+		repo.batchUpdate(ids, key, value);
+		
+	}
+
+	@Override
+	public void deleteAll(int[] ids) {
+		repo.delete(ids);
 	}
 
 }

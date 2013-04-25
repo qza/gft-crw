@@ -13,7 +13,11 @@ public interface Repository<C> {
 	List<C> fetchAll(Map<String, Object> condition, int page, int perpage);
 
 	void save(C product);
+	
+	boolean batchUpdate(int[] ids, String key, Object value);
 
 	boolean delete(C entity);
+	
+	boolean delete(int[] ids);
 
 }
