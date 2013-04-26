@@ -4,6 +4,9 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.qza.gft.crw.store.entity.Product;
 
+/**
+ * @author gft
+ */
 public class ProductMapper {
 
 	private final ObjectMapper mapper;

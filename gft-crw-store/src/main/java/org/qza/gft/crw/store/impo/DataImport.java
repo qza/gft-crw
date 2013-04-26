@@ -13,7 +13,7 @@ import com.mongodb.util.JSON;
 /**
  * @author gft
  * 
- *         Imports test data into product_store:products collection
+ *         Imports test data into configured database and collection
  */
 public class DataImport {
 

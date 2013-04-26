@@ -18,6 +18,8 @@ public interface StoreService<C> {
 	
 	void updateAll(String[] ids, String key, Object value);
 	
+	void updateAll(Page page, String key, Object value);
+	
 	void deleteAll(String[] ids);
 
 }

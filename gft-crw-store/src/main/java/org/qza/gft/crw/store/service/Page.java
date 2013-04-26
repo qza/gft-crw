@@ -1,5 +1,8 @@
 package org.qza.gft.crw.store.service;
 
+/**
+ * @author gft
+ */
 public class Page {
 
 	private int number;
@@ -9,7 +12,7 @@ public class Page {
 		this.number = 0;
 		this.size = 20;
 	}
-	
+
 	public Page(int number) {
 		this.number = number;
 		this.size = 20;
@@ -42,6 +45,11 @@ public class Page {
 
 	public Page next() {
 		return new Page(number + 1, size);
+	}
+
+	public Page previous() {
+		int previous = number > 0 ? (number - 1) : 0;
+		return new Page(previous, size);
 	}
 
 }

@@ -15,6 +15,9 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 
+/**
+ * @author gft
+ */
 @Component
 public class ProductRepository implements Repository<Product> {
 
@@ -29,16 +32,16 @@ public class ProductRepository implements Repository<Product> {
 
 	@Override
 	public List<Product> findByAttribute(String name, String value, int page,
-			int perpage) {
+			int size) {
 		BasicDBObject query = new BasicDBObject(name, value);
-		return executeLoad(query, page, perpage);
+		return loadData(query, page, size);
 	}
 
 	@Override
 	public List<Product> fetchAll(Map<String, Object> conditions, int page,
-			int perpage) {
+			int size) {
 		BasicDBObject query = buildQuery(conditions);
-		return executeLoad(query, page, perpage);
+		return loadData(query, page, size);
 	}
 
 	@Override
@@ -52,7 +55,7 @@ public class ProductRepository implements Repository<Product> {
 	public boolean delete(Product entity) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean delete(String[] ids) {
 		for (int i = 0; i < ids.length; i++) {
@@ -60,14 +63,27 @@ public class ProductRepository implements Repository<Product> {
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean batchUpdate(String[] ids, String key, Object value) {
+	public boolean updateAll(String[] ids, String key, Object value) {
 		for (int i = 0; i < ids.length; i++) {
-			BasicDBObject search = new BasicDBObject().append("_id", new ObjectId(ids[i]));
-		    DBObject dbObj = productCollection.findOne(search);
-		    dbObj.put(key, value);
-		    productCollection.save(dbObj);
+			BasicDBObject search = new BasicDBObject().append("_id",
+					new ObjectId(ids[i]));
+			DBObject dbObj = productCollection.findOne(search);
+			dbObj.put(key, value);
+			productCollection.save(dbObj);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean updateAll(int page, int size, String key, Object value) {
+		DBCursor cursor = productCollection.find(new BasicDBObject());
+		getPosition(cursor, page, size);
+		while (cursor.hasNext()) {
+			DBObject dbObj = cursor.next();
+			dbObj.put(key, value);
+			productCollection.save(dbObj);
 		}
 		return true;
 	}
@@ -83,15 +99,23 @@ public class ProductRepository implements Repository<Product> {
 		return andQuery;
 	}
 
-	private List<Product> executeLoad(BasicDBObject query, int page, int perpage) {
+	private List<Product> loadData(BasicDBObject query, int page, int size) {
 		List<Product> results = new ArrayList<>();
-		cursorToList(productCollection.find(query), results, page, perpage);
+		cursorToList(productCollection.find(query), results, page, size);
 		return results;
 	}
 
 	private void cursorToList(DBCursor cursor, List<Product> list, int page,
-			int perpage) {
-		cursor = cursor.skip((page - 1) * perpage).limit(perpage);
+			int size) {
+		getPosition(cursor, page, size);
+		convertPositionedCursor(cursor, list);
+	}
+
+	private DBCursor getPosition(DBCursor cursor, int page, int size) {
+		return cursor.skip((page - 1) * size).limit(size);
+	}
+
+	private void convertPositionedCursor(DBCursor cursor, List<Product> list) {
 		try {
 			while (cursor.hasNext()) {
 				String row_data = JSON.serialize(cursor.next());

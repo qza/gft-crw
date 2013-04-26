@@ -14,7 +14,9 @@ public interface Repository<C> {
 
 	void save(C product);
 	
-	boolean batchUpdate(String[] ids, String key, Object value);
+	boolean updateAll(String[] ids, String key, Object value);
+	
+	boolean updateAll(int page, int size, String key, Object value);
 
 	boolean delete(C entity);
 	
