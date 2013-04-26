@@ -1,4 +1,4 @@
-$(function(){
+$(function() {
 	$("#product_form").on("submit", function(event) {
 		event.preventDefault();
 		var params = $(this).serialize();
@@ -6,9 +6,12 @@ $(function(){
 	});
 });
 
+function getUrl() {
+	return 'products?page_number=' + $("#page_number").val();
+}
+
 function loadTable() {
-	var url = 'products?page_number=' + $("#page_number").val();
-	$.get(productsUrl(), function(response) {
+	$.get(getUrl(), function(response) {
 		if (response != null) {
 			fillTable(response);
 		}
@@ -16,8 +19,7 @@ function loadTable() {
 }
 
 function submitProductSelection(params) {
-	var url = 'products_save;
-	$.post(productsUrl(), params, function(response) {
+	$.post(getUrl(), params, function(response) {
 		if (response != null) {
 			fillTable(response);
 		} else {
@@ -30,19 +32,23 @@ function fillTable(response) {
 	$('#table').find('tbody').remove();
 	var products = response.products;
 	for ( var i = 0; i < products.length; i++) {
-		var row = '<tr>';
-		row += '<td><input type="checkbox" name="cb" value="'
-				+ products[i]._id.$oid + '"></td>';
-		row += '<td>' + products[i].name + '</td>';
-		row += '<td>' + products[i].category + '</td>';
-		row += '<td>' + products[i].price + '</td>';
-		row += '<td>' + products[i].rating + '</td>';
-		if (products[i].image) {
-			row += '<td><img src="' + products[i].image + '"/>' + '</td>';
-		}
-		row += '</tr>';
-		$('#table').append(row);
+		fillRow(products[i]);
 	}
 	$('#table').data('model', products);
 	$("#page_number").val(response.page.number);
+}
+
+
+function fillRow(product) {
+	var row = '<tr>';
+	row += '<td><input type="checkbox" name="cb" value="'
+			+ product._id.$oid + '"></td>';
+	row += '<td>' + '<p>' + product.name + '</p>' + '<p>'
+			+ product.category + '</p>' + '<p>' + product.price + '</p>'
+			+ '<p>' + product.rating + '</p>' + '</td>';
+	if (product.image) {
+		row += '<td><img src="' + product.image + '"/>' + '</td>';
+	}
+	row += '</tr>';
+	$('#table').append(row);
 }

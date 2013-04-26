@@ -6,12 +6,15 @@ import java.util.List;
 import org.qza.gft.crw.store.entity.Product;
 import org.qza.gft.crw.store.service.Page;
 
-public class ProductResponse {
+/**
+ * @author gft
+ */
+public class Response {
 
 	private Page page;
 	private List<Product> products;
 
-	public ProductResponse() {
+	public Response() {
 		products = new ArrayList<>();
 	}
 

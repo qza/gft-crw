@@ -21,6 +21,14 @@ import org.qza.gft.crw.gzip.StringGziper;
 
 public class FileUtils {
 
+	public static void load(String fileName, Collection<String> data) {
+		if (fileName.endsWith("gz")) {
+			FileUtils.loadTextGzip(fileName, data);
+		} else {
+			FileUtils.loadData(fileName, data);
+		}
+	}
+
 	public static void loadData(String fileName, Collection<String> data) {
 		FileReader fr = null;
 		BufferedReader br = null;
@@ -81,8 +89,7 @@ public class FileUtils {
 		try {
 			out = new FileOutputStream(file);
 			gzip = new GZIPOutputStream(out);
-			for (Iterator iterator = data.iterator(); iterator
-					.hasNext();) {
+			for (Iterator iterator = data.iterator(); iterator.hasNext();) {
 				gzipper.write(gzip, iterator.next());
 			}
 		} catch (IOException e) {

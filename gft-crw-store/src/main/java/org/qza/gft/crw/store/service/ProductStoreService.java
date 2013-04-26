@@ -33,13 +33,13 @@ public class ProductStoreService implements StoreService<Product> {
 	}
 
 	@Override
-	public void updateAll(int[] ids, String key, Object value) {
+	public void updateAll(String[] ids, String key, Object value) {
 		repo.batchUpdate(ids, key, value);
 		
 	}
 
 	@Override
-	public void deleteAll(int[] ids) {
+	public void deleteAll(String[] ids) {
 		repo.delete(ids);
 	}
 

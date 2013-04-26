@@ -16,8 +16,8 @@ public interface StoreService<C> {
 	
 	List<C> findByName(String name, Page page);
 	
-	void updateAll(int[] ids, String key, Object value);
+	void updateAll(String[] ids, String key, Object value);
 	
-	void deleteAll(int[] ids);
+	void deleteAll(String[] ids);
 
 }

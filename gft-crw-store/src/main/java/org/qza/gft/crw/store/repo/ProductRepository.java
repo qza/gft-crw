@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.bson.types.ObjectId;
 import org.qza.gft.crw.store.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -53,7 +54,7 @@ public class ProductRepository implements Repository<Product> {
 	}
 	
 	@Override
-	public boolean delete(int[] ids) {
+	public boolean delete(String[] ids) {
 		for (int i = 0; i < ids.length; i++) {
 			productCollection.remove(new BasicDBObject("_id", ids[i]));
 		}
@@ -61,11 +62,12 @@ public class ProductRepository implements Repository<Product> {
 	}
 	
 	@Override
-	public boolean batchUpdate(int[] ids, String key, Object value) {
+	public boolean batchUpdate(String[] ids, String key, Object value) {
 		for (int i = 0; i < ids.length; i++) {
-			BasicDBObject search = new BasicDBObject().append("_id", ids[i]);
-			BasicDBObject update = new BasicDBObject("$set", new BasicDBObject(key, value));
-			productCollection.update(search, update);
+			BasicDBObject search = new BasicDBObject().append("_id", new ObjectId(ids[i]));
+		    DBObject dbObj = productCollection.findOne(search);
+		    dbObj.put(key, value);
+		    productCollection.save(dbObj);
 		}
 		return true;
 	}

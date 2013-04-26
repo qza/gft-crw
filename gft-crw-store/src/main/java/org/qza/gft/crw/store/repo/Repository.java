@@ -14,10 +14,10 @@ public interface Repository<C> {
 
 	void save(C product);
 	
-	boolean batchUpdate(int[] ids, String key, Object value);
+	boolean batchUpdate(String[] ids, String key, Object value);
 
 	boolean delete(C entity);
 	
-	boolean delete(int[] ids);
+	boolean delete(String[] ids);
 
 }

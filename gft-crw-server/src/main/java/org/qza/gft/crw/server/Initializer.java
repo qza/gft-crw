@@ -27,17 +27,9 @@ public class Initializer {
 
 	public void initServerState() {
 		log.info("Loading queue");
-		if (queueFile.endsWith("gz")) {
-			FileUtils.loadTextGzip(queueFile, context.getQueue());
-		} else {
-			FileUtils.loadData(queueFile, context.getQueue());
-		}
+		FileUtils.load(queueFile, context.getQueue());
 		log.info("Loading visited links");
-		if (visitedFile.endsWith("gz")) {
-			FileUtils.loadTextGzip(visitedFile, context.getVisited());
-		} else {
-			FileUtils.loadData(visitedFile, context.getVisited());
-		}
+		FileUtils.load(visitedFile, context.getVisited());
 		log.info("Server state initialized");
 	}
 
