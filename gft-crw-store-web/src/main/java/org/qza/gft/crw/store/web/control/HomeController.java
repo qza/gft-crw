@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author gft
+ * 
+ *         Responds with home page
+ * 
  */
 @Controller
 public class HomeController {

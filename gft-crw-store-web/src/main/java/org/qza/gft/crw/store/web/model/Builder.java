@@ -7,6 +7,8 @@ import org.qza.gft.crw.store.service.Page;
 
 /**
  * @author gft
+ * 
+ *         Helps building object for web controllers
  */
 public class Builder {
 

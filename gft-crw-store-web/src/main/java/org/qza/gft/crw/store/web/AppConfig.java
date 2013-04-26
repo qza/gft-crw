@@ -6,10 +6,12 @@ import org.springframework.core.env.Environment;
 
 /**
  * @author gft
+ * 
+ *         Configures basic application context
  */
 @Configuration
 public class AppConfig {
-	
+
 	@Autowired
 	private Environment env;
 

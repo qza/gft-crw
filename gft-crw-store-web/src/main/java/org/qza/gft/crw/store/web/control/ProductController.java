@@ -27,7 +27,7 @@ public class ProductController {
 	@RequestMapping(method = RequestMethod.GET, value = "/products")
 	public @ResponseBody
 	Response loadProductData(@RequestParam("page_number") int pageNumber) {
-		return getResponse(pageNumber);
+		return getResponse(new Page(pageNumber));
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/products")
@@ -35,8 +35,10 @@ public class ProductController {
 	Response saveProductData(
 			@RequestParam(value = "page_number") int pageNumber,
 			@RequestParam(required = false, value = "cb") String[] selected) {
+		Page page = new Page(pageNumber);
 		updateSelected(selected);
-		return getResponse(pageNumber);
+		updateVisited(page);
+		return getResponse(page);
 	}
 
 	private void updateSelected(String[] selected) {
@@ -45,8 +47,11 @@ public class ProductController {
 		}
 	}
 
-	private Response getResponse(int pageNumber) {
-		Page page = new Page(pageNumber);
+	private void updateVisited(Page page) {
+		service.updateAll(page, "visited", Boolean.TRUE);
+	}
+
+	private Response getResponse(Page page) {
 		List<Product> products = service.fetchAll(page);
 		return Builder.makeResponse(products, page);
 	}

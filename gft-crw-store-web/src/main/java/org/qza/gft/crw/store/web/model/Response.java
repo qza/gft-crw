@@ -8,6 +8,8 @@ import org.qza.gft.crw.store.service.Page;
 
 /**
  * @author gft
+ * 
+ *         Web response object with paged product data
  */
 public class Response {
 
