@@ -63,6 +63,14 @@ table tr {
 	padding-left: 20px;
 }
 
+table tr.for_gift td.check{
+	background: #53C65E;
+}
+
+table tr.selected td{
+	background: #969697;
+}
+
 table td:first-child {
 	text-align: left;
 	padding-left: 20px;
@@ -101,11 +109,4 @@ table tr:last-child td:last-child {
 	-moz-border-radius-bottomright: 3px;
 	-webkit-border-bottom-right-radius: 3px;
 	border-bottom-right-radius: 3px;
-}
-
-table tr:hover td {
-	background: #f2f2f2;
-	background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2),
-		to(#f0f0f0));
-	background: -moz-linear-gradient(top, #f2f2f2, #f0f0f0);
 }

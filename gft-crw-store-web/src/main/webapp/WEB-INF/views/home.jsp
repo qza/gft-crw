@@ -12,6 +12,9 @@
 <script type='text/javascript'
 	src='<c:url value="/resources/js/script.js"/>'></script>
 
+<script type='text/javascript'
+	src='<c:url value="/resources/js/navigator.js"/>'></script>
+
 <title>Products</title>
 
 </head>
@@ -25,7 +28,7 @@
 		<input id="submit" type="submit" name="submit_button" value="submit" />
 		<input id="page_number" type="hidden" name="page_number" value="1" />
 	</form>
-
+	
 	<script type="text/javascript">
 		loadTable();
 	</script>
