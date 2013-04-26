@@ -7,37 +7,31 @@ import org.qza.gft.crw.server.report.Template;
  */
 public class Builder {
 
-	final private Template template;
+	final private Template t;
 
 	public Builder(final Template template) {
-		this.template = template;
+		this.t = template;
 	}
 
 	public String build() {
-		template.newLine();
-		template.line("Crawling report");
-		template.line("******************************************************");
-		template.newLine();
-		template.line("Parameters");
-		template.newLine();
-		template.padNumber("Max Queue size");
-		template.padNumber("Pool initialSize");
-		template.padNumber("Pool maxSize");
-		template.newLine();
-		template.line("Results");
-		template.newLine();
-		template.padText("Duration");
-		template.padText("Completed tasks");
-		template.padNumber("Remained tasks");
-		template.padNumber("Remained in queue");
-		template.padNumber("Visited");
-		template.padText("Visited / Second");
-		template.newLine();
-		template.padNumber("Free memory");
-		template.newLine();
-		template.line("******************************************************");
-		template.newLine();
-		return template.get();
+		t.newLine().line("Crawling report");
+		t.line("******************************************************");
+		t.newLine();
+		t.line("Parameters").newLine();
+		t.padNumber("Max Queue size");
+		t.padNumber("Pool initialSize");
+		t.padNumber("Pool maxSize").newLine();
+		t.line("Results").newLine();
+		t.padText("Duration");
+		t.padText("Completed tasks");
+		t.padNumber("Remained tasks");
+		t.padNumber("Remained in queue");
+		t.padNumber("Visited");
+		t.padText("Visited / Second").newLine();
+		t.padNumber("Free memory").newLine();
+		t.line("******************************************************");
+		t.newLine();
+		return t.get();
 	}
 
 }

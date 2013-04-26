@@ -12,52 +12,54 @@ public class Template {
 		return text.toString();
 	}
 
-	public void newLine() {
+	public Template newLine() {
 		text.append("\r\n");
+		return this;
 	}
 
-	public void newLine(int count) {
+	public Template newLine(int count) {
 		for (int i = 0; i < count; i++) {
 			newLine();
 		}
 		text.append("\r\n");
+		return this;
 	}
 
-	public void line(String line) {
+	public Template line(String line) {
 		text.append(line);
-		newLine();
+		return newLine();
 	}
 
-	public void tabline(String line) {
+	public Template tabline(String line) {
 		text.append("\t");
-		line(line);
+		return line(line);
 	}
 
-	public void padNumber(String name) {
-		number(format(name));
+	public Template padNumber(String name) {
+		return number(format(name));
 	}
 
-	public void padText(String name) {
-		text(format(name));
+	public Template padText(String name) {
+		return text(format(name));
 	}
 
-	public void padBoolean(String name) {
-		bool(format(name));
+	public Template padBoolean(String name) {
+		return bool(format(name));
 	}
 
-	public void number(String name) {
+	public Template number(String name) {
 		add(name, "d");
-		newLine();
+		return newLine();
 	}
 
-	public void text(String name) {
+	public Template text(String name) {
 		add(name, "s");
-		newLine();
+		return newLine();
 	}
 
-	public void bool(String name) {
+	public Template bool(String name) {
 		add(name, "b");
-		newLine();
+		return newLine();
 	}
 
 	private void add(String name, String type) {
