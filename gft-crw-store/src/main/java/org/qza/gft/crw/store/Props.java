@@ -11,6 +11,7 @@ public class Props {
 	private Integer maxClients;
 	private String storeName;
 	private String collectionProducts;
+	private String dataInitFile;
 
 	public Boolean getLogTime() {
 		return logTime;
@@ -58,6 +59,14 @@ public class Props {
 
 	public void setCollectionProducts(String collectionProducts) {
 		this.collectionProducts = collectionProducts;
+	}
+	
+	public String getDataInitFile() {
+		return dataInitFile;
+	}
+	
+	public void setDataInitFile(String dataInitFile) {
+		this.dataInitFile = dataInitFile;
 	}
 
 }

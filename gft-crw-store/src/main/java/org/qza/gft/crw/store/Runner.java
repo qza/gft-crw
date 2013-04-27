@@ -1,15 +1,12 @@
 package org.qza.gft.crw.store;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.qza.gft.crw.FileUtils;
-import org.qza.gft.crw.store.impo.DataImport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import org.qza.gft.crw.store.impo.DataImport;
 
 /**
  * @author gft
@@ -17,6 +14,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Runner {
 
 	final private DataImport importer;
+
+	final private Props props;
 
 	final private ApplicationContext ac;
 
@@ -28,6 +27,7 @@ public class Runner {
 	public Runner() {
 		ac = new AnnotationConfigApplicationContext(Config.class);
 		importer = ac.getBean(DataImport.class);
+		props = ac.getBean(Props.class);
 	}
 
 	/**
@@ -35,11 +35,8 @@ public class Runner {
 	 */
 	public void start() {
 		try {
-			Set<String> data = new HashSet<>();
-			log.info("Loading data");
-			FileUtils.loadData("src/main/resources/data/test_data.txt", data);
-			log.info("Persisting data");
-			importer.importCollection(data);
+			log.info("Importing data");
+			importer.importCollection(props.getDataInitFile());
 			log.info("Completed");
 		} catch (Exception e) {
 			log.error("Error: ", e);

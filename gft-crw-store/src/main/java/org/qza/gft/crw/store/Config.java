@@ -46,6 +46,7 @@ public class Config {
 		props.setMaxClients(getProperty("crawler.store.maxclients"));
 		props.setStoreName(getProperty("crawler.store.name"));
 		props.setCollectionProducts(getProperty("crawler.store.collections.product"));
+		props.setDataInitFile(getProperty("crawler.store.data.initfile"));
 		return props;
 	}
 

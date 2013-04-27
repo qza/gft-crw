@@ -1,8 +1,11 @@
 package org.qza.gft.crw.store.impo;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
+import org.qza.gft.crw.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +27,12 @@ public class DataImport {
 	public DataImport(final DBCollection productCollection) {
 		this.log = LoggerFactory.getLogger(DataImport.class);
 		this.productCollection = productCollection;
+	}
+
+	public void importCollection(String dataFileName) {
+		Set<String> data = new HashSet<>();
+		FileUtils.load(dataFileName, data);
+		importCollection(data);
 	}
 
 	public void importCollection(Collection<String> data) {
