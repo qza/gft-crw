@@ -2,43 +2,51 @@ package org.qza.gft.crw.store.web.control;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.qza.gft.crw.store.entity.Product;
-import org.qza.gft.crw.store.service.Page;
 import org.qza.gft.crw.store.service.ProductStoreService;
+import org.qza.gft.crw.store.service.model.Page;
 import org.qza.gft.crw.store.web.model.Builder;
+import org.qza.gft.crw.store.web.model.Request;
 import org.qza.gft.crw.store.web.model.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mongodb.DBObject;
 
 /**
  * @author gft
  */
 @Controller
+@RequestMapping("/products")
 public class ProductController {
 
 	@Autowired
 	private ProductStoreService service;
 
-	@RequestMapping(method = RequestMethod.GET, value = "/products")
+	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody
-	Response loadProductData(@RequestParam("page_number") int pageNumber) {
-		return getResponse(new Page(pageNumber));
+	Response processGet(HttpServletRequest sRequest) {
+		Request req = getRequest(sRequest);
+		return getResponse(req);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/products")
+	@RequestMapping(method = RequestMethod.POST)
 	public @ResponseBody
-	Response saveProductData(
-			@RequestParam(value = "page_number") int pageNumber,
-			@RequestParam(required = false, value = "cb") String[] selected) {
-		Page page = new Page(pageNumber);
-		updateSelected(selected);
-		updateVisited(page);
-		return getResponse(page);
+	Response processPost(HttpServletRequest sRequest) {
+		Request req = getRequest(sRequest);
+		updateSelected(req.getSelected());
+		updateVisited(req.getPage().previous(), req.getCriteria());
+		return getResponse(req);
+	}
+	
+	private Request getRequest(HttpServletRequest req) {
+		return Builder.makeRequest(req);
 	}
 
 	private void updateSelected(String[] selected) {
@@ -47,13 +55,14 @@ public class ProductController {
 		}
 	}
 
-	private void updateVisited(Page page) {
-		service.updateAll(page, "visited", Boolean.TRUE);
+	private void updateVisited(Page page, DBObject criteria) {
+		service.updateAll(page, "visited", Boolean.TRUE, criteria);
 	}
 
-	private Response getResponse(Page page) {
-		List<Product> products = service.fetchAll(page);
-		return Builder.makeResponse(products, page);
+	private Response getResponse(Request req) {
+		List<Product> products = service.fetchAll(req.getPage(),
+				req.getCriteria());
+		return Builder.makeResponse(products, req.getPage().next());
 	}
 
 }

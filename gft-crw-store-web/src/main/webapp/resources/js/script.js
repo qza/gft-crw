@@ -1,5 +1,5 @@
 function getUrl() {
-	return 'products?page_number=' + $("#page_number").val();
+	return 'products?pageNumber=' + $("#page_number").val();
 }
 
 $(function() {
@@ -9,6 +9,7 @@ $(function() {
 		submitProductSelection(params);
 	});
 	initializeNavigation();
+	getStuff();
 });
 
 function loadTable() {
@@ -16,8 +17,13 @@ function loadTable() {
 		if (response != null) {
 			fillTable(response);
 			toggleSelected();
+			focusBody();
 		}
 	});
+}
+
+function focusBody() {
+	document.body.focus();
 }
 
 function submitProductSelection(params) {
@@ -50,7 +56,7 @@ function fillRow(product) {
 	}
 	row += '<td class="check"><input type="checkbox" name="cb" value="'
 			+ product._id.$oid + '" ' + (is4g ? 'checked' : '') + '></td>';
-	row += '<td>' + '<p>' + product.name + '</p>' + '<p>' + product.category
+	row += '<td>' + '<p>' + product.name + '</p>' + '<p>' + makeCategoryLink(product.category)
 			+ '</p>' + '<p>' + product.price + '</p>' + '<p>' + product.rating
 			+ '</p>' + '</td>';
 	if (product.image) {
@@ -60,3 +66,7 @@ function fillRow(product) {
 	$('#table').append(row);
 }
 
+function makeCategoryLink(name) {
+	var href = encodeURIComponent("products?category=" + name);
+	return '<li><a class="catlink" href="' + href + '">' + name + '</a></li>';
+}

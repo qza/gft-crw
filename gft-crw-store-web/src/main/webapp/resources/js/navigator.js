@@ -3,8 +3,11 @@ var row_count = 20;
 
 function initializeNavigation() {
 	$(document).keyup(function(e) {
-		e.preventDefault();
-		processKey(e.which);
+		var code = e.which;
+		if (code != 13) {
+			e.preventDefault();
+		}
+		processKey(code);
 	});
 }
 
@@ -24,9 +27,11 @@ function processKey(code) {
 }
 
 function scrollToSelectedRow() {
+	var top = getRow().offset().top;
+	top = top > 20 ? (top - 20) : top;
 	$("body").animate({
-		scrollTop : getRow().offset().top
-	}, 100);
+		scrollTop : top
+	}, 250);
 }
 
 function toggleSelected() {

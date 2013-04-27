@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.qza.gft.crw.store.entity.Product;
-import org.qza.gft.crw.store.service.Page;
+import org.qza.gft.crw.store.service.model.Page;
 
 /**
  * @author gft
  * 
- *         Web response object with paged product data
+ *         Store service response object with paged product data
  */
 public class Response {
 
