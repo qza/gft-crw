@@ -16,7 +16,7 @@ import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
 
 /**
- * @author gft
+ * @author g
  */
 @Component
 public class ProductRepository implements Repository<Product> {
@@ -40,15 +40,21 @@ public class ProductRepository implements Repository<Product> {
 	@Override
 	public List<Product> fetchAll(Map<String, Object> conditions, int page,
 			int size) {
-		BasicDBObject query = buildQuery(conditions);
+		BasicDBObject query = null;
+		if (conditions != null && conditions.size() > 0) {
+			query = buildQuery(conditions);
+		}
 		return loadData(query, page, size);
 	}
 
 	@Override
-	public void save(Product product) {
+	public String save(Product product) {
 		String productStr = mapper.write(product);
 		DBObject productDb = (DBObject) JSON.parse(productStr);
 		productCollection.save(productDb);
+		ObjectId id = (ObjectId) ((ObjectId) productDb.get("_id"));
+		product.set_id(id);
+		return id.toString();
 	}
 
 	@Override
@@ -57,10 +63,16 @@ public class ProductRepository implements Repository<Product> {
 	}
 
 	@Override
-	public boolean delete(String[] ids) {
+	public boolean deleteAll(String[] ids) {
 		for (int i = 0; i < ids.length; i++) {
 			productCollection.remove(new BasicDBObject("_id", ids[i]));
 		}
+		return true;
+	}
+
+	@Override
+	public boolean deleteAll(String key, String val) {
+		productCollection.remove(new BasicDBObject(key, val));
 		return true;
 	}
 
@@ -77,8 +89,8 @@ public class ProductRepository implements Repository<Product> {
 	}
 
 	@Override
-	public boolean updateAll(int page, int size, String key, Object value) {
-		DBCursor cursor = productCollection.find(new BasicDBObject());
+	public boolean updateAll(int page, int size, String key, Object value, DBObject criteria) {
+		DBCursor cursor = productCollection.find(criteria);
 		getPosition(cursor, page, size);
 		while (cursor.hasNext()) {
 			DBObject dbObj = cursor.next();

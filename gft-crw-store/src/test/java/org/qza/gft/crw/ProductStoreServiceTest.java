@@ -6,12 +6,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.qza.gft.crw.store.Config;
 import org.qza.gft.crw.store.entity.Product;
-import org.qza.gft.crw.store.service.Page;
+import org.qza.gft.crw.store.service.model.Page;
 import org.qza.gft.crw.store.service.ProductStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -23,32 +24,35 @@ public class ProductStoreServiceTest {
 
 	@Autowired
 	private ProductStoreService service;
-	
+
 	private Product p;
-	
+
 	@Before
-	public void initializeProduct(){
+	public void addTestData() {
 		p = new Product();
 		p.setName("aaaa");
 		p.setCategory("bbbbb");
 		p.setImage("cccccc");
 		p.setPrice("sssss");
 		p.setRating("vvvvvv");
-		p.setRelated(new HashSet<String>(Arrays.asList("fgfgfgfgfgfg", "fgfgfgfgfgfgfg")));
-		p.setTags(new HashSet<String>(Arrays.asList("tag1", "tag2","tag3", "tag4")));
-	}
-	
-	@Test
-	public void testPersist() {
+		p.setRelated(new HashSet<String>(Arrays.asList("fgfgfgfgfgfg",
+				"fgfgfgfgfgfgfg")));
+		p.setTags(new HashSet<String>(Arrays.asList("tag1", "tag2", "tag3",
+				"tag4")));
 		service.persist(p);
+	}
+
+	@After
+	public void removeTestData() {
+		service.deleteAll("name", "aaaa");
 	}
 
 	@Test
 	public void testFetchAll() {
-		List<Product> products = service.fetchAll(new Page(1));
+		List<Product> products = service.fetchAll(new Page(1), null);
 		assertNotNull(products);
 		assertTrue(products.size() > 0);
-		assertTrue(products.iterator().next().get_id()!=null);
+		assertTrue(products.iterator().next().get_id() != null);
 	}
 
 	@Test

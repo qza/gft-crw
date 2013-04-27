@@ -2,6 +2,10 @@ package org.qza.gft.crw.store.service;
 
 import java.util.List;
 
+import org.qza.gft.crw.store.service.model.Page;
+
+import com.mongodb.DBObject;
+
 /**
  * @author gft
  * 
@@ -10,16 +14,18 @@ import java.util.List;
  */
 public interface StoreService<C> {
 
-	void persist(C data);
+	String persist(C data);
 
-	List<C> fetchAll(Page page);
-	
+	List<C> fetchAll(Page page, DBObject criteria);
+
 	List<C> findByName(String name, Page page);
-	
+
 	void updateAll(String[] ids, String key, Object value);
-	
-	void updateAll(Page page, String key, Object value);
-	
+
+	void updateAll(Page page, String key, Object value, DBObject criteria);
+
 	void deleteAll(String[] ids);
+
+	void deleteAll(String key, String val);
 
 }

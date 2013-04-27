@@ -3,6 +3,8 @@ package org.qza.gft.crw.store.repo;
 import java.util.List;
 import java.util.Map;
 
+import com.mongodb.DBObject;
+
 /**
  * @author gft
  */
@@ -12,14 +14,16 @@ public interface Repository<C> {
 
 	List<C> fetchAll(Map<String, Object> condition, int page, int perpage);
 
-	void save(C product);
-	
+	String save(C product);
+
 	boolean updateAll(String[] ids, String key, Object value);
-	
-	boolean updateAll(int page, int size, String key, Object value);
+
+	boolean updateAll(int page, int size, String key, Object value, DBObject criteria);
 
 	boolean delete(C entity);
-	
-	boolean delete(String[] ids);
+
+	boolean deleteAll(String[] ids);
+
+	boolean deleteAll(String key, String val);
 
 }

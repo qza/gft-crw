@@ -1,4 +1,4 @@
-package org.qza.gft.crw.store.service;
+package org.qza.gft.crw.store.service.model;
 
 /**
  * @author gft
