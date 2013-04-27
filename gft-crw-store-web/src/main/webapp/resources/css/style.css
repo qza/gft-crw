@@ -1,3 +1,12 @@
+body {
+	margin: 0;
+	margin-top: 10px;
+}
+
+h1 {
+	padding-left: 20px;
+}
+
 table a:link {
 	color: #666;
 	font-weight: bold;
@@ -29,10 +38,10 @@ table {
 	-moz-box-shadow: 0 1px 2px #d1d1d1;
 	-webkit-box-shadow: 0 1px 2px #d1d1d1;
 	box-shadow: 0 1px 2px #d1d1d1;
+	width: 97%;
 }
 
 table th {
-	padding: 21px 25px 22px 25px;
 	border-top: 1px solid #fafafa;
 	border-bottom: 1px solid #e0e0e0;
 	background: #ededed;
@@ -43,7 +52,6 @@ table th {
 
 table th:first-child {
 	text-align: left;
-	padding-left: 20px;
 }
 
 table tr:first-child th:first-child {
@@ -60,25 +68,23 @@ table tr:first-child th:last-child {
 
 table tr {
 	text-align: center;
-	padding-left: 20px;
 }
 
-table tr.for_gift td.check{
+table tr.for_gift td.check {
 	background: #53C65E;
 }
 
-table tr.selected td{
+table tr.selected td {
 	background: #969697;
 }
 
 table td:first-child {
 	text-align: left;
-	padding-left: 20px;
 	border-left: 0;
 }
 
 table td {
-	padding: 18px;
+	padding: 10px;
 	border-top: 1px solid #ffffff;
 	border-bottom: 1px solid #e0e0e0;
 	border-left: 1px solid #e0e0e0;
@@ -111,20 +117,18 @@ table tr:last-child td:last-child {
 	border-bottom-right-radius: 3px;
 }
 
-#main_categories_div a:link {
-	padding: .3em;
-	color: #666;
-	font-weight: bold;
-	text-decoration: none;
+#progress_bar {
+	width: 500px;
+	height: 44px;
+	background-color: #e0e0e0;
+	margin-left: 20px;
 }
 
-#main_categories_div a:visited {
-	color: #999999;
-	font-weight: bold;
-	text-decoration: none;
-}
-
-#main_categories_div a:active, #main_categories_div a:hover {
-	color: #bd5a35;
-	text-decoration: underline;
+#progress_bar div {
+	height: 100%;
+	color: #fff;
+	text-align: right;
+	line-height: 44px;
+	width: 0;
+	background-color: #0099ff;
 }

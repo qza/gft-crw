@@ -3,19 +3,19 @@ function Home() {
 	var navigator = new Navigator();
 
 	this.initAll = function() {
-		loadTable();
-		bindSubmit();
-		initializeNavigation();
-		bindCategoryLinks();
+		$("#product_form").hide();
+		$.get(getUrl(), function(response) {
+			processResponse(response);
+		}).done(function() {
+			bindSubmit();
+			bindCategoryLinks();
+			initializeNavigation();
+		}).fail(function() {
+			alert("Error getting data");
+		});
 	};
 
 	// Private members
-
-	function loadTable() {
-		$.get(getUrl(), function(response) {
-			processResponse(response);
-		});
-	}
 
 	function bindSubmit() {
 		$("#product_form").on("submit", function(event) {
@@ -25,9 +25,10 @@ function Home() {
 	}
 
 	function bindCategoryLinks() {
-		$("a.catlink").on("click", function(event) {
-			event.preventDefault();
-			loadCategory($(this).attr("href"));
+		$(".catlink").on("click", function() {
+			var addr = $(this).attr("href");
+			loadCategory(addr);
+			return false;
 		});
 	}
 
@@ -43,31 +44,44 @@ function Home() {
 	function submitProductSelection(params) {
 		$.post(getUrl(), params, function(response) {
 			processResponse(response);
+		}).fail(function() {
+			alert("Error posting data");
 		});
 	}
-	
+
 	function loadCategory(categoryLink) {
 		$.get(categoryLink, function(response) {
 			processResponse(response);
+		}).fail(function() {
+			alert("Error loading category data");
 		});
 	}
-	
+
 	function processResponse(response) {
 		if (response != null) {
 			fillTable(response);
-			navigator.toggleSelected();
+			bindCategoryLinks();
+			navigator.resetNavigation();
 		}
 	}
 
 	function fillTable(response) {
-		$('#products_table').find('tbody').remove();
+		var progress = new Progress();
+		var form = $("#product_form");
+		var table = $('#products_table');
+		showHide(progress, form);
+		table.find('tbody').remove();
 		var products = response.products;
+		progress.init(products.length);
 		for ( var i = 0; i < products.length; i++) {
 			fillRow(products[i]);
+			progress.progress();
 		}
-		$('#products_table').data('model', products);
-		$("#page_number").val(response.page.number);
-		navigator.resetNavigation();
+		progress.done(function() {
+			table.data('model', products);
+			$("#page_number").val(response.page.number);
+			showHide(form, progress);
+		});
 	}
 
 	function fillRow(product) {
@@ -105,6 +119,11 @@ function Home() {
 		navigator.initializeNavigation(function() {
 			doSubmit();
 		});
+	}
+
+	function showHide(elem1, elem2) {
+		elem2.hide();
+		elem1.show();
 	}
 
 };

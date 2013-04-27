@@ -2,7 +2,6 @@ function Navigator() {
 
 	var row = 0;
 	var row_count = 20;
-	var nav = this;
 
 	this.initializeNavigation = function(enterProcessor) {
 		$(document).keyup(function(e) {
@@ -18,27 +17,26 @@ function Navigator() {
 
 	this.resetNavigation = function() {
 		row = 0;
-		scrollToSelectedRow();
 		getRow().toggleClass("selected");
 	};
 
-	this.toggleSelected = function() {
+	function toggleSelected() {
 		getRows().each(function() {
 			$(this).removeClass("selected");
 		});
 		getRow().toggleClass("selected");
-	};
+	}
 
 	// Private members
 
 	function processKey(code) {
 		if (code == 38) {
 			decrease();
-			nav.toggleSelected();
+			toggleSelected();
 		}
 		if (code == 40) {
 			increase();
-			nav.toggleSelected();
+			toggleSelected();
 		}
 		if (code == 37 || code == 39) {
 			toggle4Gift();
