@@ -72,6 +72,6 @@ function fillRow(product) {
 }
 
 function makeCategoryLink(name) {
-	var href = encodeURIComponent("products?category=" + name);
+	var href = 'products?' + encodeURIComponent("category=" + name);
 	return '<li><a class="catlink" href="' + href + '">' + name + '</a></li>';
 }

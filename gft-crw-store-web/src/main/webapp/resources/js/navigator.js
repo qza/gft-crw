@@ -28,13 +28,8 @@ function processKey(code) {
 
 function resetNavigation() {
 	row = 0;
-	focus(row);
-}
-
-function focus(row) {
-	$(function(){
-		$('#products_table tbody tr')[row].triggerHandler("focus");
-	});
+	scrollToSelectedRow();
+	getRow().toggleClass("selected");
 }
 
 function scrollToSelectedRow() {
