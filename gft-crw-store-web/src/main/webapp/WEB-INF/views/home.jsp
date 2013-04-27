@@ -10,10 +10,10 @@
 	src='http://code.jquery.com/jquery-1.9.1.min.js'></script>
 
 <script type='text/javascript'
-	src='<c:url value="/resources/js/script.js"/>'></script>
+	src='<c:url value="/resources/js/navigator.js"/>'></script>
 
 <script type='text/javascript'
-	src='<c:url value="/resources/js/navigator.js"/>'></script>
+	src='<c:url value="/resources/js/script.js"/>'></script>
 
 <title>Products</title>
 
@@ -28,9 +28,15 @@
 		<input id="submit" type="submit" name="submit_button" value="submit" />
 		<input id="page_number" type="hidden" name="page_number" value="1" />
 	</form>
-	
+
 	<script type="text/javascript">
-		loadTable();
+		var home = new Home();
+		$(document).ready(function() {
+			home.loadTable();
+			home.bindSubmit();
+			home.bindCategoryLinks();
+			home.initializeNavigation();
+		});
 	</script>
 
 </body>
