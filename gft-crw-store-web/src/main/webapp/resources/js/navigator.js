@@ -2,9 +2,9 @@ function Navigator() {
 
 	var row = 0;
 	var row_count = 20;
+	var nav = this;
 
 	this.initializeNavigation = function(enterProcessor) {
-		var nav = this;
 		$(document).keyup(function(e) {
 			var code = e.which;
 			if (code != 13) {
@@ -12,80 +12,82 @@ function Navigator() {
 			} else {
 				enterProcessor();
 			}
-			nav.processKey(code);
+			processKey(code);
 		});
 	};
 
 	this.resetNavigation = function() {
-		this.row = 0;
-		this.scrollToSelectedRow();
-		this.getRow().toggleClass("selected");
+		row = 0;
+		scrollToSelectedRow();
+		getRow().toggleClass("selected");
 	};
 
-	this.processKey = function(code) {
+	this.toggleSelected = function() {
+		getRows().each(function() {
+			$(this).removeClass("selected");
+		});
+		getRow().toggleClass("selected");
+	};
+
+	// Private members
+
+	function processKey(code) {
 		if (code == 38) {
-			this.decrease();
-			this.toggleSelected();
+			decrease();
+			nav.toggleSelected();
 		}
 		if (code == 40) {
-			this.increase();
-			this.toggleSelected();
+			increase();
+			nav.toggleSelected();
 		}
 		if (code == 37 || code == 39) {
-			this.toggle4Gift();
+			toggle4Gift();
 		}
-		this.scrollToSelectedRow();
-	};
+		scrollToSelectedRow();
+	}
 
-	this.scrollToSelectedRow = function() {
-		var top = this.getRow().offset().top;
+	function scrollToSelectedRow() {
+		var top = getRow().offset().top;
 		top = top > 20 ? (top - 20) : top;
 		$("body").animate({
 			scrollTop : top
 		}, 200);
-	};
+	}
 
-	this.toggleSelected = function() {
-		this.getRows().each(function() {
-			$(this).removeClass("selected");
-		});
-		this.getRow().toggleClass("selected");
-	};
-
-	this.toggle4Gift = function() {
-		var row = this.getRow();
+	function toggle4Gift() {
+		var row = getRow();
 		row.toggleClass("for_gift");
-		this.toggleCheckbox();
-	};
+		toggleCheckbox();
+	}
 
-	this.toggleCheckbox = function() {
-		var check = this.getRow().find('td.check input');
+	function toggleCheckbox() {
+		var check = getRow().find('td.check input');
 		var isCheck = check.prop("checked");
 		check.prop("checked", !isCheck);
-	};
+	}
 
-	this.getRow = function() {
-		return this.getRows().eq(row);
-	};
+	function getRow() {
+		return getRows().eq(row);
+	}
 
-	this.getRows = function() {
+	function getRows() {
 		return $('#products_table tbody tr');
-	};
+	}
 
-	this.increase = function() {
-		row = this.hasNext() ? (row + 1) : (row_count - 1);
-	};
+	function increase() {
+		row = hasNext() ? (row + 1) : (row_count - 1);
+	}
 
-	this.decrease = function() {
-		row = this.hasPrevious() ? (row - 1) : 0;
-	};
+	function decrease() {
+		row = hasPrevious() ? (row - 1) : 0;
+	}
 
-	this.hasPrevious = function() {
+	function hasPrevious() {
 		return row > 0;
-	};
+	}
 
-	this.hasNext = function() {
+	function hasNext() {
 		return row < (row_count - 1);
-	};
+	}
 
 }

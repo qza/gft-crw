@@ -110,3 +110,21 @@ table tr:last-child td:last-child {
 	-webkit-border-bottom-right-radius: 3px;
 	border-bottom-right-radius: 3px;
 }
+
+#main_categories_div a:link {
+	padding: .3em;
+	color: #666;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#main_categories_div a:visited {
+	color: #999999;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#main_categories_div a:active, #main_categories_div a:hover {
+	color: #bd5a35;
+	text-decoration: underline;
+}

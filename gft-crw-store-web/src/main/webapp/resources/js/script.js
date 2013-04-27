@@ -2,75 +2,75 @@ function Home() {
 
 	var navigator = new Navigator();
 
-	this.bindSubmit = function() {
-		var home = this;
+	this.initAll = function() {
+		loadTable();
+		bindSubmit();
+		initializeNavigation();
+		bindCategoryLinks();
+	};
+
+	// Private members
+
+	function loadTable() {
+		$.get(getUrl(), function(response) {
+			processResponse(response);
+		});
+	}
+
+	function bindSubmit() {
 		$("#product_form").on("submit", function(event) {
 			event.preventDefault();
-			home.doSubmit(home, event);
+			doSubmit();
 		});
-	};
+	}
 
-	this.doSubmit = function(home) {
-		var params = $(this).serialize();
-		home.submitProductSelection(params);
-	};
-
-	this.bindCategoryLinks = function() {
-		var home = this;
+	function bindCategoryLinks() {
 		$("a.catlink").on("click", function(event) {
 			event.preventDefault();
-			home.loadCategory($(this));
+			loadCategory($(this).attr("href"));
 		});
-	};
+	}
 
-	this.getUrl = function() {
+	function getUrl() {
 		return 'products?pageNumber=' + $("#page_number").val();
-	};
+	}
 
-	this.loadTable = function() {
-		var home = this;
-		$.get(this.getUrl(), function(response) {
-			home.processResponse(response);
+	function doSubmit() {
+		var params = $("#product_form").serialize();
+		submitProductSelection(params);
+	}
+
+	function submitProductSelection(params) {
+		$.post(getUrl(), params, function(response) {
+			processResponse(response);
 		});
-	};
-
-	this.loadCategory = function(categoryLink) {
-		var home = this;
-		$.get(categoryLink.attr("href"), function(response) {
-			home.processResponse(response);
+	}
+	
+	function loadCategory(categoryLink) {
+		$.get(categoryLink, function(response) {
+			processResponse(response);
 		});
-	};
-
-	this.processResponse = function(response) {
+	}
+	
+	function processResponse(response) {
 		if (response != null) {
-			this.fillTable(response);
+			fillTable(response);
 			navigator.toggleSelected();
 		}
-	};
+	}
 
-	this.submitProductSelection = function(params) {
-		var home = this;
-		$.post(this.getUrl(), params, function(response) {
-			if (response != null) {
-				home.fillTable(response);
-			} else {
-				alert('Failure! No response');
-			}
-		});
-	};
-
-	this.fillTable = function(response) {
+	function fillTable(response) {
 		$('#products_table').find('tbody').remove();
 		var products = response.products;
 		for ( var i = 0; i < products.length; i++) {
-			this.fillRow(products[i]);
+			fillRow(products[i]);
 		}
 		$('#products_table').data('model', products);
 		$("#page_number").val(response.page.number);
 		navigator.resetNavigation();
-	};
+	}
 
-	this.fillRow = function(product) {
+	function fillRow(product) {
 		var row = '';
 		var is4g = product.for_gift && product.for_gift == true;
 		if (is4g) {
@@ -85,7 +85,7 @@ function Home() {
 		row += '</td>';
 		row += '<td>';
 		row += '<p>' + product.name + '</p>';
-		row += '<p>' + this.makeCategoryLink(product.category) + '</p>';
+		row += '<p>' + makeCategoryLink(product.category) + '</p>';
 		row += '<p>' + product.price + '</p>';
 		row += '<p>' + product.rating + '</p>';
 		row += '</td>';
@@ -94,19 +94,17 @@ function Home() {
 		}
 		row += '</tr>';
 		$('#products_table').append(row);
-	};
+	}
 
-	this.makeCategoryLink = function(name) {
-		var href = 'products?' + encodeURIComponent("category=" + name);
-		return '<li><a class="catlink" href="' + href + '">' + name
-				+ '</a></li>';
-	};
+	function makeCategoryLink(name) {
+		var href = 'products?category=' + encodeURIComponent(name);
+		return '<a class="catlink" href="' + href + '">' + name + '</a>';
+	}
 
-	this.initializeNavigation = function() {
-		var home = this;
+	function initializeNavigation() {
 		navigator.initializeNavigation(function() {
-			home.doSubmit(home);
+			doSubmit();
 		});
-	};
+	}
 
 };
