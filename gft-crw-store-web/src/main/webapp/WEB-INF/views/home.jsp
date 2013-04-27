@@ -24,7 +24,7 @@
 	<h1>Products</h1>
 
 	<form id="product_form">
-		<table id="table"></table>
+		<table id="products_table"></table>
 		<input id="submit" type="submit" name="submit_button" value="submit" />
 		<input id="page_number" type="hidden" name="page_number" value="1" />
 	</form>

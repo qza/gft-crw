@@ -26,12 +26,23 @@ function processKey(code) {
 	scrollToSelectedRow();
 }
 
+function resetNavigation() {
+	row = 0;
+	focus(row);
+}
+
+function focus(row) {
+	$(function(){
+		$('#products_table tbody tr')[row].triggerHandler("focus");
+	});
+}
+
 function scrollToSelectedRow() {
 	var top = getRow().offset().top;
 	top = top > 20 ? (top - 20) : top;
 	$("body").animate({
 		scrollTop : top
-	}, 250);
+	}, 200);
 }
 
 function toggleSelected() {
@@ -58,7 +69,7 @@ function getRow() {
 }
 
 function getRows() {
-	return $('table tbody tr');
+	return $('#products_table tbody tr');
 }
 
 function increase() {

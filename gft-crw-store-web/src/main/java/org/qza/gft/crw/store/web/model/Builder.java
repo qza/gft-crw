@@ -26,9 +26,9 @@ public class Builder {
 		if (pageNum != null) {
 			request.setPageNumber(Integer.valueOf(pageNum));
 		}
-		String sel = req.getParameter("selected");
-		if (sel != null) {
-			request.setSelected(sel.split(","));
+		String[] sel = req.getParameterValues("cb");
+		if (sel != null && sel.length > 0) {
+			request.setSelected(sel);
 		}
 		return request;
 	}

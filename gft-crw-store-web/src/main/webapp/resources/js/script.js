@@ -1,29 +1,28 @@
-function getUrl() {
-	return 'products?pageNumber=' + $("#page_number").val();
-}
-
 $(function() {
+	bindSubmit();
+	initializeNavigation();
+});
+
+function bindSubmit() {
 	$("#product_form").on("submit", function(event) {
 		event.preventDefault();
 		var params = $(this).serialize();
 		submitProductSelection(params);
 	});
-	initializeNavigation();
-	getStuff();
-});
+}
+
+function getUrl() {
+	return 'products?pageNumber=' + $("#page_number").val();
+}
 
 function loadTable() {
 	$.get(getUrl(), function(response) {
 		if (response != null) {
 			fillTable(response);
 			toggleSelected();
-			focusBody();
 		}
+		resetNavigation();
 	});
-}
-
-function focusBody() {
-	document.body.focus();
 }
 
 function submitProductSelection(params) {
@@ -37,13 +36,14 @@ function submitProductSelection(params) {
 }
 
 function fillTable(response) {
-	$('#table').find('tbody').remove();
+	$('#products_table').find('tbody').remove();
 	var products = response.products;
 	for ( var i = 0; i < products.length; i++) {
 		fillRow(products[i]);
 	}
-	$('#table').data('model', products);
+	$('#products_table').data('model', products);
 	$("#page_number").val(response.page.number);
+	resetNavigation();
 }
 
 function fillRow(product) {
@@ -54,16 +54,21 @@ function fillRow(product) {
 	} else {
 		row += '<tr>';
 	}
-	row += '<td class="check"><input type="checkbox" name="cb" value="'
-			+ product._id.$oid + '" ' + (is4g ? 'checked' : '') + '></td>';
-	row += '<td>' + '<p>' + product.name + '</p>' + '<p>' + makeCategoryLink(product.category)
-			+ '</p>' + '<p>' + product.price + '</p>' + '<p>' + product.rating
-			+ '</p>' + '</td>';
+	row += '<td class="check">';
+	row += '<input type="checkbox" name="cb" value="' + product._id.$oid + '" ';
+	row += (is4g ? 'checked' : '') + '/>';
+	row += '</td>';
+	row += '<td>';
+	row += '<p>' + product.name + '</p>';
+	row += '<p>' + makeCategoryLink(product.category) + '</p>';
+	row += '<p>' + product.price + '</p>';
+	row += '<p>' + product.rating + '</p>';
+	row += '</td>';
 	if (product.image) {
 		row += '<td><img src="' + product.image + '"/>' + '</td>';
 	}
 	row += '</tr>';
-	$('#table').append(row);
+	$('#products_table').append(row);
 }
 
 function makeCategoryLink(name) {
