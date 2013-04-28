@@ -46,15 +46,17 @@ public class Context extends ContextBase {
 		this.storeService = storeService;
 	}
 
-	public synchronized void addMessage(Message message) {
-		for (Iterator<String> iterator = message.getRelated().iterator(); iterator
-				.hasNext();) {
-			String link = iterator.next();
-			if (visited.add(link)) {
-				queue.add(link);
+	public void addMessage(Message message) {
+		productData.add(message);
+		synchronized(this) {
+			for (Iterator<String> iterator = message.getRelated().iterator(); iterator
+					.hasNext();) {
+				String link = iterator.next();
+				if (visited.add(link)) {
+					queue.add(link);
+				}
 			}
 		}
-		productData.add(message);
 	}
 
 	public Set<String> getVisited() {
