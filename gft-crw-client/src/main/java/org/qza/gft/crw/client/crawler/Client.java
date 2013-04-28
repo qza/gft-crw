@@ -42,7 +42,6 @@ public class Client implements Runnable {
 		if (connection.check()) {
 			work();
 		}
-		System.gc();
 	}
 
 	public void shutdown() {

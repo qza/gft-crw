@@ -48,13 +48,9 @@ public class DbPersister implements Runnable {
 			} catch (Exception ex) {
 				log.error("Problem saving data", ex);
 			} finally {
-				long free = Runtime.getRuntime().freeMemory() / mb;
-				if (free < memoryMin) {
-					System.gc();
-				}
+				checkMemory();
 			}
 		}
-
 	}
 
 	private void saveData(Collection<Message> data) {
@@ -69,6 +65,16 @@ public class DbPersister implements Runnable {
 			data.add(new String(converter.write(messIt.next())));
 		}
 		return data;
+	}
+
+	private void checkMemory() {
+		long free = Runtime.getRuntime().freeMemory() / mb;
+		if (free < memoryMin) {
+			System.gc();
+		}
+		if (free < memoryMin / 2) {
+			log.warn("\n Running out of memory!!!\n");
+		}
 	}
 
 }
