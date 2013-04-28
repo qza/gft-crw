@@ -23,16 +23,11 @@ public class DbPersister implements Runnable {
 	final private MessageConverter converter;
 
 	final private Logger log;
-	
-	final private Integer memoryMin;
-	
-	final private Integer mb = 1024 * 1024;
 
 	public DbPersister(final Context context) {
 		this.context = context;
 		this.service = context.getStoreService();
 		this.converter = new MessageConverter();
-		this.memoryMin = context.getProps().getDataMemoryMin();
 		this.log = LoggerFactory.getLogger(DbPersister.class);
 	}
 
@@ -47,9 +42,7 @@ public class DbPersister implements Runnable {
 				log.info("Concurrent access. Will try next time.");
 			} catch (Exception ex) {
 				log.error("Problem saving data", ex);
-			} finally {
-				checkMemory();
-			}
+			} 
 		}
 	}
 
@@ -71,16 +64,6 @@ public class DbPersister implements Runnable {
 			throw new ConcurrentModificationException(cme);
 		} 
 		return data;
-	}
-
-	private void checkMemory() {
-		long free = Runtime.getRuntime().freeMemory() / mb;
-		if (free < memoryMin) {
-			System.gc();
-		}
-		if (free < memoryMin / 2) {
-			log.warn("\n Running out of memory!!!\n");
-		}
 	}
 
 }

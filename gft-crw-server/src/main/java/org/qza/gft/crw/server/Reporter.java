@@ -19,11 +19,15 @@ public class Reporter implements Runnable {
 	private final Context context;
 	private final Props props;
 	private final Logger log;
+	
+	final private Integer memoryMin;
+	final private Integer mb = 1024 * 1024;
 
 	public Reporter(final Context context) {
 		this.context = context;
 		this.props = context.getProps();
 		this.log = LoggerFactory.getLogger(Reporter.class);
+		this.memoryMin = props.getDataMemoryMin();
 	}
 
 	@Override
@@ -34,6 +38,8 @@ public class Reporter implements Runnable {
 			log.info(new Date() + "\n" + report);
 		} catch(Exception ex) {
 			log.error("Error creating report", ex);
+		} finally {
+			checkMemory();
 		}
 	}
 
@@ -72,6 +78,16 @@ public class Reporter implements Runnable {
 					queueSize, visitedSize, productsSize, visitedInSecond,
 					freeMemory);
 			return report;
+	}
+
+	private void checkMemory() {
+		long free = Runtime.getRuntime().freeMemory() / mb;
+		if (free < memoryMin) {
+			System.gc();
+		}
+		if (free < memoryMin / 2) {
+			log.warn("\n Running out of memory!!!\n");
+		}
 	}
 
 }
