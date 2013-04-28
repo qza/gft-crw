@@ -38,7 +38,7 @@ public class Config {
 
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
-	public Props props() {
+	public Props storeProps() {
 		Props props = new Props();
 		props.setLogTime(getProperty("crawler.store.log.time"));
 		props.setDbHost(getProperty("crawler.store.host"));
@@ -52,16 +52,16 @@ public class Config {
 
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
-	public Context context() {
-		Context context = new Context(props());
+	public Context storeContext() {
+		Context context = new Context(storeProps());
 		return context;
 	}
 
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
-	public Mongo mongo() {
+	public Mongo storeMongo() {
 		try {
-			return new Mongo(props().getDbHost(), props().getDbPort());
+			return new Mongo(storeProps().getDbHost(), storeProps().getDbPort());
 		} catch (UnknownHostException e) {
 			throw new RuntimeException(e);
 		} catch (MongoException e) {
@@ -71,9 +71,9 @@ public class Config {
 
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
-	public DB db() {
+	public DB storeDb() {
 		try {
-			return mongo().getDB(props().getStoreName());
+			return storeMongo().getDB(storeProps().getStoreName());
 		} catch (MongoException e) {
 			throw new RuntimeException(e);
 		}
@@ -82,12 +82,12 @@ public class Config {
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public DBCollection productCollection() {
-		return db().getCollection(props().getCollectionProducts());
+		return storeDb().getCollection(storeProps().getCollectionProducts());
 	}
 
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
-	public DataImport importer() {
+	public DataImport storeImporter() {
 		DataImport importer = new DataImport(productCollection());
 		return importer;
 	}

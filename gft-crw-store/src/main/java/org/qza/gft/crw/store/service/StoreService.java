@@ -1,5 +1,6 @@
 package org.qza.gft.crw.store.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.qza.gft.crw.store.service.model.Page;
@@ -28,6 +29,8 @@ public interface StoreService<C> {
 	void deleteAll(String[] ids);
 
 	void deleteAll(String key, String val);
+	
+	void insertAll(Collection<String> data);
 	
 	Stats stats();
 

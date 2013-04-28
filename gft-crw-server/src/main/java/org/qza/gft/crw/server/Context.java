@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import org.qza.gft.crw.ContextBase;
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.ServerAddress;
+import org.qza.gft.crw.server.store.DbPersister;
 
 /**
  * @author gft
@@ -29,17 +30,20 @@ public class Context extends ContextBase {
 	final private ExecutorService executor;
 
 	final private ScheduledExecutorService scheduler;
-
+	
+	final private DbPersister persister;
+	
 	public Context(final Props props, final Set<String> visited,
 			final BlockingQueue<String> queue, final ExecutorService executor,
 			final ScheduledExecutorService scheduler,
-			final Set<Message> products) {
+			final Set<Message> products, final DbPersister persister) {
 		this.props = props;
 		this.visited = visited;
 		this.queue = queue;
 		this.executor = executor;
 		this.scheduler = scheduler;
 		this.productData = products;
+		this.persister = persister;
 	}
 
 	public void addMessage(Message message) {
@@ -48,8 +52,11 @@ public class Context extends ContextBase {
 			String link = iterator.next();
 			synchronized (this) {
 				if (visited.add(link)) {
-					productData.add(message);
 					queue.add(link);
+					productData.add(message);
+					if(productData.size() > 1000) {
+						persister.saveData(productData);
+					}
 				}
 			}
 		}

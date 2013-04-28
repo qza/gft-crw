@@ -1,5 +1,6 @@
 package org.qza.gft.crw.store.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +64,11 @@ public class ProductStoreService implements StoreService<Product> {
 	@Override
 	public Stats stats() {
 		return repo.stats();
+	}
+
+	@Override
+	public void insertAll(Collection<String> data) {
+		repo.insertAll(data);
 	}
 
 }

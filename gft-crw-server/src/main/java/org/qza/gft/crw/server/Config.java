@@ -12,12 +12,15 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.qza.gft.crw.Message;
+import org.qza.gft.crw.server.store.DbPersister;
+import org.qza.gft.crw.store.service.ProductStoreService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
@@ -26,12 +29,16 @@ import org.springframework.core.env.Environment;
  * @author gft
  */
 @Configuration
-@ComponentScan(basePackages = { "org.qza.gft.crw.server" })
+@ComponentScan(basePackages = { "org.qza.gft.crw" })
 @PropertySource("classpath:gft-crw-server.properties")
+@Import(org.qza.gft.crw.store.Config.class)
 public class Config {
 
 	@Autowired
 	private Environment env;
+	
+	@Autowired
+	private ProductStoreService store;
 
 	private String getProperty(String key) {
 		return env.getProperty(key);
@@ -114,12 +121,19 @@ public class Config {
 		Set<Message> products = new HashSet<>();
 		return products;
 	}
+	
+	@Bean
+	@Scope(BeanDefinition.SCOPE_SINGLETON)
+	public DbPersister dbPersister() {
+		DbPersister persister = new DbPersister(store);
+		return persister;
+	}
 
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public Context context() {
 		Context context = new Context(props(), visited(), queue(), executor(),
-				scheduler(), products());
+				scheduler(), products(), dbPersister());
 		return context;
 	}
 

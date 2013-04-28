@@ -1,5 +1,6 @@
 package org.qza.gft.crw.store.repo;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -29,5 +30,7 @@ public interface Repository<C> {
 	boolean deleteAll(String key, String val);
 	
 	Stats stats();
+	
+	void insertAll(Collection<String> data);
 
 }

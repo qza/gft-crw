@@ -8,10 +8,10 @@
 	<name>gft-crw</name>
 	<modules>
 		<module>gft-crw-common</module>
-		<module>gft-crw-server</module>
 		<module>gft-crw-store</module>
+		<module>gft-crw-server</module>
 		<module>gft-crw-client</module>
-    <module>gft-crw-store-web</module>
+	    <module>gft-crw-store-web</module>
   </modules>
 	<properties>
 		<java-version>1.7</java-version>

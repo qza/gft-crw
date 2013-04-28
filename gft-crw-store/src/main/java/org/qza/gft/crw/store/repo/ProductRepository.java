@@ -1,6 +1,8 @@
 package org.qza.gft.crw.store.repo;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -100,6 +102,29 @@ public class ProductRepository implements Repository<Product> {
 		}
 		return true;
 	}
+	
+
+	@Override
+	public Stats stats() {
+		Stats stats = new Stats();
+		stats.setRecordCount(productCollection.count());
+		DBObject query = new BasicDBObject("visited", true);
+		stats.setVisitedCount(productCollection.find(query).count());
+		query = new BasicDBObject("for_gift", true);
+		stats.setForGiftCount(productCollection.find(query).count());
+		return stats;
+	}
+	
+	@Override
+	public void insertAll(Collection<String> data) {
+		for (Iterator<String> iterator = data.iterator(); iterator.hasNext();) {
+			String row = iterator.next();
+			DBObject dbObject = (DBObject) JSON.parse(row);
+			if (dbObject != null) {
+				productCollection.insert(dbObject);
+			}
+		}
+	}
 
 	private BasicDBObject buildQuery(Map<String, Object> conditions) {
 		BasicDBObject andQuery = null;
@@ -137,17 +162,6 @@ public class ProductRepository implements Repository<Product> {
 		} finally {
 			cursor.close();
 		}
-	}
-
-	@Override
-	public Stats stats() {
-		Stats stats = new Stats();
-		stats.setRecordCount(productCollection.count());
-		DBObject query = new BasicDBObject("visited", true);
-		stats.setVisitedCount(productCollection.find(query).count());
-		query = new BasicDBObject("for_gift", true);
-		stats.setForGiftCount(productCollection.find(query).count());
-		return stats;
 	}
 
 }

@@ -11,7 +11,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.qza</groupId>
-			<artifactId>gft-crw-common</artifactId>
+			<artifactId>gft-crw-store</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
