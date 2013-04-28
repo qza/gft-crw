@@ -24,8 +24,8 @@
 				<configuration>
 					<executable>java</executable>
 					<arguments>
-						<argument>-Xmx384m</argument>
-						<argument>-Xmx384m</argument>
+						<argument>-Xmx256m</argument>
+						<argument>-Xmx512m</argument>
 						<argument>-classpath</argument>
 						<classpath />
 						<argument>org.qza.gft.crw.server.Runner</argument>
