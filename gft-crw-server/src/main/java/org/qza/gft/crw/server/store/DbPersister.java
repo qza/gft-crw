@@ -1,6 +1,7 @@
 package org.qza.gft.crw.server.store;
 
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -37,6 +38,8 @@ public class DbPersister implements Runnable {
 				saveData(context.getProductDataClone());
 				context.getProductData().clear();
 				log.info("Data persisted @ " + new Date());
+			} catch (ConcurrentModificationException cme){
+				log.info("Concurrent access. Will try next time.");
 			} catch (Exception ex) {
 				log.error("Problem saving data", ex);
 			}
