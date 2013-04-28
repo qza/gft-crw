@@ -133,9 +133,8 @@ public class Context extends ContextBase {
 		getProductData().add(data);
 	}
 
-	public List<Message> getProductDataCloneAndClear() {
+	public List<Message> getProductDataClone() {
 		List<Message> data = new CopyOnWriteArrayList<>(getProductData());
-		getProductData().clear();
 		return data;
 	}
 
