@@ -47,23 +47,32 @@ public class Reporter implements Runnable {
 	}
 
 	private String makeReport() {
-		String template = new Builder(new Template()).build();
-		long duration = context.getDurationInNanos();
-		String durationStr = StatsUtils.formatDuration(duration);
-		Integer queueMax = props.getQueueMaxsize();
-		Integer poolInit = props.getTpoolInitsize();
-		Integer poolMax = props.getTpoolMaxsize();
-		Integer visitedSize = context.visitedSize();
-		Integer queueSize = context.queueSize();
-		String completedTasks = StatsUtils.decimalFormat(context
-				.completedTasksCount());
-		Integer remainedTasks = context.activeTasksCount();
-		String visitedInSecond = StatsUtils.formatPerSecond(visitedSize,
-				duration);
-		String report = String.format(template, queueMax, poolInit, poolMax,
-				durationStr, completedTasks, remainedTasks, queueSize,
-				visitedSize, visitedInSecond, (int) Runtime.getRuntime().freeMemory()/(1024*1024));
-		return report;
+		try {
+			String template = new Builder(new Template()).build();
+			long duration = context.getDurationInNanos();
+			String durationStr = StatsUtils.formatDuration(duration);
+			Integer queueMax = props.getQueueMaxsize();
+			Integer poolInit = props.getTpoolInitsize();
+			Integer poolMax = props.getTpoolMaxsize();
+			Integer queueSize = context.queueSize();
+			Integer visitedSize = context.visitedSize();
+			Integer productsSize = context.getProductsSize();
+			String completedTasks = StatsUtils.decimalFormat(context
+					.completedTasksCount());
+			Integer remainedTasks = context.activeTasksCount();
+			Integer freeMemory = (int) Runtime.getRuntime().freeMemory()
+					/ (1024 * 1024);
+			String visitedInSecond = StatsUtils.formatPerSecond(visitedSize,
+					duration);
+			String report = String.format(template, queueMax, poolInit,
+					poolMax, durationStr, completedTasks, remainedTasks,
+					queueSize, visitedSize, productsSize, visitedInSecond,
+					freeMemory);
+			return report;
+		} catch (Exception ex) {
+			log.error("Error creating report", ex);
+			throw new RuntimeException(ex);
+		}
 	}
 
 }
