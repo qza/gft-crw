@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.MessageConverter;
@@ -24,8 +22,6 @@ public class DbPersister implements Runnable {
 
 	final private MessageConverter converter;
 
-	final private Lock lock;
-	
 	final private Logger log;
 	
 	final private Integer memoryMin;
@@ -38,23 +34,22 @@ public class DbPersister implements Runnable {
 		this.converter = new MessageConverter();
 		this.memoryMin = context.getProps().getDataMemoryMin();
 		this.log = LoggerFactory.getLogger(DbPersister.class);
-		this.lock = new ReentrantLock();
 	}
 
 	@Override
 	public void run() {
-		lock.lock();
-		try {
-			saveData(context.getProductDataClone());
-			context.getProductData().clear();
-			log.info("Data persisted @ " + new Date());
-		} catch (ConcurrentModificationException cme) {
-			log.info("Concurrent access. Will try next time.");
-		} catch (Exception ex) {
-			log.error("Problem saving data", ex);
-		} finally {
-			checkMemory();
-			lock.unlock();
+		synchronized(this){
+			try {
+				saveData(context.getProductDataClone());
+				context.getProductData().clear();
+				log.info("Data persisted @ " + new Date());
+			} catch (ConcurrentModificationException cme) {
+				log.info("Concurrent access. Will try next time.");
+			} catch (Exception ex) {
+				log.error("Problem saving data", ex);
+			} finally {
+				checkMemory();
+			}
 		}
 	}
 
