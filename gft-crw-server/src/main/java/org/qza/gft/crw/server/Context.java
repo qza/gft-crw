@@ -49,19 +49,17 @@ public class Context extends ContextBase {
 		this.dataPersistSize = props.getDataPersistSize();
 	}
 
-	public void addMessage(Message message) {
+	public synchronized void addMessage(Message message) {
 		for (Iterator<String> iterator = message.getRelated().iterator(); iterator
 				.hasNext();) {
 			String link = iterator.next();
-			synchronized (this) {
-				if (visited.add(link)) {
-					queue.add(link);
-					productData.add(message);
-					if(productData.size() >= dataPersistSize) {
-						persister.saveData(productData);
-					}
-				}
+			if (visited.add(link)) {
+				queue.add(link);
 			}
+		}
+		productData.add(message);
+		if(productData.size() >= dataPersistSize) {
+			persister.saveData(productData);
 		}
 	}
 
