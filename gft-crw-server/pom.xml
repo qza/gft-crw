@@ -24,7 +24,7 @@
 				<configuration>
 					<executable>java</executable>
 					<arguments>
-						<argument>-Xms256m</argument>
+						<argument>-Xmx384m</argument>
 						<argument>-Xmx384m</argument>
 						<argument>-classpath</argument>
 						<classpath />
