@@ -10,6 +10,11 @@ function Navigator(table_id, row_count) {
 			keyProcessor(code);
 		});
 	};
+	
+	this.setRow = function(index, top_pad) {
+		row = index;
+		this.scrollToRow(top_pad);
+	};
 
 	this.reset = function() {
 		row = 0;

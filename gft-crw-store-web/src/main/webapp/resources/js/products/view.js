@@ -30,6 +30,7 @@ function ProductsView(props) {
 	function bindActions() {
 		bindForm();
 		bindCategories();
+		bindRows();
 	}
 
 	function bindForm() {
@@ -45,6 +46,14 @@ function ProductsView(props) {
 				processResponse(response);
 			});
 			return false;
+		});
+	}
+	
+	function bindRows(){
+		table.find("tr").on("click", function(){
+			var i = $(this).attr("id").replace("row_", "");
+			nav.setRow(i-1);
+			toggleSelected();
 		});
 	}
 
@@ -102,6 +111,7 @@ function ProductsView(props) {
 				nav.reset();
 				toggleSelected();
 				bindCategories();
+				bindRows();
 				fillStats(response);
 				hideProgress();
 			});
@@ -113,7 +123,7 @@ function ProductsView(props) {
 		var products = response.products;
 		progress.setCount(products.length);
 		for ( var i = 0; i < products.length; i++) {
-			fillRow(products[i]);
+			fillRow(i, products[i]);
 			progress.progress();
 		}
 		progress.done(function() {
@@ -125,13 +135,13 @@ function ProductsView(props) {
 		});
 	}
 
-	function fillRow(product) {
+	function fillRow(i, product) {
 		var row = '';
 		var is4g = product.for_gift && product.for_gift == true;
 		if (is4g) {
-			row += '<tr class="for_gift">';
+			row += '<tr id="row_' + (i+1) + '" class="for_gift">';
 		} else {
-			row += '<tr>';
+			row += '<tr id="row_' + (i+1) + '">';
 		}
 		row += '<td class="check">';
 		row += '<input type="checkbox" name="cb" value="' + product._id.$oid
@@ -168,14 +178,17 @@ function ProductsView(props) {
 	
 	function showProgress(){
 		progress.init();
+		stats.fadeOut(50);
 		table.fadeOut(50, function() {
-			progress.getBar().fadeIn(500);
+			progress.getBar().fadeIn(300);
 		});
 	}
 	
 	function hideProgress(){
-		progress.getBar().fadeOut(100, function() {
-			table.fadeIn(300);
+		progress.getBar().fadeOut(50, function() {
+			table.fadeIn(100, function(){
+				stats.fadeIn(100);
+			});
 		});
 	}
 
