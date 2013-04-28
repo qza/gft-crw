@@ -3,7 +3,7 @@ function ProductsView(props) {
 	var ctr = new ProductsController(props);
 
 	var nav = new Navigator(props.table, 20);
-	
+
 	var progress = new Progress(props.progress);
 
 	var form = elem(props.form);
@@ -13,10 +13,14 @@ function ProductsView(props) {
 	var page = elem(props.page);
 
 	var stats = elem(props.stats);
-	
+
 	var content = elem(props.content);
-	
+
 	var logo = elem(props.logo);
+
+	var title = $("h1");
+
+	var initialTitle = title.text();
 
 	this.init = function() {
 		initializeView();
@@ -31,10 +35,10 @@ function ProductsView(props) {
 			alert("Error getting data");
 		});
 	};
-	
-	function initializeView(){
+
+	function initializeView() {
 		logo.fadeIn(2000, function() {
-			logo.fadeOut(2000, function(){
+			logo.fadeOut(1500, function() {
 				content.fadeIn(500);
 			});
 		});
@@ -61,13 +65,27 @@ function ProductsView(props) {
 			return false;
 		});
 	}
-	
-	function bindRows(){
-		table.find("tr").on("click", function(){
-			var i = $(this).attr("id").replace("row_", "");
-			nav.setRow(i-1);
-			toggleSelected();
+
+	function bindRows() {
+		table.find("tr").on("click", function() {
+			goToRow($(this));
 		});
+		table.find("tr td input[type='checkbox']").on("click", function() {
+			var row = $(this).parent().parent(); 
+			goToRow(row);
+			var isCheck = $(this).prop("checked");
+			if(isCheck == true){
+				row.addClass("for_gift");
+			} else {
+				row.removeClass("for_gift");
+			}
+		});
+	}
+
+	function goToRow(row) {
+		var i = row.attr("id").replace("row_", "");
+		nav.setRow(i - 1);
+		toggleSelected();
 	}
 
 	function initNavigation() {
@@ -152,9 +170,9 @@ function ProductsView(props) {
 		var row = '';
 		var is4g = product.for_gift && product.for_gift == true;
 		if (is4g) {
-			row += '<tr id="row_' + (i+1) + '" class="for_gift">';
+			row += '<tr id="row_' + (i + 1) + '" class="for_gift">';
 		} else {
-			row += '<tr id="row_' + (i+1) + '">';
+			row += '<tr id="row_' + (i + 1) + '">';
 		}
 		row += '<td class="check">';
 		row += '<input type="checkbox" name="cb" value="' + product._id.$oid
@@ -188,19 +206,23 @@ function ProductsView(props) {
 		content += "<p> For gift count: <b>" + rstats.forGiftCount + "</b></p>";
 		stats.html(content);
 	}
-	
-	function showProgress(){
+
+	function showProgress() {
 		progress.init();
-		stats.fadeOut(50);
-		table.fadeOut(50, function() {
-			progress.getBar().fadeIn(300);
+		stats.fadeOut(200);
+		table.fadeOut(200, function() {
+			progress.getBar().fadeIn(300, function(){
+				title.text("Loading ... ");
+			});
+			
 		});
 	}
-	
-	function hideProgress(){
+
+	function hideProgress() {
 		progress.getBar().fadeOut(50, function() {
-			table.fadeIn(100, function(){
+			table.fadeIn(100, function() {
 				stats.fadeIn(100);
+				title.text(initialTitle);
 			});
 		});
 	}
