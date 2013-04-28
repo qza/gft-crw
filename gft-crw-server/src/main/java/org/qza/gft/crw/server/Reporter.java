@@ -63,7 +63,7 @@ public class Reporter implements Runnable {
 		Integer pSize = context.getProductsSize();
 		String completedTasks = StatsUtils.decimalFormat(completed);
 		Integer remainedTasks = context.activeTasksCount();
-		Integer freeMemory = (int) Runtime.getRuntime().freeMemory() / (1024 / 1024);
+		Integer freeMemory = (int) Runtime.getRuntime().freeMemory() / (1024 * 1024);
 		String visitedInSecond = StatsUtils.formatPerSecond(vSize, duration);
 		String report = String.format(template, queueMax, poolInit, poolMax,
 				durationStr, completedTasks, remainedTasks, qSize, vSize,
