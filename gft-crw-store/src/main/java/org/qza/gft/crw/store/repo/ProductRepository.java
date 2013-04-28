@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.bson.types.ObjectId;
 import org.qza.gft.crw.store.entity.Product;
+import org.qza.gft.crw.store.service.model.Stats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -136,6 +137,17 @@ public class ProductRepository implements Repository<Product> {
 		} finally {
 			cursor.close();
 		}
+	}
+
+	@Override
+	public Stats stats() {
+		Stats stats = new Stats();
+		stats.setRecordCount(productCollection.count());
+		DBObject query = new BasicDBObject("visited", true);
+		stats.setVisitedCount(productCollection.find(query).count());
+		query = new BasicDBObject("for_gift", true);
+		stats.setForGiftCount(productCollection.find(query).count());
+		return stats;
 	}
 
 }

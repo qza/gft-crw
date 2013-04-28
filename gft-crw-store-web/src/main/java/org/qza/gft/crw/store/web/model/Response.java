@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.qza.gft.crw.store.entity.Product;
 import org.qza.gft.crw.store.service.model.Page;
+import org.qza.gft.crw.store.service.model.Stats;
 
 /**
  * @author gft
@@ -14,6 +15,9 @@ import org.qza.gft.crw.store.service.model.Page;
 public class Response {
 
 	private Page page;
+	
+	private Stats stats;
+	
 	private List<Product> products;
 
 	public Response() {
@@ -42,6 +46,14 @@ public class Response {
 
 	public int getPageNumber() {
 		return getPage().getNumber();
+	}
+	
+	public Stats getStats() {
+		return stats;
+	}
+	
+	public void setStats(Stats stats) {
+		this.stats = stats;
 	}
 
 }

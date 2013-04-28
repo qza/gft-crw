@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.qza.gft.crw.store.entity.Product;
 import org.qza.gft.crw.store.service.model.Page;
+import org.qza.gft.crw.store.service.model.Stats;
 
 /**
  * @author gft
@@ -47,11 +48,12 @@ public class Builder {
 		return request;
 	}
 
-	public static Response makeResponse(List<Product> products, Page page) {
-		Response productReponse = new Response();
-		productReponse.setProducts(products);
-		productReponse.setPage(page);
-		return productReponse;
+	public static Response makeResponse(List<Product> products, Page page, Stats stats) {
+		Response response = new Response();
+		response.setProducts(products);
+		response.setPage(page);
+		response.setStats(stats);
+		return response;
 	}
 
 }

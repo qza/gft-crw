@@ -1,14 +1,12 @@
-function Progress() {
+function Progress(holder) {
 
 	var step = 0;
 	var state = 0;
 
 	this.init = function(count) {
 		step = 100 / count;
-		var top = bar().offset().top;
-		$("body").animate({
-			scrollTop : top
-		}, 200);
+		scrollTo(bar().offset().top);
+		create();
 	};
 
 	this.progress = function() {
@@ -16,7 +14,7 @@ function Progress() {
 		var newWidth = state * bar().width() / 100;
 		bar_div().animate({
 			width : newWidth
-		}, 30);
+		}, 25);
 	};
 
 	this.hide = function() {
@@ -33,8 +31,19 @@ function Progress() {
 		});
 	};
 
+	function create() {
+		bar().html("");
+		bar().append("<div></div>");
+	}
+
+	function scrollTo(yCord) {
+		$("body").animate({
+			scrollTop : yCord
+		}, 200);
+	}
+
 	function bar() {
-		return $("#progress_bar");
+		return $("#" + holder);
 	}
 
 	function bar_div() {

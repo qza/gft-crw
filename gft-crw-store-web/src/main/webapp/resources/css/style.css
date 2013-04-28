@@ -1,10 +1,28 @@
 body {
 	margin: 0;
 	margin-top: 10px;
+	font-family: 'Noto Sans', sans-serif;
 }
 
 h1 {
 	padding-left: 20px;
+	color: #4479D4;
+	font-size: 32px;
+}
+
+#stats {
+	float: right;
+	padding-right: 20px;
+}
+
+#stats p {
+	float: right;
+	padding-left: .5em;
+	color: #4479D4;
+}
+
+#stats p b{
+	color: #FFA400;
 }
 
 table a:link {
@@ -25,7 +43,7 @@ table a:active,table a:hover {
 }
 
 table {
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: 'Noto Sans', sans-serif;
 	color: #666;
 	font-size: 12px;
 	text-shadow: 1px 1px 0px #fff;
@@ -71,11 +89,11 @@ table tr {
 }
 
 table tr.for_gift td.check {
-	background: #53C65E;
+	background: #639A00;
 }
 
 table tr.selected td {
-	background: #969697;
+	background: #FFBB40;
 }
 
 table td:first-child {
@@ -88,14 +106,15 @@ table td {
 	border-top: 1px solid #ffffff;
 	border-bottom: 1px solid #e0e0e0;
 	border-left: 1px solid #e0e0e0;
-	background: #fafafa;
+	background: #969697;
 	background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb),
 		to(#fafafa));
 	background: -moz-linear-gradient(top, #fbfbfb, #fafafa);
+	font-size: x-large;
 }
 
 table tr.even td {
-	background: #f6f6f6;
+	background: #969697;
 	background: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8),
 		to(#f6f6f6));
 	background: -moz-linear-gradient(top, #f8f8f8, #f6f6f6);

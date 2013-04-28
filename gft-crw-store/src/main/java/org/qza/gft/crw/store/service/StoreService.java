@@ -3,6 +3,7 @@ package org.qza.gft.crw.store.service;
 import java.util.List;
 
 import org.qza.gft.crw.store.service.model.Page;
+import org.qza.gft.crw.store.service.model.Stats;
 
 import com.mongodb.DBObject;
 
@@ -27,5 +28,7 @@ public interface StoreService<C> {
 	void deleteAll(String[] ids);
 
 	void deleteAll(String key, String val);
+	
+	Stats stats();
 
 }

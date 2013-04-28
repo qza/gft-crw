@@ -3,6 +3,8 @@ package org.qza.gft.crw.store.repo;
 import java.util.List;
 import java.util.Map;
 
+import org.qza.gft.crw.store.service.model.Stats;
+
 import com.mongodb.DBObject;
 
 /**
@@ -25,5 +27,7 @@ public interface Repository<C> {
 	boolean deleteAll(String[] ids);
 
 	boolean deleteAll(String key, String val);
+	
+	Stats stats();
 
 }

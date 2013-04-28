@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.qza.gft.crw.store.entity.Product;
 import org.qza.gft.crw.store.service.ProductStoreService;
 import org.qza.gft.crw.store.service.model.Page;
+import org.qza.gft.crw.store.service.model.Stats;
 import org.qza.gft.crw.store.web.model.Builder;
 import org.qza.gft.crw.store.web.model.Request;
 import org.qza.gft.crw.store.web.model.Response;
@@ -44,7 +45,7 @@ public class ProductController {
 		updateVisited(req.getPage().previous(), req.getCriteria());
 		return getResponse(req);
 	}
-	
+
 	private Request getRequest(HttpServletRequest req) {
 		return Builder.makeRequest(req);
 	}
@@ -62,7 +63,9 @@ public class ProductController {
 	private Response getResponse(Request req) {
 		List<Product> products = service.fetchAll(req.getPage(),
 				req.getCriteria());
-		return Builder.makeResponse(products, req.getPage().next());
+		Page nextPage = req.getPage().next();
+		Stats stats = service.stats();
+		return Builder.makeResponse(products, nextPage, stats);
 	}
 
 }

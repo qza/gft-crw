@@ -6,6 +6,7 @@ import java.util.Map;
 import org.qza.gft.crw.store.entity.Product;
 import org.qza.gft.crw.store.repo.ProductRepository;
 import org.qza.gft.crw.store.service.model.Page;
+import org.qza.gft.crw.store.service.model.Stats;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +58,11 @@ public class ProductStoreService implements StoreService<Product> {
 	@Override
 	public void updateAll(Page page, String key, Object value, DBObject criteria) {
 		repo.updateAll(page.getNumber(), page.getSize(), key, value, criteria);
+	}
+
+	@Override
+	public Stats stats() {
+		return repo.stats();
 	}
 
 }
