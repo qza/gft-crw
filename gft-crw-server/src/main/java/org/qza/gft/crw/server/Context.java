@@ -33,6 +33,8 @@ public class Context extends ContextBase {
 	
 	final private DbPersister persister;
 	
+	final private Integer dataPersistSize;
+	
 	public Context(final Props props, final Set<String> visited,
 			final BlockingQueue<String> queue, final ExecutorService executor,
 			final ScheduledExecutorService scheduler,
@@ -44,6 +46,7 @@ public class Context extends ContextBase {
 		this.scheduler = scheduler;
 		this.productData = products;
 		this.persister = persister;
+		this.dataPersistSize = props.getDataPersistSize();
 	}
 
 	public void addMessage(Message message) {
@@ -54,7 +57,7 @@ public class Context extends ContextBase {
 				if (visited.add(link)) {
 					queue.add(link);
 					productData.add(message);
-					if(productData.size() > 1000) {
+					if(productData.size() >= dataPersistSize) {
 						persister.saveData(productData);
 					}
 				}

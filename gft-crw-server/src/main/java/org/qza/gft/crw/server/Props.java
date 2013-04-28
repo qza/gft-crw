@@ -43,6 +43,8 @@ public class Props {
 	private String dataFileVisited;
 	
 	private String dataFileProducts;
+	
+	private Integer dataPersistSize;
 
 	public Boolean getLogTime() {
 		return logTime;
@@ -177,6 +179,14 @@ public class Props {
 	
 	public void setDataFileProducts(String dataFileProducts) {
 		this.dataFileProducts = dataFileProducts;
+	}
+	
+	public void setDataPersistSize(String dataPersistSize) {
+		this.dataPersistSize = Integer.valueOf(dataPersistSize);
+	}
+	
+	public Integer getDataPersistSize() {
+		return dataPersistSize;
 	}
 
 }
