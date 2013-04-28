@@ -32,7 +32,7 @@ public class DbPersister implements Runnable {
 
 	@Override
 	public void run() {
-		synchronized (DbPersister.class) {
+		synchronized (this) {
 			try {
 				saveData(context.getProductDataClone());
 				context.getProductData().clear();

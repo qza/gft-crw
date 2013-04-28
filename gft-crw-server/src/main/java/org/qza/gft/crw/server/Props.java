@@ -44,7 +44,7 @@ public class Props {
 	
 	private String dataFileProducts;
 	
-	private Integer dataPersistSize;
+	private Integer dataPersistInterval;
 
 	public Boolean getLogTime() {
 		return logTime;
@@ -181,12 +181,12 @@ public class Props {
 		this.dataFileProducts = dataFileProducts;
 	}
 	
-	public void setDataPersistSize(String dataPersistSize) {
-		this.dataPersistSize = Integer.valueOf(dataPersistSize);
+	public void setDataPersistInterval(String dataPersistInterval) {
+		this.dataPersistInterval = Integer.valueOf(dataPersistInterval);
 	}
 	
-	public Integer getDataPersistSize() {
-		return dataPersistSize;
+	public Integer getDataPersistInterval() {
+		return dataPersistInterval;
 	}
 
 }

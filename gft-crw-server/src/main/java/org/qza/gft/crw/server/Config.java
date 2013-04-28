@@ -62,7 +62,7 @@ public class Config {
 		props.setDataFileQueue(getProperty("crawler.data.file.queue"));
 		props.setDataFileVisited(getProperty("crawler.data.file.visited"));
 		props.setDataFileProducts(getProperty("crawler.data.file.main"));
-		props.setDataPersistSize(getProperty("crawler.data.persist.size"));
+		props.setDataPersistInterval(getProperty("crawler.data.persist.interval"));
 		props.setReportLogInterval(getProperty("crawler.report.log.interval"));
 		props.setServerMaxclients(getProperty("crawler.server.maxclients"));
 		return props;

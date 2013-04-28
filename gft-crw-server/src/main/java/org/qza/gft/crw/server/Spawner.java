@@ -67,10 +67,11 @@ public class Spawner {
 
 	private void initializeDbPersister() {
 		DbPersister dbPersister = new DbPersister(context);
-		scheduler().scheduleWithFixedDelay(dbPersister, 0, 1, TimeUnit.MINUTES);
+		scheduler().scheduleWithFixedDelay(dbPersister, 0,
+				context.getProps().getDataPersistInterval(), TimeUnit.SECONDS);
 		log.info("Db Persister scheduled");
 	}
-	
+
 	private void initializeReporter() {
 		int interval = context.getProps().getReportLogInterval();
 		if (interval > 0) {
