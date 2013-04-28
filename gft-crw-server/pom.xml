@@ -24,14 +24,8 @@
 				<configuration>
 					<executable>java</executable>
 					<arguments>
-					 	<argument>-Dcom.sun.management.jmxremote</argument>
-		            	<argument>-Dcom.sun.management.jmxremote.authenticate=false</argument>
-        		    	<argument>-Dcom.sun.management.jmxremote.ssl=false</argument>
-            			<argument>-Dcom.sun.management.jmxremote.local.only=false</argument>
-            			<argument>-Djava.rmi.server.hostname=176.58.103.109</argument>
-            			<argument>-Dcom.sun.management.jmxremote.port=6002</argument>
-            			<argument>-Xms384m</argument>
-						<argument>-Xmx512m</argument>
+            			<argument>-Xms512m</argument>
+						<argument>-Xmx640m</argument>
 						<argument>-classpath</argument>
 						<classpath />
 						<argument>org.qza.gft.crw.server.Runner</argument>
