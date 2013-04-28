@@ -7,20 +7,31 @@ import java.util.Set;
 
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.MessageConverter;
+import org.qza.gft.crw.server.Context;
 import org.qza.gft.crw.store.service.ProductStoreService;
 
-public class DbPersister {
+public class DbPersister implements Runnable {
+
+	final private Context context;
 
 	final private ProductStoreService service;
 
 	final private MessageConverter converter;
 
-	public DbPersister(final ProductStoreService service) {
-		this.service = service;
+	public DbPersister(final Context context) {
+		this.context = context;
+		this.service = context.getStoreService();
 		this.converter = new MessageConverter();
 	}
 
-	public void saveData(Collection<Message> data) {
+	@Override
+	public void run() {
+		synchronized (DbPersister.class) {
+			saveData(context.getProductDataClone());
+		}
+	}
+
+	private void saveData(Collection<Message> data) {
 		service.insertAll(makeData(data));
 		data.clear();
 		System.gc();

@@ -35,7 +35,6 @@ public class Config {
 		props.setParserTimeout(env.getProperty("crawler.parser.timeout"));
 		props.setParserMaxbytes(env.getProperty("crawler.parser.maxbytes"));
 		props.setServerList(env.getProperty("crawler.server.list"));
-		props.setClientTimeout(env.getProperty("crawler.client.timeout"));
 		props.setSpawnTime(env.getProperty("crawler.spawn.time"));
 		props.setSpawnPerserver(env.getProperty("crawler.spawn.perserver"));
 		props.setTpoolInitsize(env.getProperty("crawler.spawn.tpool.initsize"));

@@ -40,21 +40,32 @@ public class ServerWorker implements Runnable {
 
 	@Override
 	public void run() {
-		while (true) {
-			String message = null;
-			try {
-				message = context.getQueue().take();
-			} catch (InterruptedException e) {
-				log.warn("Can't read queue");
+		try {
+			while (true) {
+				String message = null;
+				try {
+					message = context.getQueue().take();
+				} catch (InterruptedException e) {
+					log.warn("Can't read queue");
+				}
+				try {
+					writeMessage(socket, message);
+					readMessage(socket);
+				} catch (RuntimeException e) {
+					String warning = "Client disconected";
+					try {
+						warning += " ::: " + socket.getRemoteAddress();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					log.warn(warning);
+					break;
+				}
 			}
-			try {
-				writeMessage(socket, message);
-				readMessage(socket);
-			} catch (RuntimeException e) {
-				log.warn("Client disconected");
-				shutdown();
-				break;
-			}
+		} catch (Exception ex) {
+			log.error("Unexpected error", ex);
+		} finally {
+			shutdown();
 		}
 	}
 
@@ -105,8 +116,8 @@ public class ServerWorker implements Runnable {
 		try {
 			socket.close();
 			workers.remove(this);
-		} catch (IOException ioe) {
-			log.warn("Can't close worker", ioe);
+		} catch (Exception e) {
+			log.warn("Can't close worker", e);
 		}
 	}
 

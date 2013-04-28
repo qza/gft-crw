@@ -114,14 +114,6 @@ public class Props {
 		this.tpoolMaxsize = Integer.valueOf(tpoolMaxsize);
 	}
 
-	public Integer getClientTimeout() {
-		return clientTimeout;
-	}
-
-	public void setClientTimeout(String clientTimeout) {
-		this.clientTimeout = Integer.valueOf(clientTimeout);
-	}
-
 	public String getParserCssName() {
 		return parserCssName;
 	}

@@ -17,38 +17,16 @@ public class Builder {
 
 	public static Request makeRequest(HttpServletRequest req) {
 		Request request = new Request();
-		String cat = req.getParameter("category");
-		request.setCategory(cat);
-		String visited = req.getParameter("visited");
-		if (visited != null) {
-			request.setVisited(Boolean.valueOf(visited));
-		}
-		String pageNum = req.getParameter("pageNumber");
-		if (pageNum != null) {
-			request.setPageNumber(Integer.valueOf(pageNum));
-		}
-		String[] sel = req.getParameterValues("cb");
-		if (sel != null && sel.length > 0) {
-			request.setSelected(sel);
-		}
+		request.setCategory(req.getParameter("category"));
+		request.setVisited(req.getParameter("visited"));
+		request.setForGift(req.getParameter("for_gift"));
+		request.setPageNumber(req.getParameter("pageNumber"));
+		request.setSelected(req.getParameterValues("cb"));
 		return request;
 	}
 
-	public static Request makeRequest(String[] selected, int pageNumber) {
-		Request request = new Request();
-		request.setSelected(selected);
-		request.setPageNumber(pageNumber);
-		return request;
-	}
-
-	public static Request makeRequest(boolean visited, int pageNumber) {
-		Request request = new Request();
-		request.setVisited(visited);
-		request.setPageNumber(pageNumber);
-		return request;
-	}
-
-	public static Response makeResponse(List<Product> products, Page page, Stats stats) {
+	public static Response makeResponse(List<Product> products, Page page,
+			Stats stats) {
 		Response response = new Response();
 		response.setProducts(products);
 		response.setPage(page);

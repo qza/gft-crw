@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import org.qza.gft.crw.ContextBase;
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.ServerAddress;
-import org.qza.gft.crw.server.store.DbPersister;
+import org.qza.gft.crw.store.service.ProductStoreService;
 
 /**
  * @author gft
@@ -31,22 +31,19 @@ public class Context extends ContextBase {
 
 	final private ScheduledExecutorService scheduler;
 	
-	final private DbPersister persister;
-	
-	final private Integer dataPersistSize;
+	final private ProductStoreService storeService;
 	
 	public Context(final Props props, final Set<String> visited,
 			final BlockingQueue<String> queue, final ExecutorService executor,
 			final ScheduledExecutorService scheduler,
-			final Set<Message> products, final DbPersister persister) {
+			final Set<Message> products, final ProductStoreService storeService) {
 		this.props = props;
 		this.visited = visited;
 		this.queue = queue;
 		this.executor = executor;
 		this.scheduler = scheduler;
 		this.productData = products;
-		this.persister = persister;
-		this.dataPersistSize = props.getDataPersistSize();
+		this.storeService = storeService;
 	}
 
 	public synchronized void addMessage(Message message) {
@@ -58,9 +55,6 @@ public class Context extends ContextBase {
 			}
 		}
 		productData.add(message);
-		if(productData.size() >= dataPersistSize) {
-			persister.saveData(productData);
-		}
 	}
 
 	public Set<String> getVisited() {
@@ -149,6 +143,10 @@ public class Context extends ContextBase {
 
 	public List<String> getVisitedClone() {
 		return new CopyOnWriteArrayList<>(getVisited());
+	}
+	
+	public ProductStoreService getStoreService() {
+		return storeService;
 	}
 
 }

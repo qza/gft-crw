@@ -28,9 +28,13 @@ public class Reporter implements Runnable {
 
 	@Override
 	public void run() {
-		context.end();
-		String report = makeReport();
-		log.info(new Date() + "\n" + report);
+		try {
+			context.end();
+			String report = makeReport();
+			log.info(new Date() + "\n" + report);
+		} catch(Exception ex) {
+			log.error("Error creating report", ex);
+		}
 	}
 
 	public void writeReport() {
@@ -47,7 +51,6 @@ public class Reporter implements Runnable {
 	}
 
 	private String makeReport() {
-		try {
 			String template = new Builder(new Template()).build();
 			long duration = context.getDurationInNanos();
 			String durationStr = StatsUtils.formatDuration(duration);
@@ -69,10 +72,6 @@ public class Reporter implements Runnable {
 					queueSize, visitedSize, productsSize, visitedInSecond,
 					freeMemory);
 			return report;
-		} catch (Exception ex) {
-			log.error("Error creating report", ex);
-			throw new RuntimeException(ex);
-		}
 	}
 
 }

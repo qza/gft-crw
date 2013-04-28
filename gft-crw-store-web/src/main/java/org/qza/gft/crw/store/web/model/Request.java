@@ -39,17 +39,21 @@ public class Request {
 	}
 
 	public void setCategory(String category) {
-		if (category != null) {
+		if (category != null ) {
 			criteria.put("category", category);
 		}
 	}
 
-	public void setPageNumber(int pageNumber) {
-		this.pageNumber = pageNumber;
+	public void setPageNumber(String pageNumber) {
+		if (pageNumber != null && !pageNumber.equals("")) {
+			this.pageNumber = Integer.valueOf(pageNumber);
+		}
 	}
 
 	public void setSelected(String[] selected) {
-		this.selected = selected;
+		if (selected != null && selected.length > 0) {
+			this.selected = selected;
+		}
 	}
 
 	public boolean isVisited() {
@@ -60,8 +64,24 @@ public class Request {
 		return false;
 	}
 
-	public void setVisited(boolean visited) {
-		criteria.put("visited", visited);
+	public void setVisited(String visited) {
+		if (visited != null && !visited.equals("")) {
+			criteria.put("visited", Boolean.valueOf(visited));
+		}
+	}
+
+	public boolean isForGift() {
+		Object val = criteria.get("for_gift");
+		if (val != null) {
+			return Boolean.valueOf(String.valueOf(val));
+		}
+		return false;
+	}
+
+	public void setForGift(String forGift) {
+		if (forGift != null && !forGift.equals("")) {
+			criteria.put("for_gift", Boolean.valueOf(forGift));
+		}
 	}
 
 	public Page getPage() {

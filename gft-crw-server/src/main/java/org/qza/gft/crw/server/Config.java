@@ -36,7 +36,7 @@ public class Config {
 
 	@Autowired
 	private Environment env;
-	
+
 	@Autowired
 	private ProductStoreService store;
 
@@ -122,11 +122,11 @@ public class Config {
 		Set<Message> products = new HashSet<>();
 		return products;
 	}
-	
+
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public DbPersister dbPersister() {
-		DbPersister persister = new DbPersister(store);
+		DbPersister persister = new DbPersister(context());
 		return persister;
 	}
 
@@ -134,7 +134,7 @@ public class Config {
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public Context context() {
 		Context context = new Context(props(), visited(), queue(), executor(),
-				scheduler(), products(), dbPersister());
+				scheduler(), products(), store);
 		return context;
 	}
 
