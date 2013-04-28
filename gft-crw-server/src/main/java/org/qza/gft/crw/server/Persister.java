@@ -30,7 +30,7 @@ public class Persister {
 
 	public void persist() {
 		log.info("Persisting product data");
-		List<Message> messages = context.getProductDataClone();
+		List<Message> messages = context.getProductDataCloneAndClear();
 		context.getProductData().clear();
 		FileUtils.writeMessagesGzip(dataFileProducts, messages);
 		messages.clear();

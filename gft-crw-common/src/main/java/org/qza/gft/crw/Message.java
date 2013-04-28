@@ -87,4 +87,24 @@ public class Message {
 		this.image = image;
 	}
 
+	@Override
+	public int hashCode() {
+		if (this.url != null) {
+			return this.url.hashCode();
+		}
+		return super.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object arg0) {
+		if (arg0 != null && arg0 instanceof Message) {
+			if (((Message) arg0).url.equals(this.url)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return super.equals(arg0);
+	}
+
 }

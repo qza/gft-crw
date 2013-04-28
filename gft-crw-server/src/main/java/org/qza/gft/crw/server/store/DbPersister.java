@@ -27,7 +27,7 @@ public class DbPersister implements Runnable {
 	@Override
 	public void run() {
 		synchronized (DbPersister.class) {
-			saveData(context.getProductDataClone());
+			saveData(context.getProductDataCloneAndClear());
 		}
 	}
 

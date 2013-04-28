@@ -133,8 +133,10 @@ public class Context extends ContextBase {
 		getProductData().add(data);
 	}
 
-	public List<Message> getProductDataClone() {
-		return new CopyOnWriteArrayList<>(getProductData());
+	public List<Message> getProductDataCloneAndClear() {
+		List<Message> data = new CopyOnWriteArrayList<>(getProductData());
+		getProductData().clear();
+		return data;
 	}
 
 	public List<String> getQueueClone() {
