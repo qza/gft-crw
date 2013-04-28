@@ -13,8 +13,13 @@ function ProductsView(props) {
 	var page = elem(props.page);
 
 	var stats = elem(props.stats);
+	
+	var content = elem(props.content);
+	
+	var logo = elem(props.logo);
 
 	this.init = function() {
+		initializeView();
 		showProgress();
 		$.get(props.url, function(response) {
 			form.show();
@@ -26,6 +31,14 @@ function ProductsView(props) {
 			alert("Error getting data");
 		});
 	};
+	
+	function initializeView(){
+		logo.fadeIn(2000, function() {
+			logo.fadeOut(2000, function(){
+				content.fadeIn(500);
+			});
+		});
+	}
 
 	function bindActions() {
 		bindForm();

@@ -29,7 +29,11 @@
 
 <body>
 
-	<div id="content_div">
+	<div id="logo_div" style="display:none;">
+		<img alt="logo" src="resources/css/logo.png">
+	</div>
+
+	<div id="content_div" style="display:none;">
 
 		<div id="head_div">
 			<div>
@@ -54,10 +58,12 @@
 			new ProductsView({
 				url : "products",
 				form : "product_form",
+				content: "content_div",
 				table : "products_table",
 				progress : "progress_bar",
 				page : "page_number",
-				stats : "stats"
+				stats : "stats",
+				logo: "logo_div"
 			}).init();
 		});
 	</script>
