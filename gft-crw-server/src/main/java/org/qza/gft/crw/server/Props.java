@@ -18,8 +18,6 @@ public class Props {
 
 	private Boolean logCompleted;
 
-	private Integer serverTimeout;
-
 	private Integer serverDuration;
 
 	private String serverHost;
@@ -76,14 +74,6 @@ public class Props {
 
 	public void setLogCompleted(String logCompleted) {
 		this.logCompleted = Boolean.valueOf(logCompleted);
-	}
-
-	public Integer getServerTimeout() {
-		return serverTimeout;
-	}
-
-	public void setServerTimeout(String serverTimeout) {
-		this.serverTimeout = Integer.valueOf(serverTimeout);
 	}
 
 	public Integer getServerDuration() {

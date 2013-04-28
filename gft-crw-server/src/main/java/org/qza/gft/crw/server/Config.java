@@ -52,7 +52,6 @@ public class Config {
 		props.setVisitedMaxsize(getProperty("crawler.visited.maxsize"));
 		props.setLogTime(getProperty("crawler.log.time"));
 		props.setLogCompleted(getProperty("crawler.log.completed"));
-		props.setServerTimeout(getProperty("crawler.server.timeout"));
 		props.setServerDuration(getProperty("crawler.server.duration"));
 		props.setServerHost(getProperty("crawler.server.host"));
 		props.setServerPorts(getProperty("crawler.server.ports"));

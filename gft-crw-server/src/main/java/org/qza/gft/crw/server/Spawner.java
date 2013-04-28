@@ -67,7 +67,7 @@ public class Spawner {
 
 	private void initializeDbPersister() {
 		DbPersister dbPersister = new DbPersister(context);
-		scheduler().scheduleWithFixedDelay(dbPersister, 0,
+		scheduler().scheduleWithFixedDelay(dbPersister, 5,
 				context.getProps().getDataPersistInterval(), TimeUnit.SECONDS);
 		log.info("Db Persister scheduled");
 	}
