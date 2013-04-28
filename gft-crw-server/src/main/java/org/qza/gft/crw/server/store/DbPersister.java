@@ -23,24 +23,31 @@ public class DbPersister implements Runnable {
 
 	final private Logger log;
 
+	final private Integer memoryMin;
+
+	final private Integer mb = 1024 * 1024;
+
 	public DbPersister(final Context context) {
 		this.context = context;
 		this.service = context.getStoreService();
 		this.converter = new MessageConverter();
+		this.memoryMin = context.getProps().getDataMemoryMin();
 		this.log = LoggerFactory.getLogger(DbPersister.class);
 	}
 
 	@Override
 	public void run() {
-		synchronized(this){
-			try {
+		try {
+			synchronized (this) {
 				saveData(context.getProductDataClone());
 				context.getProductData().clear();
-			} catch (ConcurrentModificationException cme) {
-				log.warn("Concurrent access. Will try next time.");
-			} catch (Exception ex) {
-				log.error("Problem saving data", ex);
-			} 
+			}
+		} catch (ConcurrentModificationException cme) {
+			log.warn("Concurrent access. Will try next time.");
+		} catch (Exception ex) {
+			log.error("Problem saving data", ex);
+		} finally {
+			checkMemory();
 		}
 	}
 
@@ -56,11 +63,21 @@ public class DbPersister implements Runnable {
 			while (messIt.hasNext()) {
 				data.add(new String(converter.write(messIt.next())));
 			}
-		} catch(ConcurrentModificationException cme) {
+		} catch (ConcurrentModificationException cme) {
 			data.clear();
 			throw new ConcurrentModificationException(cme);
-		} 
+		}
 		return data;
+	}
+
+	private void checkMemory() {
+		long free = Runtime.getRuntime().freeMemory() / mb;
+		if (free < memoryMin / 2) {
+			log.warn("\n Running out of memory!!!\n");
+		}
+		if (free < memoryMin) {
+			System.gc();
+		}
 	}
 
 }

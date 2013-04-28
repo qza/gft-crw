@@ -26,8 +26,6 @@ public class Props {
 
 	private Integer tpoolMaxsize;
 
-	private Integer clientTimeout;
-
 	private ServerAddresses servers;
 
 	private String parserCssName;
