@@ -4,11 +4,16 @@ function Progress(holder) {
 	var state = 0;
 
 	this.init = function(count) {
-		step = 100 / count;
+		state = 0;
 		scrollTo(bar().offset().top);
 		create();
 	};
-
+	
+	this.setCount = function(count) {
+		step = 100 / count;
+		bar().css("background-color", "#e0e0e0");
+	};
+	
 	this.progress = function() {
 		state += step;
 		var newWidth = state * bar().width() / 100;
@@ -16,17 +21,14 @@ function Progress(holder) {
 			width : newWidth
 		}, 25);
 	};
-
-	this.hide = function() {
-		bar().hide();
-	};
-
-	this.show = function() {
-		bar().show();
+	
+	this.getBar = function(){
+		return bar();
 	};
 
 	this.done = function(callback) {
 		bar_div().promise().done(function() {
+			bar().css("background-color", "white");
 			callback();
 		});
 	};

@@ -24,9 +24,9 @@ function Navigator(table_id, row_count) {
 		return this.getRows().eq(row);
 	};
 
-	this.scrollToRow = function() {
+	this.scrollToRow = function(top_pad) {
 		var top = this.getRow().offset().top;
-		top = top > 70 ? (top - 70) : top;
+		top = top > top_pad ? (top - top_pad) : top;
 		$("body").animate({
 			scrollTop : top
 		}, 200);

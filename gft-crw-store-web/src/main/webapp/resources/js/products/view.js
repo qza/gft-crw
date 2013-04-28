@@ -3,18 +3,21 @@ function ProductsView(props) {
 	var ctr = new ProductsController(props);
 
 	var nav = new Navigator(props.table, 20);
+	
+	var progress = new Progress(props.progress);
 
 	var form = elem(props.form);
 
 	var table = elem(props.table);
 
 	var page = elem(props.page);
-	
+
 	var stats = elem(props.stats);
 
 	this.init = function() {
-		form.hide();
+		showProgress();
 		$.get(props.url, function(response) {
+			form.show();
 			processResponse(response);
 		}).done(function() {
 			bindActions();
@@ -61,7 +64,7 @@ function ProductsView(props) {
 			if (code == 37 || code == 39) {
 				toggle4Gift();
 			}
-			nav.scrollToRow();
+			nav.scrollToRow(70);
 		});
 	}
 
@@ -85,6 +88,7 @@ function ProductsView(props) {
 	}
 
 	function doSubmit() {
+		showProgress();
 		var params = form.serialize();
 		ctr.submit(params, function(response) {
 			processResponse(response);
@@ -94,21 +98,20 @@ function ProductsView(props) {
 
 	function processResponse(response) {
 		if (response) {
-			fillTable(response, function(){
+			fillTable(response, function() {
 				nav.reset();
 				toggleSelected();
 				bindCategories();
 				fillStats(response);
+				hideProgress();
 			});
 		}
 	}
 
 	function fillTable(response, callback) {
-		var progress = new Progress(props.progress);
-		showHide(progress, form);
 		table.find('tbody').remove();
 		var products = response.products;
-		progress.init(products.length);
+		progress.setCount(products.length);
 		for ( var i = 0; i < products.length; i++) {
 			fillRow(products[i]);
 			progress.progress();
@@ -116,7 +119,6 @@ function ProductsView(props) {
 		progress.done(function() {
 			table.data('model', products);
 			page.val(response.page.number);
-			showHide(form, progress);
 			table.promise().done(function() {
 				callback();
 			});
@@ -153,8 +155,8 @@ function ProductsView(props) {
 		var href = 'products?category=' + encodeURIComponent(name);
 		return '<a class="catlink" href="' + href + '">' + name + '</a>';
 	}
-	
-	function fillStats(response){
+
+	function fillStats(response) {
 		stats.html("");
 		var content = "";
 		var rstats = response.stats;
@@ -163,13 +165,21 @@ function ProductsView(props) {
 		content += "<p> For gift count: <b>" + rstats.forGiftCount + "</b></p>";
 		stats.html(content);
 	}
-
-	function showHide(elem1, elem2) {
-		elem2.hide();
-		elem1.show();
+	
+	function showProgress(){
+		progress.init();
+		table.fadeOut(50, function() {
+			progress.getBar().fadeIn(500);
+		});
 	}
 	
-	function elem(id){
+	function hideProgress(){
+		progress.getBar().fadeOut(100, function() {
+			table.fadeIn(300);
+		});
+	}
+
+	function elem(id) {
 		return $("#" + id);
 	}
 
