@@ -37,7 +37,7 @@ public class DbPersister implements Runnable {
 			try {
 				saveData(context.getProductDataClone());
 				context.getProductData().clear();
-				log.info("Data persisted @ " + new Date());
+//				log.info("Data persisted @ " + new Date());
 			} catch (ConcurrentModificationException cme) {
 				log.info("Concurrent access. Will try next time.");
 			} catch (Exception ex) {

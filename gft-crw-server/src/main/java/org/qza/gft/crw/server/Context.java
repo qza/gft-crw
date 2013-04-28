@@ -8,8 +8,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import org.qza.gft.crw.ContextBase;
 import org.qza.gft.crw.Message;
@@ -20,8 +18,6 @@ import org.qza.gft.crw.store.service.ProductStoreService;
  * @author gft
  */
 public class Context extends ContextBase {
-
-	final private Lock lock;
 
 	final private Props props;
 
@@ -48,13 +44,11 @@ public class Context extends ContextBase {
 		this.scheduler = scheduler;
 		this.productData = products;
 		this.storeService = storeService;
-		this.lock = new ReentrantLock();
 	}
 
 	public void addMessage(Message message) {
 		productData.add(message);
-		lock.lock();
-		try {
+		synchronized (this) {
 			for (Iterator<String> iterator = message.getRelated().iterator(); iterator
 					.hasNext();) {
 				String link = iterator.next();
@@ -62,8 +56,6 @@ public class Context extends ContextBase {
 					queue.add(link);
 				}
 			}
-		} finally {
-			lock.unlock();
 		}
 	}
 
