@@ -35,7 +35,7 @@ public class Spawner {
 		this.context = context;
 		this.executor = executor;
 		this.clients = new ArrayList<>();
-		this.duration = context.getProps().getClientDuration();
+		this.duration = context.getProps().getSpawnTime();
 		this.perServer = context.getProps().getSpawnPerserver();
 	}
 

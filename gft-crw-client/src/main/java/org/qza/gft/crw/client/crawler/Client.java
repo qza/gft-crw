@@ -3,6 +3,7 @@ package org.qza.gft.crw.client.crawler;
 import java.nio.channels.ReadPendingException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.MessageConverter;
@@ -24,6 +25,8 @@ public class Client implements Runnable {
 	final private Connection connection;
 
 	final private MessageConverter converter;
+	
+	final private AtomicInteger badLinks;
 
 	public Client(String name, final Context context,
 			final ServerAddress address, final Crawler crawler) {
@@ -31,6 +34,7 @@ public class Client implements Runnable {
 		this.connection = new Connection(context, address);
 		this.log = LoggerFactory.getLogger(name);
 		this.converter = new MessageConverter();
+		this.badLinks= new AtomicInteger();
 	}
 
 	@Override
@@ -72,8 +76,12 @@ public class Client implements Runnable {
 				connection.writeMessage(messageData);
 			}
 		} else {
-			log.warn("Bad link : " + link);
-			throw new InterruptedException();
+			int blcount = badLinks.incrementAndGet();
+			log.warn(String.format("Bad link # %s :::  %s", blcount , link));
+			if(blcount > 3) {
+				log.error("Too many bad links, shutting down.");
+				throw new InterruptedException();
+			}
 		}
 	}
 

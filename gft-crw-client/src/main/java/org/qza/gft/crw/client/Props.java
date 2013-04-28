@@ -28,8 +28,6 @@ public class Props {
 
 	private Integer clientTimeout;
 
-	private Integer clientDuration;
-
 	private ServerAddresses servers;
 
 	private String parserCssName;
@@ -122,14 +120,6 @@ public class Props {
 
 	public void setClientTimeout(String clientTimeout) {
 		this.clientTimeout = Integer.valueOf(clientTimeout);
-	}
-
-	public Integer getClientDuration() {
-		return clientDuration;
-	}
-
-	public void setClientDuration(String clientDuration) {
-		this.clientDuration = Integer.valueOf(clientDuration);
 	}
 
 	public String getParserCssName() {
