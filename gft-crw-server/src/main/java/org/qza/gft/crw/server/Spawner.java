@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.qza.gft.crw.ServerAddress;
 import org.qza.gft.crw.server.spawn.Server;
+import org.qza.gft.crw.server.store.DbPersister;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +42,7 @@ public class Spawner {
 		initializeState();
 		initializeServers();
 		initializeReporter();
+		initializeDbPersister();
 		work(duration, TimeUnit.MINUTES);
 		terminateServers();
 		terminateScheduler();
@@ -63,6 +65,12 @@ public class Spawner {
 		log.info(String.format("%d servers initialized", serverMap.size()));
 	}
 
+	private void initializeDbPersister() {
+		DbPersister dbPersister = new DbPersister(context);
+		scheduler().scheduleWithFixedDelay(dbPersister, 0, 1, TimeUnit.MINUTES);
+		log.info("Db Persister scheduled");
+	}
+	
 	private void initializeReporter() {
 		int interval = context.getProps().getReportLogInterval();
 		if (interval > 0) {
@@ -92,7 +100,7 @@ public class Spawner {
 			while (servers.hasNext()) {
 				servers.next().shutdown();
 			}
-			executor().shutdown();
+			executor().shutdownNow();
 			executor().awaitTermination(5, TimeUnit.SECONDS);
 		} catch (InterruptedException e1) {
 			log.error("Server termination interupted");
@@ -103,7 +111,7 @@ public class Spawner {
 
 	private void terminateScheduler() {
 		try {
-			scheduler().shutdown();
+			scheduler().shutdownNow();
 			scheduler().awaitTermination(1, TimeUnit.SECONDS);
 		} catch (InterruptedException e1) {
 			log.error("Scheduler termination interupted");
