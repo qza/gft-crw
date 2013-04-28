@@ -41,8 +41,8 @@ public class ProductController {
 	public @ResponseBody
 	Response processPost(HttpServletRequest sRequest) {
 		Request req = getRequest(sRequest);
-		updateSelected(req.getSelected());
-		updateVisited(req.getPage().previous(), req.getCriteria());
+		updateSelected(req);
+		updateVisited(req);
 		return getResponse(req);
 	}
 
@@ -50,13 +50,19 @@ public class ProductController {
 		return Builder.makeRequest(req);
 	}
 
-	private void updateSelected(String[] selected) {
+	private void updateSelected(Request req) {
+		Page page = req.getPage().previous();
+		String[] selected = req.getSelected();
+		DBObject criteria = req.getCriteria();
 		if (selected != null && selected.length > 0) {
+			service.updateAll(page, "for_gift", Boolean.FALSE, criteria);
 			service.updateAll(selected, "for_gift", Boolean.TRUE);
 		}
 	}
 
-	private void updateVisited(Page page, DBObject criteria) {
+	private void updateVisited(Request req){
+		Page page = req.getPage().previous();
+		DBObject criteria = req.getCriteria();
 		service.updateAll(page, "visited", Boolean.TRUE, criteria);
 	}
 
