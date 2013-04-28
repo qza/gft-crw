@@ -81,6 +81,10 @@ public class Context extends ContextBase {
 	public int queueSize() {
 		return getQueue().size();
 	}
+	
+	public int getProductsSize() {
+		return getProductData().size();
+	}
 
 	public boolean isMaxSize() {
 		return getProps().getVisitedMaxsize() >= visitedSize();
