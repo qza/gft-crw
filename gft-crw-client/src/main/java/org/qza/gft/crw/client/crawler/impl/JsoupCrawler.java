@@ -72,6 +72,8 @@ public class JsoupCrawler implements Crawler {
 			log.error(String.format("Timeout for link %s", link));
 		} catch (org.jsoup.HttpStatusException notFound) {
 			log.error(String.format("Link %s not found", link));
+		} catch(java.io.EOFException eof) {
+			log.error(String.format("Link %s bad format", link));
 		} catch (Exception e) {
 			log.error(String.format("Problem with link %s", link), e);
 			throw new RuntimeException(e);

@@ -5,7 +5,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.MessageConverter;
@@ -27,15 +26,12 @@ public class ServerWorker implements Runnable {
 
 	final private AsynchronousSocketChannel socket;
 
-	final private AtomicInteger errorCount;
-
 	public ServerWorker(final Context context,
 			final List<ServerWorker> workers,
 			final AsynchronousSocketChannel socket) {
 		this.context = context;
 		this.socket = socket;
 		this.converter = new MessageConverter();
-		this.errorCount = new AtomicInteger();
 		this.log = LoggerFactory.getLogger(ServerWorker.class);
 	}
 
@@ -82,11 +78,6 @@ public class ServerWorker implements Runnable {
 		Message message = converter.read(data);
 		if (message != null) {
 			context.addMessage(message);
-		} else {
-			log.error("BAD MESSAGE");
-			if (errorCount.incrementAndGet() > 1) {
-				throw new RuntimeException("Too many bad links");
-			}
 		}
 	}
 

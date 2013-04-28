@@ -10,6 +10,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 public class MessageConverter {
 
 	private final ObjectMapper mapper;
+	
 
 	public MessageConverter() {
 		mapper = new ObjectMapper();
@@ -19,32 +20,24 @@ public class MessageConverter {
 		try {
 			return mapper.writeValueAsString(message).getBytes();
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return null;
 	}
 
 	public Message read(byte[] value) {
 		try {
 			return mapper.readValue(value, Message.class);
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return null;
 	}
 
 	public static void main(String[] args) {
