@@ -64,6 +64,7 @@ public class Config {
 		props.setDataPersistInterval(getProperty("crawler.data.persist.interval"));
 		props.setReportLogInterval(getProperty("crawler.report.log.interval"));
 		props.setServerMaxclients(getProperty("crawler.server.maxclients"));
+		props.setDataMemoryMin(getProperty("crawler.data.memory.min"));
 		return props;
 	}
 

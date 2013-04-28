@@ -22,12 +22,17 @@ public class DbPersister implements Runnable {
 
 	final private MessageConverter converter;
 
+	final private Integer memoryMin;
+
 	final private Logger log;
+
+	final private Integer mb = 1024 * 1024;
 
 	public DbPersister(final Context context) {
 		this.context = context;
 		this.service = context.getStoreService();
 		this.converter = new MessageConverter();
+		this.memoryMin = context.getProps().getDataMemoryMin();
 		this.log = LoggerFactory.getLogger(DbPersister.class);
 	}
 
@@ -38,18 +43,23 @@ public class DbPersister implements Runnable {
 				saveData(context.getProductDataClone());
 				context.getProductData().clear();
 				log.info("Data persisted @ " + new Date());
-			} catch (ConcurrentModificationException cme){
+			} catch (ConcurrentModificationException cme) {
 				log.info("Concurrent access. Will try next time.");
 			} catch (Exception ex) {
 				log.error("Problem saving data", ex);
+			} finally {
+				long free = Runtime.getRuntime().freeMemory() / mb;
+				if (free < memoryMin) {
+					System.gc();
+				}
 			}
 		}
+
 	}
 
 	private void saveData(Collection<Message> data) {
 		service.insertAll(makeData(data));
 		data.clear();
-		System.gc();
 	}
 
 	private Collection<String> makeData(Collection<Message> messages) {

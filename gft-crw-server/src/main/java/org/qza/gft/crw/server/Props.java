@@ -43,6 +43,8 @@ public class Props {
 	private String dataFileProducts;
 	
 	private Integer dataPersistInterval;
+	
+	private Integer dataMemoryMin;
 
 	public Boolean getLogTime() {
 		return logTime;
@@ -177,6 +179,14 @@ public class Props {
 	
 	public Integer getDataPersistInterval() {
 		return dataPersistInterval;
+	}
+	
+	public Integer getDataMemoryMin() {
+		return dataMemoryMin;
+	}
+	
+	public void setDataMemoryMin(String dataMemoryMin) {
+		this.dataMemoryMin = Integer.valueOf(dataMemoryMin);
 	}
 
 }
