@@ -24,6 +24,7 @@ public class Product extends AbstractPersistable<Long> {
 	private String url;
 	private String image;
 	private String tags;
+	@Column(length=2048)
 	private String relatedUrls;
 	private boolean for_gift;
 	private boolean visited;

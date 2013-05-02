@@ -48,15 +48,14 @@ public class Message2Product {
 				try {
 					product.setPrice(Double.valueOf(price.substring(1).trim()));
 				} catch (Exception ex) {
-					log.warn("Cannot convert price");
+					log.warn("Cannot convert price: " + price , ex);
 				}
 			}
 			if (notBlank(rating)) {
 				try {
-					product.setRating(Double.valueOf(price.substring(0,
-							price.indexOf("out") - 1).trim()));
+					product.setRating(Double.valueOf(price.substring(0, 3).trim()));
 				} catch (Exception ex) {
-					log.warn("Cannot convert rating");
+					log.warn("Cannot convert rating " + rating, ex);
 				}
 			}
 			if (notBlank(related)) {
