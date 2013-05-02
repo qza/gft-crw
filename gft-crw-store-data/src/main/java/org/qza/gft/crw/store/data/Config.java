@@ -67,6 +67,7 @@ public class Config {
 		factory.setDataSource(datasource());
 		Properties jpaProps = new Properties();
 		jpaProps.put("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
+		jpaProps.put("hibernate.hbm2ddl.auto","create-drop");
 		factory.setJpaProperties(jpaProps);
 		return factory;
 	}
