@@ -42,7 +42,7 @@ public class Config {
 	public DataSource datasource() {
 		DataSource dataSource = new SingleConnectionDataSource(
 				env.getProperty("jdbc.url"), env.getProperty("jdbc.username"),
-				env.getProperty("jdbc.password"), false);
+				env.getProperty("jdbc.password"), true);
 		return dataSource;
 	}
 
