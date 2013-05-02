@@ -45,8 +45,6 @@ function Navigator(table_id, row_count) {
 		row = hasPrevious() ? (row - 1) : 0;
 	};
 
-	// Private members
-
 	function scrollToTop() {
 		$("body").animate({
 			scrollTop : 1

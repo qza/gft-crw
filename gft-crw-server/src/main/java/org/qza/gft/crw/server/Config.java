@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.server.store.DbPersister;
-import org.qza.gft.crw.store.service.ProductStoreService;
+import org.qza.gft.crw.store.data.service.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -31,14 +31,14 @@ import org.springframework.core.env.Environment;
 @Configuration
 @ComponentScan(basePackages = { "org.qza.gft.crw" })
 @PropertySource("classpath:gft-crw-server.properties")
-@Import(org.qza.gft.crw.store.Config.class)
+@Import(org.qza.gft.crw.store.data.Config.class)
 public class Config {
 
 	@Autowired
 	private Environment env;
 
 	@Autowired
-	private ProductStoreService store;
+	private ProductService store;
 
 	private String getProperty(String key) {
 		return env.getProperty(key);

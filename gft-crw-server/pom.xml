@@ -11,7 +11,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.qza</groupId>
-			<artifactId>gft-crw-store</artifactId>
+			<artifactId>gft-crw-store-data</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
@@ -24,7 +24,7 @@
 				<configuration>
 					<executable>java</executable>
 					<arguments>
-            			<argument>-Xms512m</argument>
+						<argument>-Xms512m</argument>
 						<argument>-Xmx640m</argument>
 						<argument>-classpath</argument>
 						<classpath />

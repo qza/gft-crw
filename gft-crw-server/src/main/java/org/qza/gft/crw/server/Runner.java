@@ -12,7 +12,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Runner {
 
 	final private Spawner spawner;
-	
+
 	final private ApplicationContext ac;
 
 	final private Logger log = LoggerFactory.getLogger(Runner.class);
@@ -30,6 +30,7 @@ public class Runner {
 	 */
 	public void start() {
 		try {
+			log.info("Starting server");
 			spawner.spawn();
 		} catch (Exception e) {
 			log.error("Error: ", e);

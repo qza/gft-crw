@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import org.qza.gft.crw.ContextBase;
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.ServerAddress;
-import org.qza.gft.crw.store.service.ProductStoreService;
+import org.qza.gft.crw.store.data.service.ProductService;
 
 /**
  * @author gft
@@ -31,12 +31,12 @@ public class Context extends ContextBase {
 
 	final private ScheduledExecutorService scheduler;
 
-	final private ProductStoreService storeService;
+	final private ProductService storeService;
 
 	public Context(final Props props, final Set<String> visited,
 			final BlockingQueue<String> queue, final ExecutorService executor,
 			final ScheduledExecutorService scheduler,
-			final Set<Message> products, final ProductStoreService storeService) {
+			final Set<Message> products, final ProductService storeService) {
 		this.props = props;
 		this.visited = visited;
 		this.queue = queue;
@@ -148,7 +148,7 @@ public class Context extends ContextBase {
 		return new CopyOnWriteArrayList<>(getVisited());
 	}
 
-	public ProductStoreService getStoreService() {
+	public ProductService getStoreService() {
 		return storeService;
 	}
 

@@ -1,12 +1,15 @@
 *.class
 
-# Package Files #
+#Package Files
 *.jar
 *.war
 *.ear
 
-# Eclipse #
+#Eclipse
 .settings
 .project
 .classpath
 /**/target
+
+#Project
+/**/*.out

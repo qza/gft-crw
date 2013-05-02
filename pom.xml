@@ -13,6 +13,7 @@
 		<module>gft-crw-server</module>
 		<module>gft-crw-client</module>
 		<module>gft-crw-store-web</module>
+		<module>gft-crw-store-data</module>
 	</modules>
 	<properties>
 		<java-version>1.7</java-version>
@@ -21,12 +22,24 @@
 		<log4j.version>1.2.17</log4j.version>
 		<org.slf4j.version>1.6.1</org.slf4j.version>
 		<junit.version>4.8.2</junit.version>
+		<netty.version>4.0.0.CR1</netty.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>${netty.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>checkstyle</artifactId>
+					<groupId>com.puppycrawl.tools</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
