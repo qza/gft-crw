@@ -53,7 +53,8 @@ public class Message2Product {
 			}
 			if (notBlank(rating)) {
 				try {
-					product.setRating(Double.valueOf(price.substring(0, 3).trim()));
+					product.setRating(Double.valueOf(rating.substring(0,
+							rating.indexOf("out") - 1).trim()));
 				} catch (Exception ex) {
 					log.warn("Cannot convert rating " + rating, ex);
 				}
