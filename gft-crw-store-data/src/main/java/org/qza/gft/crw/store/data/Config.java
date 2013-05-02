@@ -1,5 +1,7 @@
 package org.qza.gft.crw.store.data;
 
+import java.util.Properties;
+
 import org.springframework.core.env.Environment;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -58,6 +60,9 @@ public class Config {
 		factory.setJpaVendorAdapter(vendorAdapter());
 		factory.setPackagesToScan(getClass().getPackage().getName());
 		factory.setDataSource(datasource());
+		Properties jpaProps = new Properties();
+		jpaProps.put("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
+		factory.setJpaProperties(jpaProps);
 		return factory;
 	}
 
