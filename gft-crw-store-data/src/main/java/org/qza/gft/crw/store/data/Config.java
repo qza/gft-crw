@@ -40,6 +40,11 @@ public class Config {
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public DataSource datasource() {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		DataSource dataSource = new SingleConnectionDataSource(
 				env.getProperty("jdbc.url"), env.getProperty("jdbc.username"),
 				env.getProperty("jdbc.password"), true);
