@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import org.qza.gft.crw.ContextBase;
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.ServerAddress;
+import org.qza.gft.crw.ValidUtils;
 import org.qza.gft.crw.store.data.service.ProductService;
 
 /**
@@ -22,7 +23,7 @@ public class Context extends ContextBase {
 	final private Props props;
 
 	final private Set<String> visited;
-	
+
 	final private Set<String> collected;
 
 	final private Set<Message> productData;
@@ -38,7 +39,8 @@ public class Context extends ContextBase {
 	public Context(final Props props, final Set<String> visited,
 			final BlockingQueue<String> queue, final ExecutorService executor,
 			final ScheduledExecutorService scheduler,
-			final Set<Message> products, final Set<String> collected, final ProductService storeService) {
+			final Set<Message> products, final Set<String> collected,
+			final ProductService storeService) {
 		this.props = props;
 		this.visited = visited;
 		this.collected = collected;
@@ -49,25 +51,32 @@ public class Context extends ContextBase {
 		this.storeService = storeService;
 	}
 
-	public void addMessage(Message message) {
-		synchronized (this) {
-			if(collected.add(message.getUrl())){
+	public synchronized void addMessage(Message message) {
+		if (shouldAddMessage(message)) {
+			if (collected.add(message.getUrl())) {
 				productData.add(message);
 			}
-			for (Iterator<String> iterator = message.getRelated().iterator(); iterator
-					.hasNext();) {
-				String link = iterator.next();
-				if (visited.add(link)) {
-					queue.add(link);
-				}
+		}
+		for (Iterator<String> iterator = message.getRelated().iterator(); iterator
+				.hasNext();) {
+			String link = iterator.next();
+			if (visited.add(link)) {
+				queue.add(link);
 			}
 		}
+	}
+
+	private boolean shouldAddMessage(Message message) {
+		return message != null
+				&& ValidUtils.notBlank(message.getName(),
+						message.getCategory(), message.getImage(),
+						message.getUrl());
 	}
 
 	public Set<String> getVisited() {
 		return visited;
 	}
-	
+
 	public Set<String> getCollected() {
 		return collected;
 	}
@@ -91,7 +100,7 @@ public class Context extends ContextBase {
 	public int productsSize() {
 		return getProductData().size();
 	}
-	
+
 	public int collectedSize() {
 		return getCollected().size();
 	}

@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.qza.gft.crw.Message;
+import org.qza.gft.crw.ValidUtils;
 import org.qza.gft.crw.store.data.entity.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,30 +41,30 @@ public class Message2Product {
 		String rating = message.getRating();
 		String url = message.getUrl();
 		Set<String> related = message.getRelated();
-		if (notBlank(new String[] { name, category, image, url })) {
+		if (ValidUtils.notBlank(name, category, image, url)) {
 			product.setName(name.trim());
 			product.setCategory(category.trim());
 			product.setImage(image.trim());
 			product.setUrl(url);
-			if (notBlank(price)) {
+			if (ValidUtils.notBlank(price)) {
 				try {
 					product.setPrice(getFirstPrice(price));
 				} catch (Exception ex) {
 					log.warn("Cannot convert price: " + price);
 				}
 			}
-			if (notBlank(rating)) {
+			if (ValidUtils.notBlank(rating)) {
 				try {
 					product.setRating(getRating(rating));
 				} catch (Exception ex) {
 					log.warn("Cannot convert rating " + rating);
 				}
 			}
-			if (notBlank(related)) {
+			if (ValidUtils.notBlank(related)) {
 				String[] strArray = related.toArray(new String[related.size()]);
 				String strString = Arrays.toString(strArray)
 						.replaceAll("\\[", "").replaceAll("\\]", "");
-				if (notBlank(strString)) {
+				if (ValidUtils.notBlank(strString)) {
 					product.setRelatedUrls(strString);
 				}
 			}
@@ -94,22 +95,6 @@ public class Message2Product {
 
 	public static Message convert(Product product) {
 		return null;
-	}
-
-	private static boolean notBlank(Set<String> strings) {
-		return strings != null && strings.size() > 0;
-	}
-
-	private static boolean notBlank(String[] strings) {
-		boolean result = true;
-		for (int i = 0; i < strings.length && result; i++) {
-			result = notBlank(strings[i]);
-		}
-		return result;
-	}
-
-	private static boolean notBlank(String string) {
-		return string != null && string.length() > 0;
 	}
 
 }

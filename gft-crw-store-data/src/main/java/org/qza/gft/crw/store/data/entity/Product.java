@@ -15,18 +15,26 @@ public class Product extends AbstractPersistable<Long> {
 
 	private static final long serialVersionUID = 7014806576369506706L;
 
-	@Column(unique = true)
 	private String name;
 
 	private String category;
+
 	private double price;
+
 	private double rating;
+
+	@Column(unique = true)
 	private String url;
+
 	private String image;
+
 	private String tags;
+
 	@Column(length = 2048)
 	private String relatedUrls;
+
 	private boolean for_gift;
+
 	private boolean visited;
 
 	public Product() {
