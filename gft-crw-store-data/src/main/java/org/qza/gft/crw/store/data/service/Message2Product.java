@@ -1,11 +1,12 @@
 package org.qza.gft.crw.store.data.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.store.data.entity.Product;
@@ -21,7 +22,7 @@ public class Message2Product {
 			.getLogger(Message2Product.class);
 
 	public static Collection<Product> convert(Collection<Message> messages) {
-		List<Product> results = new ArrayList<>();
+		Set<Product> results = new HashSet<>();
 		for (Iterator<Message> iterator = messages.iterator(); iterator
 				.hasNext();) {
 			Message message = iterator.next();
@@ -46,17 +47,16 @@ public class Message2Product {
 			product.setUrl(url);
 			if (notBlank(price)) {
 				try {
-					product.setPrice(Double.valueOf(price.substring(1).trim()));
+					product.setPrice(getFirstPrice(price));
 				} catch (Exception ex) {
-					log.warn("Cannot convert price: " + price , ex);
+					log.warn("Cannot convert price: " + price);
 				}
 			}
 			if (notBlank(rating)) {
 				try {
-					product.setRating(Double.valueOf(rating.substring(0,
-							rating.indexOf("out") - 1).trim()));
+					product.setRating(getRating(rating));
 				} catch (Exception ex) {
-					log.warn("Cannot convert rating " + rating, ex);
+					log.warn("Cannot convert rating " + rating);
 				}
 			}
 			if (notBlank(related)) {
@@ -69,6 +69,27 @@ public class Message2Product {
 			}
 		}
 		return product;
+	}
+
+	private static double getFirstPrice(String price) {
+		price = price.replaceAll(",", "");
+		Pattern pattern = Pattern.compile("\\d+\\.*\\d+");
+		Matcher matcher = pattern.matcher(price);
+		if (matcher.find()) {
+			return Double.valueOf(matcher.group());
+		} else {
+			return 0;
+		}
+	}
+
+	private static double getRating(String rating) {
+		Pattern pattern = Pattern.compile("\\d\\.\\d");
+		Matcher matcher = pattern.matcher(rating);
+		if (matcher.find()) {
+			return Double.valueOf(matcher.group());
+		} else {
+			return 0;
+		}
 	}
 
 	public static Message convert(Product product) {

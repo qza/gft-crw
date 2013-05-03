@@ -13,3 +13,4 @@
 
 #Project
 /**/*.out
+/**/database.properties

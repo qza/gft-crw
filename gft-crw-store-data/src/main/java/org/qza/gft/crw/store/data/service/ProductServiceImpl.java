@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void insertAll(Collection<Message> data) {
 		Collection<Product> products = Message2Product.convert(data);
-		repo.save(products);
+		repo.saveAll(products);
 	}
 
 }

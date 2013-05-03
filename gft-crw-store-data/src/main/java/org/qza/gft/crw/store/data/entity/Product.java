@@ -119,5 +119,25 @@ public class Product extends AbstractPersistable<Long> {
 	public void setVisited(boolean visited) {
 		this.visited = visited;
 	}
+	
+	@Override
+	public int hashCode() {
+		if (this.url != null) {
+			return this.url.hashCode();
+		}
+		return super.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object arg0) {
+		if (arg0 != null && arg0 instanceof Product) {
+			if (((Product) arg0).url.equals(this.url)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return super.equals(arg0);
+	}
 
 }
