@@ -31,13 +31,13 @@
 	</appender>
 
 	<logger name="org.qza.gft.crw">
-		<level value="INFO" />
-		<appender-ref ref="FILE_ROLL" />
+		<level value="ERROR" />
+		<appender-ref ref="CONSOLE" />
 	</logger>
 
 	<root>
-		<level value="ERROR" />
-		<appender-ref ref="CONSOLE" />
+		<level value="INFO" />
+		<appender-ref ref="FILE_ROLL" />
 	</root>
 
 </log4j:configuration>

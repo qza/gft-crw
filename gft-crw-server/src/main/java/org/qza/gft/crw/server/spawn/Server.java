@@ -11,7 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
@@ -80,9 +79,9 @@ public class Server implements Runnable {
 					log.warn("Max clients reached");
 					Thread.sleep(10000);
 				}
-			} catch (InterruptedException | ExecutionException e) {
-				log.warn("Unexpected server termination ", e.getMessage());
-				restartServer();
+			} catch (Throwable th) {
+				log.warn("Unexpected server termination : " + th.getMessage());
+				// restartServer();
 			}
 		}
 	}
@@ -111,7 +110,7 @@ public class Server implements Runnable {
 			tpool.shutdown();
 			tpool.awaitTermination(500, TimeUnit.MILLISECONDS);
 		} catch (Exception e) {
-			log.error("Error:", e.getMessage());
+			log.error("Error: " + e.getMessage());
 		}
 	}
 

@@ -1,6 +1,5 @@
 package org.qza.gft.crw.server.spawn;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.util.List;
@@ -51,20 +50,21 @@ public class ServerWorker implements Runnable {
 				try {
 					writeMessage(socket, message);
 					readMessage(socket);
-				} catch (RuntimeException e) {
+				} catch (Throwable e) {
 					String warning = "Client disconected";
 					try {
 						warning += " ::: " + socket.getRemoteAddress();
-					} catch (IOException e1) {
-						e1.printStackTrace();
+					} catch (Throwable ex) {
+						log.error("Unexpected error : " + ex.getMessage());
 					}
 					log.warn(warning);
 					break;
 				}
 			}
-		} catch (Exception ex) {
-			log.error("Unexpected error", ex);
-		} finally {
+		} catch (Throwable ex) {
+			log.error("Unexpected error : " + ex.getMessage());
+		}
+		finally {
 			shutdown();
 		}
 	}
@@ -117,7 +117,7 @@ public class ServerWorker implements Runnable {
 			socket.close();
 			workers.remove(this);
 		} catch (Exception e) {
-			log.warn("Can't close worker", e);
+			log.warn("Can't close worker ::: " + e.getMessage());
 		}
 	}
 
