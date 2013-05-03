@@ -1,5 +1,6 @@
 package org.qza.gft.crw.server;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -28,9 +29,14 @@ public class Initializer {
 		visited.addAll(visitedBase);
 		visited.addAll(collectedBase);
 		visitedBase.removeAll(collectedBase);
+		Set<String> newQueue = new HashSet<String>(10000);
 		context.getQueue().addAll(visitedBase);
+		context.getQueue().drainTo(newQueue, 10000);
+		context.getQueue().clear();
+		context.getQueue().addAll(newQueue);
 		collectedBase.clear();
 		visitedBase.clear();
+		newQueue.clear();
 		System.gc();
 		log.info("Server state initialized");
 	}
