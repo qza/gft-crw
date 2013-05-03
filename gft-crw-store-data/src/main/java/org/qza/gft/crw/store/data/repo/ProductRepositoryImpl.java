@@ -48,7 +48,7 @@ public class ProductRepositoryImpl implements ProductRepositoryMain {
 	@Override
 	public Set<String> collected() {
 		Set<String> result = new HashSet<>();
-		String query = "select related from products";
+		String query = "select relatedUrls from products";
 		Query q = em.createNativeQuery(query);
 		Iterator<?> results = q.getResultList().iterator();
 		while(results.hasNext()) {
