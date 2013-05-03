@@ -57,7 +57,7 @@ public class WebSocketServer implements Runnable {
 						}
 					});
 			final Channel ch = sb.bind(9999).sync().channel();
-			context.getScheduler().schedule(new Runnable() {
+			context.getScheduler().scheduleWithFixedDelay(new Runnable() {
 				@Override
 				public void run() {
 					if (ch != null && ch.isActive()) {
@@ -69,7 +69,7 @@ public class WebSocketServer implements Runnable {
 								+ ch.isRegistered() + ")");
 					}
 				}
-			}, context.getProps().getReportLogInterval(), TimeUnit.SECONDS);
+			}, 15, context.getProps().getReportLogInterval(), TimeUnit.SECONDS);
 			log.info("Web socket server started at port " + 9999);
 			ch.closeFuture().sync();
 			log.info("Web socket server stoped");
