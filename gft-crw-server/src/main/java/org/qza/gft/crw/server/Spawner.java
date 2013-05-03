@@ -78,7 +78,7 @@ public class Spawner {
 		int interval = context.getProps().getReportLogInterval();
 		if (interval > 0) {
 			Reporter reporter = new Reporter(context);
-			scheduler().scheduleWithFixedDelay(reporter, 0, interval,
+			scheduler().scheduleWithFixedDelay(reporter, 1, interval,
 					TimeUnit.SECONDS);
 			log.info("Reporter scheduled");
 //			try {

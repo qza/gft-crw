@@ -3,11 +3,13 @@
 <!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
 
 <log4j:configuration>
-	<appender name="CONSOLE_APPENDER" class="org.apache.log4j.ConsoleAppender">
+	
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%-4p %c{1} %m%n" />
 		</layout>
 	</appender>
+	
 	<appender name="FILE" class="org.apache.log4j.FileAppender">
 		<param name="file" value="server-log.out" />
 		<param name="immediateFlush" value="true" />
@@ -17,9 +19,25 @@
 			<param name="conversionPattern" value="%m%n" />
 		</layout>
 	</appender>
+
+	<!-- APPENDER: rollingFileSize -->
+	<appender name="FILE_ROLL" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="server-log.out" />
+		<param name="MaxFileSize" value="20MB" />
+		<param name="MaxBackupIndex" value="100" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="conversionPattern" value="%m%n" />
+		</layout>
+	</appender>
+
+	<logger name="org.qza.gft.crw">
+		<level value="INFO" />
+		<appender-ref ref="FILE_ROLL" />
+	</logger>
+
 	<root>
-		<priority value="INFO" />
-		<appender-ref ref="CONSOLE_APPENDER" />
-		<appender-ref ref="FILE" />
+		<level value="ERROR" />
+		<appender-ref ref="CONSOLE" />
 	</root>
+
 </log4j:configuration>

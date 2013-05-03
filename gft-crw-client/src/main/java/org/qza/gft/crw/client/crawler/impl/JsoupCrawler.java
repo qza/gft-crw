@@ -65,6 +65,7 @@ public class JsoupCrawler implements Crawler {
 			}
 			Message m = new Message(name, category, price, rating, link, image);
 			m.getRelated().addAll(related);
+			checkMemory();
 			return m;
 		} catch (java.net.SocketException tex) {
 			log.error(String.format("Socket exception for link %s", link));
@@ -112,6 +113,14 @@ public class JsoupCrawler implements Crawler {
 
 	private boolean checkElems(Elements elems) {
 		return (elems != null && elems.size() > 0);
+	}
+	
+	private void checkMemory(){
+		long free = Runtime.getRuntime().freeMemory() / (1024*1024);
+		if(free < 128) {
+			log.warn("Memory : " + free);
+			System.gc();
+		}
 	}
 
 }
