@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.store.data.entity.Product;
+import org.qza.gft.crw.store.data.repo.model.Stats;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -19,5 +20,9 @@ public interface ProductService {
 	Product findByName(String name);
 
 	Page<Product> findByCategory(String category, Pageable page);
+	
+	Stats stats();
+	
+	long total();
 
 }

@@ -1,12 +1,10 @@
 package org.qza.gft.crw.store.web.model;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.qza.gft.crw.store.entity.Product;
-import org.qza.gft.crw.store.service.model.Page;
-import org.qza.gft.crw.store.service.model.Stats;
+import org.qza.gft.crw.store.data.entity.Product;
+import org.qza.gft.crw.store.data.repo.model.Stats;
+import org.springframework.data.domain.Page;
 
 /**
  * @author gft
@@ -25,11 +23,10 @@ public class Builder {
 		return request;
 	}
 
-	public static Response makeResponse(List<Product> products, Page page,
-			Stats stats) {
+	public static Response makeResponse(Request request,
+			Page<Product> products, Stats stats) {
 		Response response = new Response();
-		response.setProducts(products);
-		response.setPage(page);
+		response.setData(products);
 		response.setStats(stats);
 		return response;
 	}

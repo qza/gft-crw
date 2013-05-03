@@ -1,11 +1,10 @@
 package org.qza.gft.crw.store.web.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.qza.gft.crw.store.entity.Product;
-import org.qza.gft.crw.store.service.model.Page;
-import org.qza.gft.crw.store.service.model.Stats;
+import org.qza.gft.crw.store.data.entity.Product;
+import org.qza.gft.crw.store.data.repo.model.Stats;
+import org.springframework.data.domain.Page;
 
 /**
  * @author gft
@@ -14,44 +13,37 @@ import org.qza.gft.crw.store.service.model.Stats;
  */
 public class Response {
 
-	private Page page;
-	
+	private Page<Product> data;
+
 	private Stats stats;
-	
-	private List<Product> products;
 
 	public Response() {
-		products = new ArrayList<>();
 	}
 
 	public List<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(List<Product> products) {
-		this.products = products;
+		return data.getContent();
 	}
 
 	public void addProduct(Product product) {
-		this.products.add(product);
+		data.getContent().add(product);
 	}
 
-	public Page getPage() {
-		return page;
+	public Page<Product> getData() {
+		return data;
 	}
 
-	public void setPage(Page page) {
-		this.page = page;
+	public void setData(Page<Product> data) {
+		this.data = data;
 	}
 
 	public int getPageNumber() {
-		return getPage().getNumber();
+		return getData().getNumber();
 	}
-	
+
 	public Stats getStats() {
 		return stats;
 	}
-	
+
 	public void setStats(Stats stats) {
 		this.stats = stats;
 	}

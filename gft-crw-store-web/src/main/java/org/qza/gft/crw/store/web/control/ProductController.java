@@ -1,24 +1,20 @@
 package org.qza.gft.crw.store.web.control;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.qza.gft.crw.store.entity.Product;
-import org.qza.gft.crw.store.service.ProductStoreService;
-import org.qza.gft.crw.store.service.model.Page;
-import org.qza.gft.crw.store.service.model.Stats;
+import org.qza.gft.crw.store.data.entity.Product;
+import org.qza.gft.crw.store.data.repo.model.Stats;
+import org.qza.gft.crw.store.data.service.ProductService;
 import org.qza.gft.crw.store.web.model.Builder;
 import org.qza.gft.crw.store.web.model.Request;
 import org.qza.gft.crw.store.web.model.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.mongodb.DBObject;
 
 /**
  * @author gft
@@ -28,7 +24,7 @@ import com.mongodb.DBObject;
 public class ProductController {
 
 	@Autowired
-	private ProductStoreService service;
+	private ProductService service;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody
@@ -51,27 +47,18 @@ public class ProductController {
 	}
 
 	private void updateSelected(Request req) {
-		Page page = req.getPage().previous();
-		String[] selected = req.getSelected();
-		DBObject criteria = req.getCriteria();
-		if (selected != null && selected.length > 0) {
-			service.updateAll(page, "for_gift", Boolean.FALSE, criteria);
-			service.updateAll(selected, "for_gift", Boolean.TRUE);
-		}
+		// TODO
 	}
 
-	private void updateVisited(Request req){
-		Page page = req.getPage().previous();
-		DBObject criteria = req.getCriteria();
-		service.updateAll(page, "visited", Boolean.TRUE, criteria);
+	private void updateVisited(Request req) {
+		// TODO
 	}
 
 	private Response getResponse(Request req) {
-		List<Product> products = service.fetchAll(req.getPage(),
-				req.getCriteria());
-		Page nextPage = req.getPage().next();
+		Page<Product> products = service.findByCategory(req.getCategory(),
+				req.getPage());
 		Stats stats = service.stats();
-		return Builder.makeResponse(products, nextPage, stats);
+		return Builder.makeResponse(req, products, stats);
 	}
 
 }

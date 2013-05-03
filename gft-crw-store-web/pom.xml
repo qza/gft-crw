@@ -53,7 +53,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.qza</groupId>
-			<artifactId>gft-crw-store</artifactId>
+			<artifactId>gft-crw-store-data</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

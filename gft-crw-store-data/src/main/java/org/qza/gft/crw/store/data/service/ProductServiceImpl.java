@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.store.data.entity.Product;
 import org.qza.gft.crw.store.data.repo.ProductRepository;
+import org.qza.gft.crw.store.data.repo.model.Stats;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +57,16 @@ public class ProductServiceImpl implements ProductService {
 				log.warn(ex.getMessage());
 			}
 		}
+	}
+
+	@Override
+	public Stats stats() {
+		return repo.stats();
+	}
+
+	@Override
+	public long total() {
+		return repo.count();
 	}
 
 }

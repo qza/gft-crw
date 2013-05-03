@@ -1,9 +1,8 @@
 package org.qza.gft.crw.store.web.model;
 
-import org.qza.gft.crw.store.service.model.Page;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
+import org.qza.gft.crw.ValidUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author gft
@@ -12,85 +11,88 @@ import com.mongodb.DBObject;
  */
 public class Request {
 
-	private DBObject criteria;
+	// TODO
+	static final int PAGE = 20;
 
+	private String name;
+	private String category;
+	private boolean forGift;
+	private boolean visited;
 	private int pageNumber;
+
+	private Pageable page;
 
 	private String[] selected;
 
 	public Request() {
-		criteria = new BasicDBObject();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getCategory() {
-		Object val = criteria.get("category");
-		if (val != null) {
-			return String.valueOf(val);
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public boolean isVisited() {
+		return visited;
+	}
+
+	public void setVisited(String visited) {
+		if (ValidUtils.notBlank(visited)) {
+			this.visited = Boolean.valueOf(visited);
 		}
-		return null;
+	}
+
+	public boolean isForGift() {
+		return forGift;
+	}
+
+	public void setForGift(String forGift) {
+		if (ValidUtils.notBlank(forGift)) {
+			this.forGift = Boolean.valueOf(forGift);
+		}
 	}
 
 	public int getPageNumber() {
 		return pageNumber;
+	}
+	
+	public Pageable nextPage(){
+		return new PageRequest(getPageNumber()+1, PAGE);
+	}
+
+	public void setPageNumber(String pageNumber) {
+		if (ValidUtils.notBlank(pageNumber)) {
+			this.pageNumber = Integer.valueOf(pageNumber);
+			this.page = new PageRequest(this.pageNumber, PAGE);
+		}
+	}
+
+	public Pageable getPage() {
+		if (pageNumber == 0) {
+			pageNumber = 1;
+			return new PageRequest(pageNumber, PAGE);
+		} else {
+			return this.page;
+		}
 	}
 
 	public String[] getSelected() {
 		return selected;
 	}
 
-	public void setCategory(String category) {
-		if (category != null ) {
-			criteria.put("category", category);
-		}
-	}
-
-	public void setPageNumber(String pageNumber) {
-		if (pageNumber != null && !pageNumber.equals("")) {
-			this.pageNumber = Integer.valueOf(pageNumber);
-		}
-	}
-
 	public void setSelected(String[] selected) {
-		if (selected != null && selected.length > 0) {
-			this.selected = selected;
-		}
-	}
-
-	public boolean isVisited() {
-		Object val = criteria.get("visited");
-		if (val != null) {
-			return Boolean.valueOf(String.valueOf(val));
-		}
-		return false;
-	}
-
-	public void setVisited(String visited) {
-		if (visited != null && !visited.equals("")) {
-			criteria.put("visited", Boolean.valueOf(visited));
-		}
-	}
-
-	public boolean isForGift() {
-		Object val = criteria.get("for_gift");
-		if (val != null) {
-			return Boolean.valueOf(String.valueOf(val));
-		}
-		return false;
-	}
-
-	public void setForGift(String forGift) {
-		if (forGift != null && !forGift.equals("")) {
-			criteria.put("for_gift", Boolean.valueOf(forGift));
-		}
-	}
-
-	public Page getPage() {
-		int num = pageNumber > 0 ? pageNumber : 1;
-		return new Page(num);
-	}
-
-	public DBObject getCriteria() {
-		return criteria;
+		this.selected = selected;
 	}
 
 	public void log() {
