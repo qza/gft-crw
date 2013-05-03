@@ -19,6 +19,7 @@
         }
 
         function onmessage(event) {
+        	console.info("message received");
             appendTextArea(event.data);
         }
         function onclose(event) {
