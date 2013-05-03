@@ -115,6 +115,13 @@ public class Config {
 		Set<String> visited = new HashSet<>(props().getVisitedMaxsize());
 		return visited;
 	}
+	
+	@Bean
+	@Scope(BeanDefinition.SCOPE_SINGLETON)
+	public Set<String> collected() {
+		Set<String> collected = new HashSet<>(props().getVisitedMaxsize());
+		return collected;
+	}
 
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
@@ -134,7 +141,7 @@ public class Config {
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public Context context() {
 		Context context = new Context(props(), visited(), queue(), executor(),
-				scheduler(), products(), store);
+				scheduler(), products(), collected(), store);
 		return context;
 	}
 

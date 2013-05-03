@@ -60,14 +60,16 @@ public class Reporter implements Runnable {
 		Integer poolMax = props.getTpoolMaxsize();
 		Integer qSize = context.queueSize();
 		Integer vSize = context.visitedSize();
-		Integer pSize = context.getProductsSize();
+		Integer cSize = context.collectedSize();
+		Integer pSize = context.productsSize();
 		String completedTasks = StatsUtils.decimalFormat(completed);
 		Integer remainedTasks = context.activeTasksCount();
 		Integer freeMemory = (int) Runtime.getRuntime().freeMemory() / (1024 * 1024);
 		String visitedInSecond = StatsUtils.formatPerSecond(vSize, duration);
+		String collectedInSecond = StatsUtils.formatPerSecond(cSize, duration);
 		String report = String.format(template, queueMax, poolInit, poolMax,
 				durationStr, completedTasks, remainedTasks, qSize, vSize,
-				pSize, visitedInSecond, freeMemory);
+				cSize, pSize, visitedInSecond, collectedInSecond, freeMemory);
 		return report;
 	}
 

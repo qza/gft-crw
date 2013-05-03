@@ -22,6 +22,8 @@ public class Context extends ContextBase {
 	final private Props props;
 
 	final private Set<String> visited;
+	
+	final private Set<String> collected;
 
 	final private Set<Message> productData;
 
@@ -36,9 +38,10 @@ public class Context extends ContextBase {
 	public Context(final Props props, final Set<String> visited,
 			final BlockingQueue<String> queue, final ExecutorService executor,
 			final ScheduledExecutorService scheduler,
-			final Set<Message> products, final ProductService storeService) {
+			final Set<Message> products, final Set<String> collected, final ProductService storeService) {
 		this.props = props;
 		this.visited = visited;
+		this.collected = collected;
 		this.queue = queue;
 		this.executor = executor;
 		this.scheduler = scheduler;
@@ -47,8 +50,10 @@ public class Context extends ContextBase {
 	}
 
 	public void addMessage(Message message) {
-		productData.add(message);
 		synchronized (this) {
+			if(collected.add(message.getUrl())){
+				productData.add(message);
+			}
 			for (Iterator<String> iterator = message.getRelated().iterator(); iterator
 					.hasNext();) {
 				String link = iterator.next();
@@ -61,6 +66,10 @@ public class Context extends ContextBase {
 
 	public Set<String> getVisited() {
 		return visited;
+	}
+	
+	public Set<String> getCollected() {
+		return collected;
 	}
 
 	public BlockingQueue<String> getQueue() {
@@ -79,8 +88,12 @@ public class Context extends ContextBase {
 		return getQueue().size();
 	}
 
-	public int getProductsSize() {
+	public int productsSize() {
 		return getProductData().size();
+	}
+	
+	public int collectedSize() {
+		return getCollected().size();
 	}
 
 	public boolean isMaxSize() {

@@ -27,8 +27,10 @@ public class Builder {
 		t.padNumber("Remained tasks");
 		t.padNumber("Remained in queue");
 		t.padNumber("Visited");
+		t.padNumber("Collected");
 		t.padNumber("Buffered");
-		t.padText("Visited / Second").newLine();
+		t.padText("Visited / Second");
+		t.padText("Collected / Second").newLine();
 		t.padNumber("Free memory").newLine();
 		t.line("******************************************************");
 		t.newLine();
