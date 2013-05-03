@@ -30,13 +30,14 @@
 		</layout>
 	</appender>
 
-	<logger name="org.qza.gft.crw">
+	<!-- logger name="org.qza.gft.crw">
 		<level value="ERROR" />
 		<appender-ref ref="CONSOLE" />
-	</logger>
+	</logger -->
 
 	<root>
 		<level value="INFO" />
+		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="FILE_ROLL" />
 	</root>
 
