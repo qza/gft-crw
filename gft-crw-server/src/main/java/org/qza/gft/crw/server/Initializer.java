@@ -31,12 +31,11 @@ public class Initializer {
 
 	public void initServerState() {
 		Set<String> collected = context.getStoreService().collected();
-		context.getCollected().addAll(collected);
 		Set<String> visited = context.getStoreService().visited();
+		context.getCollected().addAll(collected);
 		for (Iterator<String> iterator = visited.iterator(); iterator.hasNext();) {
 			String string = iterator.next();
-			context.getVisited().add(string);
-			if(!collected.contains(string)) {
+			if(visited.add(string) && !collected.contains(string)){
 				context.getQueue().add(string);
 			}
 		}
