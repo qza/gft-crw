@@ -32,7 +32,7 @@
 				<configuration>
 					<executable>java</executable>
 					<arguments>
-						<argument>-Xmx512m</argument>
+						<argument>-Xms384m</argument>
 						<argument>-Xmx512m</argument>
 						<argument>-classpath</argument>
 						<classpath />
