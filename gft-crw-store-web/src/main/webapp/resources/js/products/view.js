@@ -148,10 +148,10 @@ function ProductsView(props) {
 			});
 		}
 	}
-
+	
 	function fillTable(response, callback) {
 		table.find('tbody').remove();
-		var products = response.products;
+		var products = response.data.content;
 		progress.setCount(products.length);
 		for ( var i = 0; i < products.length; i++) {
 			fillRow(i, products[i]);
@@ -159,7 +159,7 @@ function ProductsView(props) {
 		}
 		progress.done(function() {
 			table.data('model', products);
-			page.val(response.page.number);
+			page.val(response.data.number);
 			table.promise().done(function() {
 				callback();
 			});

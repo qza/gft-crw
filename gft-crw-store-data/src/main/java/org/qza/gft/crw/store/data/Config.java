@@ -40,7 +40,6 @@ public class Config {
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public DataSource datasource() {
-		loadDriver();
 		DataSource dataSource = new SingleConnectionDataSource(
 				env.getProperty("jdbc.url"), env.getProperty("jdbc.username"),
 				env.getProperty("jdbc.password"), true);
@@ -63,7 +62,7 @@ public class Config {
 		factory.setDataSource(datasource());
 		Properties jpaProps = new Properties();
 		jpaProps.put("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
-		jpaProps.put("hibernate.hbm2ddl.auto","create-drop");
+		jpaProps.put("hibernate.hbm2ddl.auto","update");
 		factory.setJpaProperties(jpaProps);
 		return factory;
 	}
@@ -75,12 +74,4 @@ public class Config {
 		return txManager;
 	}
 	
-	private void loadDriver(){
-		try {
-			Class.forName(env.getProperty("jdbc.driver.class"));
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
 }
