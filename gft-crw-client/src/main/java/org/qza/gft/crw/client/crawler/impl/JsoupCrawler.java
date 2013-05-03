@@ -117,9 +117,11 @@ public class JsoupCrawler implements Crawler {
 	
 	private void checkMemory(){
 		long free = Runtime.getRuntime().freeMemory() / (1024*1024);
+		if(free < 128) {
+			System.gc();
+		}
 		if(free < 64) {
 			log.warn("Memory : " + free);
-			System.gc();
 		}
 	}
 
