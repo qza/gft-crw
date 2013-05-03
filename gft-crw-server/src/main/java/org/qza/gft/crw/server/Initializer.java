@@ -35,7 +35,7 @@ public class Initializer {
 		context.getCollected().addAll(collected);
 		for (Iterator<String> iterator = visited.iterator(); iterator.hasNext();) {
 			String string = iterator.next();
-			if(visited.add(string) && !collected.contains(string)){
+			if(context.getVisited().add(string) && !collected.contains(string)){
 				context.getQueue().add(string);
 			}
 		}
