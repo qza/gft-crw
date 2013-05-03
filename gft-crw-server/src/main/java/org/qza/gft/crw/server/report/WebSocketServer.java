@@ -15,6 +15,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 
 public class WebSocketServer implements Runnable {
@@ -61,7 +62,8 @@ public class WebSocketServer implements Runnable {
 				@Override
 				public void run() {
 					if (ch != null && ch.isActive()) {
-						ch.write(reporter.makeReport());
+						String report = reporter.makeReport();
+						ch.write(new TextWebSocketFrame(report));
 						ch.flush();
 						log.info("Report sent");
 					} else {
