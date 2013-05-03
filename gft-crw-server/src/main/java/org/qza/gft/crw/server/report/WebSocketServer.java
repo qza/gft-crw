@@ -62,6 +62,11 @@ public class WebSocketServer implements Runnable {
 				public void run() {
 					if (ch != null && ch.isActive()) {
 						ch.write(reporter.makeReport());
+						try {
+							ch.flush().sync();
+						} catch (InterruptedException e) {
+							log.error("Cant flush report", e);
+						}
 						log.info("Report sent");
 					} else {
 						log.warn("Cannot send report on channel (A,O,R) ("
