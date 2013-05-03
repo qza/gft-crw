@@ -39,6 +39,8 @@ public class DbPersister implements Runnable {
 			log.warn("Concurrent access. Will try next time.");
 		} catch (Exception ex) {
 			log.error("Problem saving data", ex);
+		} catch (Throwable th) {
+			log.error("Problem saving data", th);
 		} finally {
 			checkMemory();
 		}

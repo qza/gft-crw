@@ -34,7 +34,9 @@ public class Reporter implements Runnable {
 			log.info(new Date() + "\n" + report);
 		} catch (Exception ex) {
 			log.error("Error creating report", ex);
-		} 
+		} catch (Throwable th) {
+			log.error("Error creating report", th);
+		}
 	}
 
 	public void writeReport() {
