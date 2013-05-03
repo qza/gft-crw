@@ -30,15 +30,17 @@ public class Initializer {
 	}
 
 	public void initServerState() {
-		Set<String> collected = context.getStoreService().collected();
-		Set<String> visited = context.getStoreService().visited();
-		context.getCollected().addAll(collected);
-		for (Iterator<String> iterator = visited.iterator(); iterator.hasNext();) {
-			String string = iterator.next();
-			if(context.getVisited().add(string) && !collected.contains(string)){
-				context.getQueue().add(string);
-			}
-		}
+		Set<String> collectedBase = context.getStoreService().collected();
+		Set<String> visitedBase = context.getStoreService().visited();
+		Set<String> collected = context.getCollected();
+		Set<String> visited = context.getVisited();
+		collected.addAll(collectedBase);
+		visited.addAll(visitedBase);
+		visitedBase.removeAll(collectedBase);
+		context.getQueue().addAll(visitedBase);
+		collectedBase.clear();
+		visitedBase.clear();
+		System.gc();
 		log.info("Server state initialized");
 	}
 	
