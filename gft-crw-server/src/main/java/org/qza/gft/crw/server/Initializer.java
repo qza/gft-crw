@@ -1,6 +1,6 @@
 package org.qza.gft.crw.server;
 
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -22,23 +22,21 @@ public class Initializer {
 
 	public void initServerState() {
 		Set<String> collectedBase = context.getStoreService().collected();
+		log.info("Collected loaded");
 		Set<String> visitedBase = context.getStoreService().visited();
+		log.info("Visited loaded");
 		Set<String> collected = context.getCollected();
 		Set<String> visited = context.getVisited();
 		collected.addAll(collectedBase);
 		visited.addAll(visitedBase);
 		visited.addAll(collectedBase);
 		visitedBase.removeAll(collectedBase);
-		Set<String> newQueue = new HashSet<String>(1000);
+		Iterator<String> it = visitedBase.iterator();
+		while(it.hasNext() && context.getQueue().size() <= 100) {
+			context.getQueue().add(it.next());
+		}
 		collectedBase.clear();
-		System.gc();
-		context.getQueue().addAll(visitedBase);
 		visitedBase.clear();
-		System.gc();
-		context.getQueue().drainTo(newQueue, 1000);
-		context.getQueue().clear();
-		context.getQueue().addAll(newQueue);
-		newQueue.clear();
 		System.gc();
 		log.info("Server state initialized");
 	}
