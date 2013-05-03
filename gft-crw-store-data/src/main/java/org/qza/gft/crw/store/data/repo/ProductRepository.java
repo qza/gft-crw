@@ -13,4 +13,6 @@ public interface ProductRepository extends CrudRepository<Product, Long>,
 
 	Page<Product> findByCategory(String category, Pageable page);
 	
+	Page<Product> findByVisited(boolean visited, Pageable page);
+	
 }

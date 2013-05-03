@@ -25,7 +25,7 @@ function ProductsView(props) {
 	this.init = function() {
 		initializeView();
 		showProgress();
-		$.get(props.url, function(response) {
+		$.get(props.url+"?pageNumber=" + page.val(), function(response) {
 			form.show();
 			processResponse(response);
 		}).done(function() {
@@ -175,7 +175,7 @@ function ProductsView(props) {
 			row += '<tr id="row_' + (i + 1) + '">';
 		}
 		row += '<td class="check">';
-		row += '<input type="checkbox" name="cb" value="' + product._id.$oid
+		row += '<input type="checkbox" name="cb" value="' + product.id
 				+ '" ';
 		row += (is4g ? 'checked' : '') + '/>';
 		row += '</td>';

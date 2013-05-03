@@ -21,6 +21,8 @@ public interface ProductService {
 
 	Page<Product> findByCategory(String category, Pageable page);
 	
+	Page<Product> findByVisited(boolean visited, Pageable page);
+	
 	Stats stats();
 	
 	long total();

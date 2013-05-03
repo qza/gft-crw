@@ -1,4 +1,4 @@
-package org.qza.gft.crw.server;
+package org.qza.gft.crw.server.report;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.qza.gft.crw.StatsUtils;
-import org.qza.gft.crw.server.report.Builder;
-import org.qza.gft.crw.server.report.Template;
+import org.qza.gft.crw.server.Context;
+import org.qza.gft.crw.server.Props;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +50,7 @@ public class Reporter implements Runnable {
 		}
 	}
 
-	private String makeReport() {
+	public String makeReport() {
 		String template = new Builder(new Template()).build();
 		long duration = context.getDurationInNanos();
 		String durationStr = StatsUtils.formatDuration(duration);

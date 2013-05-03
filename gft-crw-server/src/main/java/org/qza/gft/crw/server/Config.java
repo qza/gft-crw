@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.qza.gft.crw.Message;
+import org.qza.gft.crw.server.report.Reporter;
 import org.qza.gft.crw.server.store.DbPersister;
 import org.qza.gft.crw.store.data.service.ProductService;
 

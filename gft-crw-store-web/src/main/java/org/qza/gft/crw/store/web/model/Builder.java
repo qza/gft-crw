@@ -2,8 +2,11 @@ package org.qza.gft.crw.store.web.model;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.qza.gft.crw.ValidUtils;
 import org.qza.gft.crw.store.data.entity.Product;
 import org.qza.gft.crw.store.data.repo.model.Stats;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 
 /**
@@ -13,18 +16,24 @@ import org.springframework.data.domain.Page;
  */
 public class Builder {
 
+	static final Logger log = LoggerFactory.getLogger(Builder.class);
+
 	public static Request makeRequest(HttpServletRequest req) {
 		Request request = new Request();
 		request.setCategory(req.getParameter("category"));
 		request.setVisited(req.getParameter("visited"));
 		request.setForGift(req.getParameter("for_gift"));
-		request.setPageNumber(req.getParameter("pageNumber"));
+		String pageNumber = req.getParameter("pageNumber");
+		if (ValidUtils.notBlank(pageNumber)) {
+			request.setPageNumber(Integer.valueOf(pageNumber)+1);
+		} else {
+			log.warn("No page number");
+		}
 		request.setSelected(req.getParameterValues("cb"));
 		return request;
 	}
 
-	public static Response makeResponse(Request request,
-			Page<Product> products, Stats stats) {
+	public static Response makeResponse(Page<Product> products, Stats stats) {
 		Response response = new Response();
 		response.setData(products);
 		response.setStats(stats);

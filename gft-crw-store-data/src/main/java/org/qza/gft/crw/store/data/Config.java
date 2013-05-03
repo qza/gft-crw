@@ -64,8 +64,9 @@ public class Config {
 		factory.setPackagesToScan(getClass().getPackage().getName());
 		factory.setDataSource(datasource());
 		Properties jpaProps = new Properties();
-		jpaProps.put("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
 		jpaProps.put("hibernate.hbm2ddl.auto","update");
+		jpaProps.put("hibernate.show_sql",true);
+		jpaProps.put("hibernate.format_sql",true);
 		factory.setJpaProperties(jpaProps);
 		return factory;
 	}

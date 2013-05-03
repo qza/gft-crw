@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.qza.gft.crw.FileUtils;
 import org.qza.gft.crw.Message;
+import org.qza.gft.crw.server.report.Reporter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

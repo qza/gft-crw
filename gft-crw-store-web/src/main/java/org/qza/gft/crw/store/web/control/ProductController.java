@@ -55,10 +55,9 @@ public class ProductController {
 	}
 
 	private Response getResponse(Request req) {
-		Page<Product> products = service.findByCategory(req.getCategory(),
-				req.getPage());
+		Page<Product> products = service.findByVisited(false, req.getPage());
 		Stats stats = service.stats();
-		return Builder.makeResponse(req, products, stats);
+		return Builder.makeResponse(products, stats);
 	}
 
 }

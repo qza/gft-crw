@@ -29,6 +29,9 @@
 
 <body>
 
+	<div id="categories_div">
+	</div>
+
 	<div id="logo_div" style="display:none;">
 		<img alt="logo" src="resources/css/logo.png">
 	</div>
@@ -45,12 +48,12 @@
 
 		<form id="product_form" style="display:none">
 			<table id="products_table"></table>
-			<input id="page_number" type="hidden" name="pageNumber" value="1" />
+			<input id="page_number" type="hidden" name="pageNumber" value="-1" />
 		</form>
 		
 		<div id="progress_bar">
 		</div>
-
+		
 	</div>
 
 	<script type="text/javascript">

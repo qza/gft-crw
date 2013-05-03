@@ -1,7 +1,5 @@
 package org.qza.gft.crw.store.web.model;
 
-import java.util.List;
-
 import org.qza.gft.crw.store.data.entity.Product;
 import org.qza.gft.crw.store.data.repo.model.Stats;
 import org.springframework.data.domain.Page;
@@ -18,14 +16,6 @@ public class Response {
 	private Stats stats;
 
 	public Response() {
-	}
-
-	public List<Product> getProducts() {
-		return data.getContent();
-	}
-
-	public void addProduct(Product product) {
-		data.getContent().add(product);
 	}
 
 	public Page<Product> getData() {

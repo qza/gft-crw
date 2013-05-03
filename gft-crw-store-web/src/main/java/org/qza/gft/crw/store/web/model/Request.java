@@ -18,7 +18,7 @@ public class Request {
 	private String category;
 	private boolean forGift;
 	private boolean visited;
-	private int pageNumber;
+	private int pageNumber=0;
 
 	private Pageable page;
 
@@ -67,24 +67,13 @@ public class Request {
 		return pageNumber;
 	}
 	
-	public Pageable nextPage(){
-		return new PageRequest(getPageNumber()+1, PAGE);
-	}
-
-	public void setPageNumber(String pageNumber) {
-		if (ValidUtils.notBlank(pageNumber)) {
-			this.pageNumber = Integer.valueOf(pageNumber);
-			this.page = new PageRequest(this.pageNumber, PAGE);
-		}
+	public void setPageNumber(Integer pageNumber) {
+		this.pageNumber = pageNumber;
+		this.page = new PageRequest(this.pageNumber, PAGE);
 	}
 
 	public Pageable getPage() {
-		if (pageNumber == 0) {
-			pageNumber = 1;
-			return new PageRequest(pageNumber, PAGE);
-		} else {
-			return this.page;
-		}
+		return this.page;
 	}
 
 	public String[] getSelected() {

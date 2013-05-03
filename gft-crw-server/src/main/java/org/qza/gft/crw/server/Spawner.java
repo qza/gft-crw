@@ -8,6 +8,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.qza.gft.crw.ServerAddress;
+import org.qza.gft.crw.server.report.Reporter;
+import org.qza.gft.crw.server.report.WebSocketServer;
 import org.qza.gft.crw.server.spawn.Server;
 import org.qza.gft.crw.server.store.DbPersister;
 
@@ -79,7 +81,13 @@ public class Spawner {
 			scheduler().scheduleWithFixedDelay(reporter, 0, interval,
 					TimeUnit.SECONDS);
 			log.info("Reporter scheduled");
+			try {
+				context.execute(new WebSocketServer(context, reporter));
+			} catch (Exception e) {
+				log.error("Error starting socket server", e);
+			}
 		}
+		
 	}
 
 	private void persistData() {

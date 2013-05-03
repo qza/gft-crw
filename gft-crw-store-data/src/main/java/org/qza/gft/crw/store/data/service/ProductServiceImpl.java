@@ -46,6 +46,12 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	public Page<Product> findByVisited(boolean visited, Pageable page) {
+		log.info("Loading visited page : " + page.getPageNumber());
+		return repo.findByVisited(visited, page);
+	}
+
+	@Override
 	public void insertAll(Collection<Message> data) {
 		Collection<Product> products = Message2Product.convert(data);
 		for (Iterator<Product> iterator = products.iterator(); iterator
