@@ -46,7 +46,7 @@ public class ProductRepositoryImpl implements ProductRepositoryMain {
 	}
 
 	@Override
-	public Set<String> collected() {
+	public Set<String> visited() {
 		Set<String> result = new HashSet<>();
 		String query = "select relatedUrls from products";
 		Query q = em.createNativeQuery(query);
@@ -61,7 +61,7 @@ public class ProductRepositoryImpl implements ProductRepositoryMain {
 	}
 
 	@Override
-	public Set<String> visited() {
+	public Set<String> collected() {
 		Set<String> result = new HashSet<>();
 		String query = "select url from products";
 		Query q = em.createNativeQuery(query);
