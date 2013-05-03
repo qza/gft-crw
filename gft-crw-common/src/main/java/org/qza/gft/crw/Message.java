@@ -89,10 +89,7 @@ public class Message {
 
 	@Override
 	public int hashCode() {
-		if (this.url != null) {
-			return this.url.hashCode();
-		}
-		return super.hashCode();
+		return this.url.hashCode();
 	}
 
 	@Override

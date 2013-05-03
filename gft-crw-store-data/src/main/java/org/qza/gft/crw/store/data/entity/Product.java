@@ -15,6 +15,7 @@ public class Product extends AbstractPersistable<Long> {
 
 	private static final long serialVersionUID = 7014806576369506706L;
 
+	@Column(length = 512)
 	private String name;
 
 	private String category;

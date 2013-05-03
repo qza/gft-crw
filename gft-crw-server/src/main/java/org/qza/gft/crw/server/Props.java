@@ -45,6 +45,8 @@ public class Props {
 	private Integer dataPersistInterval;
 	
 	private Integer dataMemoryMin;
+	
+	private String[] banCategories;
 
 	public Boolean getLogTime() {
 		return logTime;
@@ -187,6 +189,14 @@ public class Props {
 	
 	public void setDataMemoryMin(String dataMemoryMin) {
 		this.dataMemoryMin = Integer.valueOf(dataMemoryMin);
+	}
+	
+	public String[] getBanCategories() {
+		return banCategories;
+	}
+	
+	public void setBanCategories(String banCategories) {
+		this.banCategories = banCategories.split(",");
 	}
 
 }

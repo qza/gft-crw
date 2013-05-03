@@ -12,7 +12,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import org.qza.gft.crw.ContextBase;
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.ServerAddress;
-import org.qza.gft.crw.ValidUtils;
 import org.qza.gft.crw.store.data.service.ProductService;
 
 /**
@@ -36,11 +35,13 @@ public class Context extends ContextBase {
 
 	final private ProductService storeService;
 
+	final private Acceptor acceptor;
+
 	public Context(final Props props, final Set<String> visited,
 			final BlockingQueue<String> queue, final ExecutorService executor,
 			final ScheduledExecutorService scheduler,
 			final Set<Message> products, final Set<String> collected,
-			final ProductService storeService) {
+			final Acceptor acceptor, final ProductService storeService) {
 		this.props = props;
 		this.visited = visited;
 		this.collected = collected;
@@ -49,10 +50,11 @@ public class Context extends ContextBase {
 		this.scheduler = scheduler;
 		this.productData = products;
 		this.storeService = storeService;
+		this.acceptor = acceptor;
 	}
 
 	public synchronized void addMessage(Message message) {
-		if (shouldAddMessage(message)) {
+		if (acceptor.accept(message)) {
 			if (collected.add(message.getUrl())) {
 				productData.add(message);
 			}
@@ -64,13 +66,6 @@ public class Context extends ContextBase {
 				queue.add(link);
 			}
 		}
-	}
-
-	private boolean shouldAddMessage(Message message) {
-		return message != null
-				&& ValidUtils.notBlank(message.getName(),
-						message.getCategory(), message.getImage(),
-						message.getUrl());
 	}
 
 	public Set<String> getVisited() {

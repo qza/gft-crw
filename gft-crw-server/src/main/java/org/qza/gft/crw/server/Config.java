@@ -65,6 +65,7 @@ public class Config {
 		props.setReportLogInterval(getProperty("crawler.report.log.interval"));
 		props.setServerMaxclients(getProperty("crawler.server.maxclients"));
 		props.setDataMemoryMin(getProperty("crawler.data.memory.min"));
+		props.setBanCategories(getProperty("crawler.ban.categories"));
 		return props;
 	}
 
@@ -115,7 +116,7 @@ public class Config {
 		Set<String> visited = new HashSet<>(props().getVisitedMaxsize());
 		return visited;
 	}
-	
+
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public Set<String> collected() {
@@ -132,6 +133,13 @@ public class Config {
 
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
+	public Acceptor acceptor() {
+		Acceptor acceptor = new Acceptor(props());
+		return acceptor;
+	}
+
+	@Bean
+	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public DbPersister dbPersister() {
 		DbPersister persister = new DbPersister(context());
 		return persister;
@@ -141,7 +149,7 @@ public class Config {
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public Context context() {
 		Context context = new Context(props(), visited(), queue(), executor(),
-				scheduler(), products(), collected(), store);
+				scheduler(), products(), collected(), acceptor(), store);
 		return context;
 	}
 
