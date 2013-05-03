@@ -65,7 +65,7 @@ public class Config {
 		factory.setDataSource(datasource());
 		Properties jpaProps = new Properties();
 		jpaProps.put("hibernate.hbm2ddl.auto","update");
-		jpaProps.put("hibernate.show_sql",true);
+		jpaProps.put("hibernate.show_sql",false);
 		jpaProps.put("hibernate.format_sql",false);
 		factory.setJpaProperties(jpaProps);
 		return factory;
