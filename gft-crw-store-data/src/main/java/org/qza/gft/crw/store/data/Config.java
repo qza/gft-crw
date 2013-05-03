@@ -2,6 +2,7 @@ package org.qza.gft.crw.store.data;
 
 import java.util.Properties;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.core.env.Environment;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -9,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -40,9 +40,12 @@ public class Config {
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public DataSource datasource() {
-		DataSource dataSource = new SingleConnectionDataSource(
-				env.getProperty("jdbc.url"), env.getProperty("jdbc.username"),
-				env.getProperty("jdbc.password"), true);
+		BasicDataSource dataSource = new BasicDataSource();
+		dataSource.setInitialSize(20);
+		dataSource.setUrl(env.getProperty("jdbc.url"));
+		dataSource.setUsername(env.getProperty("jdbc.username"));
+		dataSource.setPassword(env.getProperty("jdbc.password"));;
+		dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
 		return dataSource;
 	}
 
