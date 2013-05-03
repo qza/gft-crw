@@ -57,13 +57,13 @@ public class WebSocketServer implements Runnable {
 											"/websocket"));
 						}
 					});
-			final Channel ch = sb.bind(9999).sync().channel();
+			final Channel ch = sb.bind(8080).sync().channel();
 			context.getScheduler().scheduleWithFixedDelay(new Runnable() {
 				@Override
 				public void run() {
 					if (ch != null && ch.isActive()) {
 						String report = reporter.makeReport();
-						ch.write(new TextWebSocketFrame(report));
+						ch.write(new TextWebSocketFrame("BLA BLA"));
 						ch.flush();
 						log.info("Report sent");
 					} else {
@@ -73,7 +73,7 @@ public class WebSocketServer implements Runnable {
 					}
 				}
 			}, 15, context.getProps().getReportLogInterval(), TimeUnit.SECONDS);
-			log.info("Web socket server started at port " + 9999);
+			log.info("Web socket server started at port " + 8080);
 			ch.closeFuture().sync();
 			log.info("Web socket server stoped");
 		} finally {

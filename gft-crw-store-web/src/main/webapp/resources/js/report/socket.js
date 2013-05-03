@@ -6,7 +6,7 @@
         }
 
         if (window.WebSocket) {
-            socket = new WebSocket("ws://50.116.0.240:9999/websocket");
+            socket = new WebSocket("ws://50.116.0.240:8080/websocket");
             socket.onopen = onopen;
             socket.onmessage = onmessage;
             socket.onclose = onclose;
