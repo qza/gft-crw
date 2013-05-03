@@ -63,7 +63,7 @@ public class WebSocketServer implements Runnable {
 				public void run() {
 					if (ch != null && ch.isActive()) {
 						String report = reporter.makeReport();
-						ch.write(new TextWebSocketFrame("BLA BLA"));
+						ch.write(new TextWebSocketFrame(report));
 						ch.flush();
 						log.info("Report sent");
 					} else {

@@ -1,5 +1,9 @@
 package org.qza.gft.crw.store.data.repo;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -39,6 +43,33 @@ public class ProductRepositoryImpl implements ProductRepositoryMain {
 		Query q = em.createNativeQuery(query);
 		Object result = q.getResultList().iterator().next();
 		return Long.valueOf(String.valueOf(result));
+	}
+
+	@Override
+	public Set<String> collected() {
+		Set<String> result = new HashSet<>();
+		String query = "select related from products";
+		Query q = em.createNativeQuery(query);
+		Iterator<?> results = q.getResultList().iterator();
+		while(results.hasNext()) {
+			String[] related = String.valueOf(results.next()).split(",");
+			for (int i = 0; i < related.length; i++) {
+				result.add(related[i]);
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public Set<String> visited() {
+		Set<String> result = new HashSet<>();
+		String query = "select url from products";
+		Query q = em.createNativeQuery(query);
+		Iterator<?> results = q.getResultList().iterator();
+		while(results.hasNext()) {
+			result.add(String.valueOf(results.next()));
+		}
+		return result;
 	}
 
 }

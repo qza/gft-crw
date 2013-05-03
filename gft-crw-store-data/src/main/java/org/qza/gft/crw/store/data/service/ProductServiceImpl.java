@@ -2,6 +2,7 @@ package org.qza.gft.crw.store.data.service;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -47,7 +48,6 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Page<Product> findByVisited(boolean visited, Pageable page) {
-		log.info("Loading visited page : " + page.getPageNumber());
 		return repo.findByVisited(visited, page);
 	}
 
@@ -73,6 +73,16 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public long total() {
 		return repo.count();
+	}
+
+	@Override
+	public Set<String> collected() {
+		return repo.collected();
+	}
+
+	@Override
+	public Set<String> visited() {
+		return repo.visited();
 	}
 
 }
