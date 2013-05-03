@@ -24,7 +24,7 @@ public class Product extends AbstractPersistable<Long> {
 	private String url;
 	private String image;
 	private String tags;
-	@Column(length=2048)
+	@Column(length = 2048)
 	private String relatedUrls;
 	private boolean for_gift;
 	private boolean visited;
@@ -119,7 +119,7 @@ public class Product extends AbstractPersistable<Long> {
 	public void setVisited(boolean visited) {
 		this.visited = visited;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		if (this.url != null) {
@@ -131,10 +131,13 @@ public class Product extends AbstractPersistable<Long> {
 	@Override
 	public boolean equals(Object arg0) {
 		if (arg0 != null && arg0 instanceof Product) {
-			if (((Product) arg0).url.equals(this.url)) {
-				return true;
-			} else {
-				return false;
+			Product p = (Product) arg0;
+			if (p.url != null && this.url != null) {
+				if (p.url.equals(this.url)) {
+					return true;
+				} else {
+					return false;
+				}
 			}
 		}
 		return super.equals(arg0);
