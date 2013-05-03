@@ -81,13 +81,12 @@ public class Spawner {
 			scheduler().scheduleWithFixedDelay(reporter, 0, interval,
 					TimeUnit.SECONDS);
 			log.info("Reporter scheduled");
-			try {
-				context.execute(new WebSocketServer(context, reporter));
-			} catch (Exception e) {
-				log.error("Error starting socket server", e);
-			}
+//			try {
+//				context.execute(new WebSocketServer(context, reporter));
+//			} catch (Exception e) {
+//				log.error("Error starting socket server", e);
+//			}
 		}
-		
 	}
 
 	private void persistData() {
