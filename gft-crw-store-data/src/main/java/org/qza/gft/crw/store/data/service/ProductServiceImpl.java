@@ -1,22 +1,35 @@
 package org.qza.gft.crw.store.data.service;
 
 import java.util.Collection;
+import java.util.Iterator;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.store.data.entity.Product;
 import org.qza.gft.crw.store.data.repo.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * @author gft
+ */
 @Component
 public class ProductServiceImpl implements ProductService {
+
+	final static Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
 
 	@Autowired
 	private ProductRepository repo;
 
 	@Override
+	@Transactional
 	public Product persist(Product data) {
 		return repo.save(data);
 	}
@@ -34,7 +47,15 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void insertAll(Collection<Message> data) {
 		Collection<Product> products = Message2Product.convert(data);
-		repo.saveAll(products);
+		for (Iterator<Product> iterator = products.iterator(); iterator
+				.hasNext();) {
+			Product product = iterator.next();
+			try {
+				persist(product);
+			} catch (DataIntegrityViolationException ex) {
+				log.warn(ex.getMessage());
+			}
+		}
 	}
 
 }
