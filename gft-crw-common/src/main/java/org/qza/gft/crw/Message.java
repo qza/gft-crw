@@ -104,4 +104,10 @@ public class Message {
 		return super.equals(arg0);
 	}
 
+	@Override
+	public String toString() {
+		return String.format("name: %s category: %s image: %s url: %s", name,
+				category, image, url);
+	}
+
 }

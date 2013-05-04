@@ -42,6 +42,8 @@ public class Props {
 	
 	private String dataFileProducts;
 	
+	private String dataFileRejected;
+	
 	private Integer dataPersistInterval;
 	
 	private Integer dataMemoryMin;
@@ -197,6 +199,14 @@ public class Props {
 	
 	public void setBanCategories(String banCategories) {
 		this.banCategories = banCategories.split(",");
+	}
+	
+	public String getDataFileRejected() {
+		return dataFileRejected;
+	}
+	
+	public void setDataFileRejected(String dataFileRejected) {
+		this.dataFileRejected = dataFileRejected;
 	}
 
 }

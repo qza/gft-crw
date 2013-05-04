@@ -36,7 +36,7 @@ public class Context extends ContextBase {
 	final private ProductService storeService;
 
 	final private Acceptor acceptor;
-
+	
 	public Context(final Props props, final Set<String> visited,
 			final BlockingQueue<String> queue, final ExecutorService executor,
 			final ScheduledExecutorService scheduler,
