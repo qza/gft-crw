@@ -60,6 +60,7 @@ function ProductsView(props) {
 			return doSubmit();
 		});
 		title.on("click", function() {
+			$("#category").val("");
 			showProgress();
 			getPage(0);
 		});

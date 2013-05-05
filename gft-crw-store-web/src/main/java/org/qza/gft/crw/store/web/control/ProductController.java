@@ -13,7 +13,6 @@ import org.qza.gft.crw.store.web.model.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +27,7 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
-	
+
 	@Autowired
 	private GiftService giftService;
 
@@ -57,8 +56,9 @@ public class ProductController {
 
 	private Response getResponse(Request req) {
 		Page<Product> products = null;
-		if(ValidUtils.notBlank(req.getCategory())) {
-			products = productService.findByCategory(req.getCategory(), req.getNextPage());
+		if (ValidUtils.notBlank(req.getCategory())) {
+			products = productService.findByCategory(req.getCategory(),
+					req.getNextPage());
 		} else {
 			products = productService.findAll(req.getNextPage());
 		}
