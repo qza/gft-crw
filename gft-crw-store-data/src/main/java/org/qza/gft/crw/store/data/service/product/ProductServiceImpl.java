@@ -44,7 +44,6 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	@Transactional(isolation=Isolation.READ_UNCOMMITTED)
 	public Page<Product> findByCategory(String category, Pageable page) {
 		return repo.findByCategory(category, page);
 	}
@@ -97,7 +96,6 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	@Transactional(isolation=Isolation.READ_UNCOMMITTED)
 	public Page<Product> findAll(Pageable page) {
 		return repo.findAll(page);
 	}
