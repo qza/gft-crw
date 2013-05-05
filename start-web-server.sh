@@ -1,4 +1,3 @@
 #!/bin/sh
 
-cd $(dirname $0)/gft-crw-store-web/
-exec mvn jetty:run
+nohup ./scripts/start-web-server.sh script args >web-server.out 2>web-server.error&

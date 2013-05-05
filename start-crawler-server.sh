@@ -1,4 +1,3 @@
 #!/bin/sh
 
-cd $(dirname $0)/gft-crw-server/
-exec mvn exec:exec
+nohup ./scripts/start-crawler-server.sh script args >crawler-server.out 2>crawler-server.error&
