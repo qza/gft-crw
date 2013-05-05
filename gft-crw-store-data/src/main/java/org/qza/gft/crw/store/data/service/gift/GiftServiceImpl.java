@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author gft
  */
 @Service
-@Transactional(readOnly = false)
+@Transactional
 public class GiftServiceImpl implements GiftService {
 
 	final static Logger log = LoggerFactory.getLogger(GiftServiceImpl.class);
@@ -53,7 +53,6 @@ public class GiftServiceImpl implements GiftService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
 	public Page<Gift> findAll(Pageable page) {
 		return repo.findAll(page);
 	}
