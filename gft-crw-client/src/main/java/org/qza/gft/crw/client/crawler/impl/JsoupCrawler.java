@@ -57,12 +57,13 @@ public class JsoupCrawler implements Crawler {
 			String price = getText(doc, cssPrice);
 			String rating = getText(doc, cssRating);
 			String image = getAttr(doc, cssImage, "src");
-			Elements elems = doc.select(cssRelated);
+			Elements elems = getElements(doc, cssRelated);
 			Set<String> related = new HashSet<>(elems.size());
 			Iterator<Element> links = elems.iterator();
 			while (links.hasNext()) {
 				related.add(links.next().attr("href"));
 			}
+			System.out.println("RELATED : " + related.size());
 			Message m = new Message(name, category, price, rating, link, image);
 			m.getRelated().addAll(related);
 			checkMemory();
@@ -104,14 +105,15 @@ public class JsoupCrawler implements Crawler {
 	}
 
 	private Elements getElements(Document doc, String selector) {
+		Elements result = new Elements();
 		String[] selectors = selector.split(",");
 		for (int i = 0; i < selectors.length; i++) {
 			Elements elems = doc.select(selectors[i].trim());
 			if (checkElems(elems)) {
-				return elems;
+				result.addAll(elems);
 			}
 		}
-		return null;
+		return result;
 	}
 
 	private boolean checkElems(Elements elems) {
