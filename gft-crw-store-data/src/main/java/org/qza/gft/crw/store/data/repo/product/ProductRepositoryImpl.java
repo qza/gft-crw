@@ -43,7 +43,7 @@ public class ProductRepositoryImpl implements ProductRepositoryMain {
 	@Override
 	public Set<String> visited() {
 		Set<String> result = new HashSet<>();
-		String query = "select relatedUrls from products limit 1000000";
+		String query = "select relatedUrls from products limit 500000";
 		Query q = em.createNativeQuery(query);
 		Iterator<?> results = q.getResultList().iterator();
 		String[] related = null;
