@@ -2,6 +2,7 @@ package org.qza.gft.crw.store.web.control;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.qza.gft.crw.ValidUtils;
 import org.qza.gft.crw.store.data.entity.Product;
 import org.qza.gft.crw.store.data.repo.model.Stats;
 import org.qza.gft.crw.store.data.service.gift.GiftService;
@@ -55,7 +56,12 @@ public class ProductController {
 	}
 
 	private Response getResponse(Request req) {
-		Page<Product> products = productService.findAll(req.getNextPage());
+		Page<Product> products = null;
+		if(ValidUtils.notBlank(req.getCategory())) {
+			products = productService.findByCategory(req.getCategory(), req.getNextPage());
+		} else {
+			products = productService.findAll(req.getNextPage());
+		}
 		Stats stats = productService.stats();
 		return Builder.makeResponse(products, stats);
 	}

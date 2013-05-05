@@ -6,10 +6,16 @@
 <link rel='stylesheet' type='text/css' media='screen'
 	href='<c:url value="/resources/css/style.css"/>' />
 
+<link rel='stylesheet' type='text/css' media='screen'
+	href='<c:url value="/resources/css/jquery/jquery-ui-1.10.3.custom.css"/>' />	
+
 <link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
 
 <script type='text/javascript'
 	src='http://code.jquery.com/jquery-1.9.1.min.js'></script>
+	
+<script type='text/javascript'
+	src='<c:url value="/resources/js/jquery/jquery-ui-1.10.3.custom.js"/>'></script>
 
 <script type='text/javascript'
 	src='<c:url value="/resources/js/components/navigator.js"/>'></script>

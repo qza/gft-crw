@@ -24,6 +24,18 @@ function ProductsView(props) {
 
 	this.init = function() {
 		initializeView();
+		firstPage();
+	};
+	
+	function initializeView() {
+		logo.fadeIn(2000, function() {
+			logo.fadeOut(1500, function() {
+				content.fadeIn(500);
+			});
+		});
+	}
+	
+	function firstPage(){
 		showProgress();
 		$.get(props.url+"?pageNumber=" + page.val(), function(response) {
 			form.show();
@@ -33,14 +45,6 @@ function ProductsView(props) {
 			initNavigation();
 		}).fail(function() {
 			alert("Error getting data");
-		});
-	};
-
-	function initializeView() {
-		logo.fadeIn(2000, function() {
-			logo.fadeOut(1500, function() {
-				content.fadeIn(500);
-			});
 		});
 	}
 
@@ -53,6 +57,16 @@ function ProductsView(props) {
 	function bindForm() {
 		form.on("submit", function() {
 			return doSubmit();
+		});
+		title.on("click", function() {
+			showProgress();
+			firstPage();
+		});
+		title.on("mouseover", function(){
+			$(this).css('cursor', 'pointer');
+		});
+		title.on("mouseout", function(){
+			$(this).css('cursor', 'default');
 		});
 	}
 
@@ -225,17 +239,18 @@ function ProductsView(props) {
 	}
 
 	function showProgress() {
+		$('body').css('cursor', 'wait');
 		progress.init();
 		stats.fadeOut(200);
 		table.fadeOut(200, function() {
 			progress.getBar().fadeIn(300, function(){
-				title.text("Loading ... ");
+				title.text("Loading... ");
 			});
-			
 		});
 	}
-
+	
 	function hideProgress() {
+		$('body').css('cursor', 'default');
 		progress.getBar().fadeOut(50, function() {
 			table.fadeIn(100, function() {
 				stats.fadeIn(100);
