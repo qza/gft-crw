@@ -25,10 +25,11 @@ public class Builder {
 		request.setForGift(req.getParameter("for_gift"));
 		String pageNumber = req.getParameter("pageNumber");
 		if (ValidUtils.notBlank(pageNumber)) {
-			request.setPageNumber(Integer.valueOf(pageNumber)+1);
+			request.setPageNumber(Integer.valueOf(pageNumber));
 		} else {
 			log.warn("No page number");
 		}
+		request.setIds(req.getParameterValues("ids"));
 		request.setSelected(req.getParameterValues("cb"));
 		return request;
 	}

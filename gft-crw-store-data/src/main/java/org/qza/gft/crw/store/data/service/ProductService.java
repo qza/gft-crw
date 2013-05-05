@@ -17,6 +17,8 @@ public interface ProductService {
 	void insertAll(Collection<Message> data);
 
 	Product persist(Product data);
+	
+	void update(Long[] ids, String column, boolean value);
 
 	Product findByName(String name);
 

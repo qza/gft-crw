@@ -126,10 +126,23 @@ function ProductsView(props) {
 		var isCheck = check.prop("checked");
 		check.prop("checked", !isCheck);
 	}
+	
+	function getIds() {
+		var ids = "";
+		var cbs = $("input[name='cb']");
+		var cbs_len = cbs.length;
+		for (var i = 0 ; i < cbs_len ; i++ ){
+			ids += "ids=" + cbs[i].getAttribute("value");
+			if(i < (cbs_len - 1)){
+				ids += "&";
+			}
+		}
+		return ids;
+	}
 
 	function doSubmit() {
 		showProgress();
-		var params = form.serialize();
+		var params = form.serialize() + "&" + getIds();
 		ctr.submit(params, function(response) {
 			processResponse(response);
 		});

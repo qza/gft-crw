@@ -109,5 +109,17 @@ public class Message {
 		return String.format("name: %s category: %s image: %s url: %s", name,
 				category, image, url);
 	}
+	
+	
+	public static void main(String[] args) {
+		Message m1 = new Message();
+		m1.setUrl("http://www.amazon.com/BLABLA");
+		m1.setName("AAA");
+		Message m2 = new Message();
+		m2.setUrl("http://www.amazon.com/BLABLA");
+		m2.setName("BBB");
+		System.out.println(m1.equals(m2));
+		System.out.println(m1.hashCode() == m2.hashCode());
+	}
 
 }

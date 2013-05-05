@@ -12,4 +12,6 @@ public interface ProductRepositoryMain {
 	
 	Set<String> visited();
 	
+	void update(Long[] ids, String column, boolean value);
+	
 }

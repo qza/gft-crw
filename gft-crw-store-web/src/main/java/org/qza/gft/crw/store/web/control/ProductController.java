@@ -37,7 +37,7 @@ public class ProductController {
 	public @ResponseBody
 	Response processPost(HttpServletRequest sRequest) {
 		Request req = getRequest(sRequest);
-		updateSelected(req);
+		updateForGift(req);
 		updateVisited(req);
 		return getResponse(req);
 	}
@@ -46,12 +46,12 @@ public class ProductController {
 		return Builder.makeRequest(req);
 	}
 
-	private void updateSelected(Request req) {
-		// TODO
+	private void updateForGift(Request req) {
+		service.update(req.getSelectedLong(), "for_gift", true);
 	}
 
 	private void updateVisited(Request req) {
-		// TODO
+		service.update(req.getIdsLong(), "visited", true);
 	}
 
 	private Response getResponse(Request req) {

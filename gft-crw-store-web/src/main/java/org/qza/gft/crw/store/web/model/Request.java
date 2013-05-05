@@ -23,6 +23,8 @@ public class Request {
 	private Pageable page;
 
 	private String[] selected;
+	
+	private String[] ids;
 
 	public Request() {
 	}
@@ -77,7 +79,34 @@ public class Request {
 	}
 
 	public String[] getSelected() {
+		if(selected == null) {
+			selected = new String[0];
+		}
 		return selected;
+	}
+	
+	public Long[] getSelectedLong(){
+		Long[] result = new Long[getSelected().length];
+		for( int i = 0 ; i < result.length ; i++ ) {
+			result[i] = Long.valueOf(getSelected()[i]);
+		}
+		return result;
+	}
+	
+	public void setIds(String[] ids) {
+		this.ids = ids;
+	}
+	
+	public String[] getIds() {
+		return ids;
+	}
+	
+	public Long[] getIdsLong() {
+		Long[] result = new Long[getIds().length];
+		for( int i = 0 ; i < result.length ; i++ ) {
+			result[i] = Long.valueOf(getIds()[i]);
+		}
+		return result;
 	}
 
 	public void setSelected(String[] selected) {

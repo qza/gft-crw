@@ -48,7 +48,7 @@
 
 		<form id="product_form" style="display:none">
 			<table id="products_table"></table>
-			<input id="page_number" type="hidden" name="pageNumber" value="-1" />
+			<input id="page_number" type="hidden" name="pageNumber" value="0" />
 		</form>
 		
 		<div id="progress_bar">

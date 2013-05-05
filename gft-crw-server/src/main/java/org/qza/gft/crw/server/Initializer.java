@@ -22,30 +22,36 @@ public class Initializer {
 	}
 	
 	public void initServerState(){
-		FileUtils.load(context.getProps().getDataFileQueue(), context.getQueue());
+		if(context.getStoreService().stats().getRecordCount() > 0) {
+			initFromDatabase();
+		} else {
+			initFromFiles();
+		}
 		log.info("Server state initialized");
 	}
 
-//	public void initServerState() {
-//		Set<String> collectedBase = context.getStoreService().collected();
-//		log.info("Collected loaded");
-//		Set<String> visitedBase = context.getStoreService().visited();
-//		log.info("Visited loaded");
-//		Set<String> collected = context.getCollected();
-//		Set<String> visited = context.getVisited();
-//		collected.addAll(collectedBase);
-//		visited.addAll(visitedBase);
-//		visited.addAll(collectedBase);
-//		visitedBase.removeAll(collectedBase);
-//		Iterator<String> it = visitedBase.iterator();
-//		while (it.hasNext() && context.getQueue().size() <= 100) {
-//			context.getQueue().add(it.next());
-//		}
-//		collectedBase.clear();
-//		visitedBase.clear();
-//		System.gc();
-//		FileUtils.load(context.getProps().getDataFileQueue(), context.getQueue());
-//		log.info("Server state initialized");
-//	}
+	private void initFromDatabase() {
+		Set<String> collectedBase = context.getStoreService().collected();
+		log.info("Collected loaded");
+		Set<String> visitedBase = context.getStoreService().visited();
+		log.info("Visited loaded");
+		context.getCollected().addAll(collectedBase);
+		context.getVisited().addAll(visitedBase);
+		context.getVisited().addAll(collectedBase);
+		visitedBase.removeAll(collectedBase);
+		Iterator<String> it = visitedBase.iterator();
+		while (it.hasNext() && context.getQueue().size() <= 100) {
+			context.getQueue().add(it.next());
+		}
+		collectedBase.clear();
+		visitedBase.clear();
+		System.gc();
+		log.info("Server state initialized");
+	}
+	
+	
+	private void initFromFiles(){
+		FileUtils.load(context.getProps().getDataFileQueue(), context.getQueue());
+	}
 
 }

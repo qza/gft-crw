@@ -22,4 +22,5 @@ public class ValidUtils {
 	public static boolean notBlank(String string) {
 		return string != null && string.length() > 0;
 	}
+	
 }

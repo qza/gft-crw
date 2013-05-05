@@ -16,6 +16,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 
@@ -32,6 +33,7 @@ import javax.sql.DataSource;
 @PropertySource(value = { "classpath:gft-crw-store-data.properties",
 		"classpath:database.properties" })
 @EnableJpaRepositories
+@EnableTransactionManagement
 public class Config {
 
 	@Autowired

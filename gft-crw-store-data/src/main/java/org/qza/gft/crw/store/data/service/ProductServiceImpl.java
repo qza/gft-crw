@@ -85,4 +85,12 @@ public class ProductServiceImpl implements ProductService {
 		return repo.visited();
 	}
 
+	@Override
+	@Transactional
+	public void update(Long[] ids, String column, boolean value) {
+		if(ids != null && ids.length > 0) {
+			repo.update(ids, column, value);
+		}
+	}
+
 }

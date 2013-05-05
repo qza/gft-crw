@@ -1,5 +1,6 @@
 package org.qza.gft.crw.store.data.repo;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -51,7 +52,7 @@ public class ProductRepositoryImpl implements ProductRepositoryMain {
 		String query = "select relatedUrls from products";
 		Query q = em.createNativeQuery(query);
 		Iterator<?> results = q.getResultList().iterator();
-		while(results.hasNext()) {
+		while (results.hasNext()) {
 			String[] related = String.valueOf(results.next()).split(",");
 			for (int i = 0; i < related.length; i++) {
 				result.add(related[i]);
@@ -66,10 +67,27 @@ public class ProductRepositoryImpl implements ProductRepositoryMain {
 		String query = "select url from products";
 		Query q = em.createNativeQuery(query);
 		Iterator<?> results = q.getResultList().iterator();
-		while(results.hasNext()) {
+		while (results.hasNext()) {
 			result.add(String.valueOf(results.next()));
 		}
 		return result;
 	}
 
+	@Override
+	public void update(Long[] ids, String column, boolean value) {
+		String query = "update products set " + column + "=" + value
+				+ " where id in ";
+		query += sqlInArray(ids);
+		System.out.println("QUERY = " + query);
+		Query q = em.createNativeQuery(query);
+		q.executeUpdate();
+	}
+	
+	private String sqlInArray(Long[] ids) {
+		String idsString = Arrays.toString(ids);
+		idsString = idsString.replace("[", "(");
+		idsString = idsString.replace("]", ")");
+		return idsString;
+	}
+	
 }
