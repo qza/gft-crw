@@ -31,14 +31,18 @@ public class Initializer {
 	}
 
 	private void initFromDatabase() {
+		System.gc();
 		Set<String> collectedBase = context.getStoreService().collected();
 		log.info("Collected loaded");
+		System.gc();
 		Set<String> visitedBase = context.getStoreService().visited();
 		log.info("Visited loaded");
+		System.gc();
 		context.getCollected().addAll(collectedBase);
 		context.getVisited().addAll(visitedBase);
 		context.getVisited().addAll(collectedBase);
 		visitedBase.removeAll(collectedBase);
+		System.gc();
 		Iterator<String> it = visitedBase.iterator();
 		while (it.hasNext() && context.getQueue().size() <= 100) {
 			context.getQueue().add(it.next());
