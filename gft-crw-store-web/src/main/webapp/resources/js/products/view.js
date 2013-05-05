@@ -24,7 +24,7 @@ function ProductsView(props) {
 
 	this.init = function() {
 		initializeView();
-		firstPage();
+		getPage();
 	};
 	
 	function initializeView() {
@@ -35,9 +35,10 @@ function ProductsView(props) {
 		});
 	}
 	
-	function firstPage(){
+	function getPage(pageNumber){
 		showProgress();
-		$.get(props.url+"?pageNumber=" + page.val(), function(response) {
+		var pNum = pageNumber? pageNumber : page.val(); 
+		$.get(props.url+"?pageNumber=" + pNum, function(response) {
 			form.show();
 			processResponse(response);
 		}).done(function() {
@@ -60,7 +61,7 @@ function ProductsView(props) {
 		});
 		title.on("click", function() {
 			showProgress();
-			firstPage();
+			getPage(0);
 		});
 		title.on("mouseover", function(){
 			$(this).css('cursor', 'pointer');
@@ -72,6 +73,7 @@ function ProductsView(props) {
 
 	function bindCategories() {
 		$(".catlink").on("click", function() {
+			showProgress();
 			var addr = $(this).attr("href");
 			ctr.loadCategory(addr, function(response) {
 				processResponse(response);

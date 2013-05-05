@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.qza.gft.crw.Message;
@@ -43,6 +44,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	@Transactional(isolation=Isolation.READ_UNCOMMITTED)
 	public Page<Product> findByCategory(String category, Pageable page) {
 		return repo.findByCategory(category, page);
 	}
@@ -95,6 +97,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	@Transactional(isolation=Isolation.READ_UNCOMMITTED)
 	public Page<Product> findAll(Pageable page) {
 		return repo.findAll(page);
 	}

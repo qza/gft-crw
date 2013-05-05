@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author gft
  */
 @Service
-@Transactional
 public class GiftServiceImpl implements GiftService {
 
 	final static Logger log = LoggerFactory.getLogger(GiftServiceImpl.class);
@@ -53,6 +52,7 @@ public class GiftServiceImpl implements GiftService {
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Page<Gift> findAll(Pageable page) {
 		return repo.findAll(page);
 	}
@@ -60,11 +60,16 @@ public class GiftServiceImpl implements GiftService {
 	private void insertAll(Iterable<Gift> gifts) {
 		for (Iterator<Gift> iterator = gifts.iterator(); iterator.hasNext();) {
 			Gift gift = iterator.next();
-			try {
-				repo.save(gift);
-			} catch (DataIntegrityViolationException ex) {
-				log.warn(ex.getMessage());
-			}
+			insert(gift);
+		}
+	}
+	
+	@Transactional
+	private void insert(Gift gift) {
+		try {
+			repo.save(gift);
+		} catch (DataIntegrityViolationException ex) {
+			log.warn(ex.getMessage());
 		}
 	}
 
