@@ -1,6 +1,5 @@
-package org.qza.gft.crw.store.data.repo;
+package org.qza.gft.crw.store.data.repo.product;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -9,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.qza.gft.crw.ArrayUtils;
 import org.qza.gft.crw.store.data.repo.model.Stats;
 
 public class ProductRepositoryImpl implements ProductRepositoryMain {
@@ -20,23 +20,17 @@ public class ProductRepositoryImpl implements ProductRepositoryMain {
 	public Stats stats() {
 		Stats stats = new Stats();
 		stats.setRecordCount(getCount());
-		stats.setVisitedCount(getVisitedCount());
 		stats.setForGiftCount(getForgiftCount());
 		return stats;
 	}
 
 	private long getCount() {
-		String query = "select count(*) from products ";
-		return getFirstLong(query);
-	}
-
-	private long getVisitedCount() {
-		String query = "select count(*) from products where visited = true";
+		String query = "select count(*) from products";
 		return getFirstLong(query);
 	}
 
 	private long getForgiftCount() {
-		String query = "select count(*) from products where for_gift = true";
+		String query = "select count(*) from gifts";
 		return getFirstLong(query);
 	}
 
@@ -77,17 +71,10 @@ public class ProductRepositoryImpl implements ProductRepositoryMain {
 	public void update(Long[] ids, String column, boolean value) {
 		String query = "update products set " + column + "=" + value
 				+ " where id in ";
-		query += sqlInArray(ids);
+		query += ArrayUtils.sqlInArray(ids);
 		System.out.println("QUERY = " + query);
 		Query q = em.createNativeQuery(query);
 		q.executeUpdate();
 	}
-	
-	private String sqlInArray(Long[] ids) {
-		String idsString = Arrays.toString(ids);
-		idsString = idsString.replace("[", "(");
-		idsString = idsString.replace("]", ")");
-		return idsString;
-	}
-	
+
 }

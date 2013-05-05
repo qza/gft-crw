@@ -5,7 +5,7 @@ import java.util.ConcurrentModificationException;
 
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.server.Context;
-import org.qza.gft.crw.store.data.service.ProductService;
+import org.qza.gft.crw.store.data.service.product.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

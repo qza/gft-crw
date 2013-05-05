@@ -1,5 +1,6 @@
 package org.qza.gft.crw;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -21,6 +22,14 @@ public class ValidUtils {
 
 	public static boolean notBlank(String string) {
 		return string != null && string.length() > 0;
+	}
+	
+	public static <C> boolean notBlank(C[] longs) {
+		return longs != null && longs.length > 0;
+	}
+	
+	public static <C> boolean notBlank(Collection<C> data) {
+		return data != null && data.size() > 0;
 	}
 	
 }

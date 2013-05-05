@@ -1,4 +1,4 @@
-package org.qza.gft.crw.store.data.repo;
+package org.qza.gft.crw.store.data.repo.product;
 
 import org.qza.gft.crw.store.data.entity.Product;
 import org.springframework.data.repository.CrudRepository;
@@ -11,6 +11,8 @@ public interface ProductRepository extends CrudRepository<Product, Long>,
 
 	Product findByName(String name);
 
+	Page<Product> findAll(Pageable page);
+	
 	Page<Product> findByCategory(String category, Pageable page);
 	
 	Page<Product> findByVisited(boolean visited, Pageable page);

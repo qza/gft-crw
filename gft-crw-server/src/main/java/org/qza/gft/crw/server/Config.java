@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.server.report.Reporter;
 import org.qza.gft.crw.server.store.DbPersister;
-import org.qza.gft.crw.store.data.service.ProductService;
+import org.qza.gft.crw.store.data.service.product.ProductService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;

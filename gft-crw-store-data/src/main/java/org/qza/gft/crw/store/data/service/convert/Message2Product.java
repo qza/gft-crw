@@ -1,6 +1,5 @@
-package org.qza.gft.crw.store.data.service;
+package org.qza.gft.crw.store.data.service.convert;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -8,6 +7,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.qza.gft.crw.ArrayUtils;
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.ValidUtils;
 import org.qza.gft.crw.store.data.entity.Product;
@@ -62,8 +62,7 @@ public class Message2Product {
 			}
 			if (ValidUtils.notBlank(related)) {
 				String[] strArray = related.toArray(new String[related.size()]);
-				String strString = Arrays.toString(strArray)
-						.replaceAll("\\[", "").replaceAll("\\]", "");
+				String strString = ArrayUtils.sqlInArray(strArray);
 				if (ValidUtils.notBlank(strString)) {
 					product.setRelatedUrls(strString);
 				}

@@ -213,11 +213,15 @@ function ProductsView(props) {
 	function fillStats(response) {
 		stats.html("");
 		var content = "";
-		var rstats = response.stats;
-		content += "<p> Record count: <b>" + rstats.recordCount + " </b></p>";
-		content += "<p> Visited count: <b>" + rstats.visitedCount + "</b></p>";
-		content += "<p> For gift count: <b>" + rstats.forGiftCount + "</b></p>";
+		content += "<p> Products : <b>" + response.stats.recordCount + " </b> </p>";
+		content += "<p> Gifts: <b>" + response.stats.forGiftCount + "</b> : : </p>";
+		content += "<p> Page : <b>" + getPageNumber() + "</b> of <b>" + response.data.totalPages + "</b> : : </p>";
 		stats.html(content);
+	}
+	
+	function getPageNumber(){
+		var number = $("#page_number").val();
+		return parseInt(number);
 	}
 
 	function showProgress() {

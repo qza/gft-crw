@@ -1,4 +1,4 @@
-package org.qza.gft.crw.store.data.service;
+package org.qza.gft.crw.store.data.service.product;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -8,13 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.store.data.entity.Product;
-import org.qza.gft.crw.store.data.repo.ProductRepository;
 import org.qza.gft.crw.store.data.repo.model.Stats;
+import org.qza.gft.crw.store.data.repo.product.ProductRepository;
+import org.qza.gft.crw.store.data.service.convert.Message2Product;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author gft
  */
-@Component
+@Service
 public class ProductServiceImpl implements ProductService {
 
 	final static Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
@@ -91,6 +92,11 @@ public class ProductServiceImpl implements ProductService {
 		if(ids != null && ids.length > 0) {
 			repo.update(ids, column, value);
 		}
+	}
+
+	@Override
+	public Page<Product> findAll(Pageable page) {
+		return repo.findAll(page);
 	}
 
 }

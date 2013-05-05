@@ -6,7 +6,6 @@ package org.qza.gft.crw.store.data.repo.model;
 public class Stats {
 
 	private long recordCount;
-	private long visitedCount;
 	private long forGiftCount;
 
 	public Stats() {
@@ -16,20 +15,12 @@ public class Stats {
 		return recordCount;
 	}
 
-	public long getVisitedCount() {
-		return visitedCount;
-	}
-
 	public long getForGiftCount() {
 		return forGiftCount;
 	}
 
 	public void setRecordCount(long recordCount) {
 		this.recordCount = recordCount;
-	}
-
-	public void setVisitedCount(long visitedCount) {
-		this.visitedCount = visitedCount;
 	}
 
 	public void setForGiftCount(long forGiftCount) {

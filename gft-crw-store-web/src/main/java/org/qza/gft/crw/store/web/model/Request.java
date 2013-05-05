@@ -71,11 +71,21 @@ public class Request {
 	
 	public void setPageNumber(Integer pageNumber) {
 		this.pageNumber = pageNumber;
-		this.page = new PageRequest(this.pageNumber, PAGE);
+		if(this.pageNumber < 0) {
+			this.page = new PageRequest(this.pageNumber+1, PAGE);
+		} else {
+			this.page = new PageRequest(this.pageNumber, PAGE);
+		}
+		
 	}
 
 	public Pageable getPage() {
 		return this.page;
+	}
+	
+	public Pageable getNextPage() {
+		this.pageNumber = this.pageNumber + 1;
+		return new PageRequest(this.pageNumber, PAGE);
 	}
 
 	public String[] getSelected() {

@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import org.qza.gft.crw.ContextBase;
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.ServerAddress;
-import org.qza.gft.crw.store.data.service.ProductService;
+import org.qza.gft.crw.store.data.service.product.ProductService;
 
 /**
  * @author gft

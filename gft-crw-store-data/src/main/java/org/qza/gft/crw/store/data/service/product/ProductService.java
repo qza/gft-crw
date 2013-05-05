@@ -1,4 +1,4 @@
-package org.qza.gft.crw.store.data.service;
+package org.qza.gft.crw.store.data.service.product;
 
 import java.util.Collection;
 import java.util.Set;
@@ -22,6 +22,8 @@ public interface ProductService {
 
 	Product findByName(String name);
 
+	Page<Product> findAll(Pageable page);
+	
 	Page<Product> findByCategory(String category, Pageable page);
 	
 	Page<Product> findByVisited(boolean visited, Pageable page);

@@ -1,4 +1,4 @@
-package org.qza.gft.crw.store.data.repo;
+package org.qza.gft.crw.store.data.repo.product;
 
 import java.util.Set;
 
