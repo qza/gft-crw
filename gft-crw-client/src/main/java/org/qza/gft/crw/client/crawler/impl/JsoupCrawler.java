@@ -63,7 +63,6 @@ public class JsoupCrawler implements Crawler {
 			while (links.hasNext()) {
 				related.add(links.next().attr("href"));
 			}
-			System.out.println("RELATED : " + related.size());
 			Message m = new Message(name, category, price, rating, link, image);
 			m.getRelated().addAll(related);
 			checkMemory();
