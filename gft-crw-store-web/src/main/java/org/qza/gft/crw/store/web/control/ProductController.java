@@ -63,7 +63,7 @@ public class ProductController {
 			products = productService.findAll(req.getNextPage());
 		}
 		Stats stats = productService.stats();
-		return Builder.makeResponse(products, stats);
+		return Builder.makeResponse(req, products, stats);
 	}
 
 }

@@ -14,8 +14,12 @@ public class ValidUtils {
 
 	public static boolean notBlank(String... strings) {
 		boolean result = true;
-		for (int i = 0; i < strings.length && result; i++) {
-			result = notBlank(strings[i]);
+		if( strings != null) {
+			for (int i = 0; i < strings.length && result; i++) {
+				result = notBlank(strings[i]);
+			}
+		} else {
+			result = false;
 		}
 		return result;
 	}

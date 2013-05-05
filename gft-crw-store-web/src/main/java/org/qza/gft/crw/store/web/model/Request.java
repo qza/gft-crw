@@ -18,12 +18,12 @@ public class Request {
 	private String category;
 	private boolean forGift;
 	private boolean visited;
-	private int pageNumber=0;
+	private int pageNumber = 0;
 
 	private Pageable page;
 
 	private String[] selected;
-	
+
 	private String[] ids;
 
 	public Request() {
@@ -68,55 +68,58 @@ public class Request {
 	public int getPageNumber() {
 		return pageNumber;
 	}
-	
+
 	public void setPageNumber(Integer pageNumber) {
 		this.pageNumber = pageNumber;
-		if(this.pageNumber < 0) {
-			this.page = new PageRequest(this.pageNumber+1, PAGE);
+		if (this.pageNumber < 0) {
+			this.page = new PageRequest(this.pageNumber + 1, PAGE);
 		} else {
 			this.page = new PageRequest(this.pageNumber, PAGE);
 		}
-		
+
 	}
 
 	public Pageable getPage() {
 		return this.page;
 	}
-	
+
 	public Pageable getNextPage() {
 		this.pageNumber = this.pageNumber + 1;
 		return new PageRequest(this.pageNumber, PAGE);
 	}
 
 	public String[] getSelected() {
-		if(selected == null) {
+		if (selected == null) {
 			selected = new String[0];
 		}
 		return selected;
 	}
-	
-	public Long[] getSelectedLong(){
+
+	public Long[] getSelectedLong() {
 		Long[] result = new Long[getSelected().length];
-		for( int i = 0 ; i < result.length ; i++ ) {
+		for (int i = 0; i < result.length; i++) {
 			result[i] = Long.valueOf(getSelected()[i]);
 		}
 		return result;
 	}
-	
+
 	public void setIds(String[] ids) {
 		this.ids = ids;
 	}
-	
+
 	public String[] getIds() {
 		return ids;
 	}
-	
+
 	public Long[] getIdsLong() {
-		Long[] result = new Long[getIds().length];
-		for( int i = 0 ; i < result.length ; i++ ) {
-			result[i] = Long.valueOf(getIds()[i]);
+		if (ValidUtils.notBlank(getIds())) {
+			Long[] result = new Long[getIds().length];
+			for (int i = 0; i < result.length; i++) {
+				result[i] = Long.valueOf(getIds()[i]);
+			}
+			return result;
 		}
-		return result;
+		return null;
 	}
 
 	public void setSelected(String[] selected) {

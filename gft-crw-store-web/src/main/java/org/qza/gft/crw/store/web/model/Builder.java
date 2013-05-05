@@ -34,8 +34,9 @@ public class Builder {
 		return request;
 	}
 
-	public static Response makeResponse(Page<Product> products, Stats stats) {
+	public static Response makeResponse(Request req, Page<Product> products, Stats stats) {
 		Response response = new Response();
+		response.setReq(req);
 		response.setData(products);
 		response.setStats(stats);
 		return response;

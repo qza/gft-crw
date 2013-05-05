@@ -20,31 +20,34 @@ function ProductsView(props) {
 
 	var title = $("h1");
 
+	var sound = elem(props.sound);
+
 	var initialTitle = title.text();
 
 	this.init = function() {
 		initializeView();
+		initNavigation();
 		getPage();
 	};
-	
+
 	function initializeView() {
-		logo.fadeIn(2000, function() {
-			logo.fadeOut(1500, function() {
-				content.fadeIn(500);
+		logo.fadeIn(4000, function() {
+			logo.fadeOut(3000, function() {
+				content.fadeIn(1000);
 			});
 		});
 	}
-	
-	function getPage(pageNumber){
+
+	function getPage(pageNumber) {
 		showProgress();
-		var pNum = pageNumber? pageNumber : page.val(); 
-		$.get(props.url+"?pageNumber=" + pNum, function(response) {
+		var pNum = pageNumber ? pageNumber : page.val();
+		$.get(props.url + "?pageNumber=" + pNum, function(response) {
 			form.show();
 			processResponse(response);
 		}).done(function() {
 			bindActions();
-			initNavigation();
 		}).fail(function() {
+			playSound('resources/wavs/error.wav');
 			alert("Error getting data");
 		});
 	}
@@ -64,10 +67,10 @@ function ProductsView(props) {
 			showProgress();
 			getPage(0);
 		});
-		title.on("mouseover", function(){
+		title.on("mouseover", function() {
 			$(this).css('cursor', 'pointer');
 		});
-		title.on("mouseout", function(){
+		title.on("mouseout", function() {
 			$(this).css('cursor', 'default');
 		});
 	}
@@ -88,10 +91,10 @@ function ProductsView(props) {
 			goToRow($(this));
 		});
 		table.find("tr td input[type='checkbox']").on("click", function() {
-			var row = $(this).parent().parent(); 
+			var row = $(this).parent().parent();
 			goToRow(row);
 			var isCheck = $(this).prop("checked");
-			if(isCheck == true){
+			if (isCheck == true) {
 				row.addClass("for_gift");
 			} else {
 				row.removeClass("for_gift");
@@ -143,14 +146,14 @@ function ProductsView(props) {
 		var isCheck = check.prop("checked");
 		check.prop("checked", !isCheck);
 	}
-	
+
 	function getIds() {
 		var ids = "";
 		var cbs = $("input[name='cb']");
 		var cbs_len = cbs.length;
-		for (var i = 0 ; i < cbs_len ; i++ ){
+		for ( var i = 0; i < cbs_len; i++) {
 			ids += "ids=" + cbs[i].getAttribute("value");
-			if(i < (cbs_len - 1)){
+			if (i < (cbs_len - 1)) {
 				ids += "&";
 			}
 		}
@@ -172,13 +175,20 @@ function ProductsView(props) {
 				nav.reset();
 				toggleSelected();
 				bindCategories();
+				categoryFilter(response);
 				bindRows();
 				fillStats(response);
 				hideProgress();
 			});
 		}
 	}
-	
+
+	function categoryFilter(response) {
+		if (response.req.category) {
+			$("#category").val(response.req.category);
+		}
+	}
+
 	function fillTable(response, callback) {
 		table.find('tbody').remove();
 		var products = response.data.content;
@@ -205,8 +215,7 @@ function ProductsView(props) {
 			row += '<tr id="row_' + (i + 1) + '">';
 		}
 		row += '<td class="check">';
-		row += '<input type="checkbox" name="cb" value="' + product.id
-				+ '" ';
+		row += '<input type="checkbox" name="cb" value="' + product.id + '" ';
 		row += (is4g ? 'checked' : '') + '/>';
 		row += '</td>';
 		row += '<td>';
@@ -230,13 +239,16 @@ function ProductsView(props) {
 	function fillStats(response) {
 		stats.html("");
 		var content = "";
-		content += "<p> Products : <b>" + response.stats.recordCount + " </b> </p>";
-		content += "<p> Gifts: <b>" + response.stats.forGiftCount + "</b> : : </p>";
-		content += "<p> Page : <b>" + getPageNumber() + "</b> of <b>" + response.data.totalPages + "</b> : : </p>";
+		content += "<p> Products : <b>" + response.stats.recordCount
+				+ " </b> </p>";
+		content += "<p> Gifts: <b>" + response.stats.forGiftCount
+				+ "</b> : : </p>";
+		content += "<p> Page : <b>" + getPageNumber() + "</b> of <b>"
+				+ response.data.totalPages + "</b> : : </p>";
 		stats.html(content);
 	}
-	
-	function getPageNumber(){
+
+	function getPageNumber() {
 		var number = $("#page_number").val();
 		return parseInt(number);
 	}
@@ -246,12 +258,12 @@ function ProductsView(props) {
 		progress.init();
 		stats.fadeOut(200);
 		table.fadeOut(200, function() {
-			progress.getBar().fadeIn(300, function(){
+			progress.getBar().fadeIn(300, function() {
 				title.text("Loading... ");
 			});
 		});
 	}
-	
+
 	function hideProgress() {
 		$('body').css('cursor', 'default');
 		progress.getBar().fadeOut(50, function() {
@@ -264,6 +276,15 @@ function ProductsView(props) {
 
 	function elem(id) {
 		return $("#" + id);
+	}
+
+	function playSound(file) {
+		var s = "<audio src='" + file + "' preload='auto' autoplay='autoplay' />";
+		sound.html(s);
+	}
+
+	function stopSound() {
+		sound.html("");
 	}
 
 }

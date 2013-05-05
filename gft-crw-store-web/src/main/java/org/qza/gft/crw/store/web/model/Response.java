@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 public class Response {
 
 	private Page<Product> data;
+	
+	private Request req;
 
 	private Stats stats;
 
@@ -36,6 +38,14 @@ public class Response {
 
 	public void setStats(Stats stats) {
 		this.stats = stats;
+	}
+	
+	public Request getReq() {
+		return req;
+	}
+	
+	public void setReq(Request req) {
+		this.req = req;
 	}
 
 }
