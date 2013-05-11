@@ -67,16 +67,11 @@ public class Initializer {
 		}
 	}
 	
-	public void loadCollected() {
-		
-	}
-	
-	public void loadVisited() {
-		
-	}
-	
-	public void loadDemoQueue() {
-		
+	public void loadDemoSetup() {
+		initFromDatabase();
+		context.getVisited().clear();
+		context.getCollected().clear();
+		log.warn("Demo setup");
 	}
 
 }

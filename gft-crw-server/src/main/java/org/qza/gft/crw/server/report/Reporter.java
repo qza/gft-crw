@@ -47,8 +47,8 @@ public class Reporter implements Runnable {
 				/ (1024 * 1024);
 		String completedTasks = StatsUtils.decimalFormat(completed);
 		String durationStr = StatsUtils.formatDuration(duration);
-		String visitedInSecond = StatsUtils.formatPerSecond(vSize, duration);
-		String collectedInSecond = StatsUtils.formatPerSecond(cSize, duration);
+		String visitedInSecond = StatsUtils.formatPerSecond(vSize - context.getInitialVisited(), duration);
+		String collectedInSecond = StatsUtils.formatPerSecond(cSize - context.getInitialCollected(), duration);
 		String template = new Builder(new Template()).build();
 		String report = String.format(template, queueMax, poolInit, poolMax,
 				durationStr, completedTasks, remainedTasks, qSize, vSize,

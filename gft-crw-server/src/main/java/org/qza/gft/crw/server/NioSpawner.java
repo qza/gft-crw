@@ -48,7 +48,8 @@ class NioSpawner {
 	}
 
 	private void initializeState() {
-		initializer.initServerState();
+//		initializer.initServerState();
+		initializer.loadDemoSetup();
 	}
 
 	private void initializeServers() {
