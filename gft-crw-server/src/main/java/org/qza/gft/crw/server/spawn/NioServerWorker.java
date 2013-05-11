@@ -37,6 +37,11 @@ public class NioServerWorker implements Runnable {
 						log.error(ex.getMessage());
 					}
 				}
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					Thread.interrupted();
+				}
 			}
 		}
 	}
