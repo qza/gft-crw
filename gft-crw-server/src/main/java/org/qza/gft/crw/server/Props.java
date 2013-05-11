@@ -44,6 +44,8 @@ public class Props {
 	
 	private String dataFileRejected;
 	
+	private Integer dataInitSize;
+	
 	private Integer dataPersistInterval;
 	
 	private Integer dataMemoryMin;
@@ -207,6 +209,14 @@ public class Props {
 	
 	public void setDataFileRejected(String dataFileRejected) {
 		this.dataFileRejected = dataFileRejected;
+	}
+	
+	public Integer getDataInitSize() {
+		return dataInitSize;
+	}
+	
+	public void setDataInitSize(String dataInitSize) {
+		this.dataInitSize = Integer.valueOf(dataInitSize);
 	}
 
 }

@@ -68,6 +68,7 @@ public class Config {
 		props.setServerMaxclients(getProperty("crawler.server.maxclients"));
 		props.setDataMemoryMin(getProperty("crawler.data.memory.min"));
 		props.setBanCategories(getProperty("crawler.ban.categories"));
+		props.setDataInitSize(getProperty("crawler.data.init.size"));
 		return props;
 	}
 
