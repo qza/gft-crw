@@ -90,7 +90,7 @@ public class ProductServiceImpl implements ProductService {
 		while(finalResult.size() < limit) {
 			finalResult.addAll(repo.visited(pageSize, offset));
 			offset += pageSize; 
-			log.info("Products page @ " + offset);
+			log.info("Products loaded : " + finalResult.size());
 			System.gc();
 		}
 		return finalResult;
