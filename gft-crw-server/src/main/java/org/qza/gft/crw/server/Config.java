@@ -6,6 +6,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -106,22 +107,25 @@ public class Config {
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public BlockingQueue<String> queue() {
-		BlockingQueue<String> queue = new ArrayBlockingQueue<String>(props()
-				.getQueueMaxsize());
+//		BlockingQueue<String> queue = new ArrayBlockingQueue<String>(props()
+//				.getQueueMaxsize());
+		BlockingQueue<String> queue = new LinkedBlockingQueue<String>();
 		return queue;
 	}
 
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public Set<String> visited() {
-		Set<String> visited = new HashSet<>(props().getVisitedMaxsize());
+//		Set<String> visited = new HashSet<>(props().getVisitedMaxsize());
+		Set<String> visited = new HashSet<>();
 		return visited;
 	}
 
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)
 	public Set<String> collected() {
-		Set<String> collected = new HashSet<>(props().getVisitedMaxsize());
+//		Set<String> collected = new HashSet<>(props().getVisitedMaxsize());
+		Set<String> collected = new HashSet<>();
 		return collected;
 	}
 
