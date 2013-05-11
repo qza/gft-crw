@@ -31,9 +31,9 @@ function ProductsView(props) {
 	};
 
 	function initializeView() {
-		logo.fadeIn(4000, function() {
-			logo.fadeOut(3000, function() {
-				content.fadeIn(1000);
+		logo.fadeIn(3000, function() {
+			logo.fadeOut(2000, function() {
+				content.fadeIn(500);
 			});
 		});
 	}

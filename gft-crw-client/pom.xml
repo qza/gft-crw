@@ -32,8 +32,9 @@
 				<configuration>
 					<executable>java</executable>
 					<arguments>
-						<argument>-Xms384m</argument>
-						<argument>-Xmx768m</argument>
+						<argument>-Xss256k</argument>
+						<argument>-Xms512m</argument>
+						<argument>-Xmx512m</argument>
 						<argument>-classpath</argument>
 						<classpath />
 						<argument>org.qza.gft.crw.client.Runner</argument>

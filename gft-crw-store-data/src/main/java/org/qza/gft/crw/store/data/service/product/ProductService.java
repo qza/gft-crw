@@ -30,7 +30,7 @@ public interface ProductService {
 	
 	Set<String> collected();
 	
-	Set<String> visited();
+	Set<String> visited(int limit);
 	
 	Stats stats();
 	

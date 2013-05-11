@@ -13,6 +13,8 @@ public class Runner {
 
 	final private Spawner spawner;
 
+	final private NioSpawner nioSpawner;
+
 	final private ApplicationContext ac;
 
 	final private Logger log = LoggerFactory.getLogger(Runner.class);
@@ -23,6 +25,7 @@ public class Runner {
 	public Runner() {
 		ac = new AnnotationConfigApplicationContext(Config.class);
 		spawner = ac.getBean(Spawner.class);
+		nioSpawner = ac.getBean(NioSpawner.class);
 	}
 
 	/**
@@ -31,7 +34,8 @@ public class Runner {
 	public void start() {
 		try {
 			log.info("Starting server");
-			spawner.spawn();
+//			spawner.spawn();
+			nioSpawner.spawn();
 		} catch (Exception e) {
 			log.error("Error: ", e);
 		} finally {

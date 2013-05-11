@@ -167,6 +167,13 @@ public class Config {
 		Spawner spawner = new Spawner(context(), initializer());
 		return spawner;
 	}
+	
+	@Bean
+	@Scope(BeanDefinition.SCOPE_SINGLETON)
+	public NioSpawner nioSpawner() {
+		NioSpawner spawner = new NioSpawner(context(), initializer());
+		return spawner;
+	}
 
 	@Bean
 	@Scope(BeanDefinition.SCOPE_SINGLETON)

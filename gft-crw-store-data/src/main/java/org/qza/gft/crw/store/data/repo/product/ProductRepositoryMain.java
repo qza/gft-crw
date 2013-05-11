@@ -10,7 +10,7 @@ public interface ProductRepositoryMain {
 	
 	Set<String> collected();
 	
-	Set<String> visited();
+	Set<String> visited(int limit);
 	
 	void update(Long[] ids, String column, boolean value);
 	

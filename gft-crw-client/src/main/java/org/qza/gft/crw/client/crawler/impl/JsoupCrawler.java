@@ -11,6 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import org.qza.gft.crw.Message;
+import org.qza.gft.crw.ValidUtils;
 import org.qza.gft.crw.client.Context;
 import org.qza.gft.crw.client.crawler.Crawler;
 
@@ -53,10 +54,25 @@ public class JsoupCrawler implements Crawler {
 					.maxBodySize(parserMaxbytes).execute();
 			Document doc = Jsoup.parse(res.body());
 			String name = getText(doc, cssName);
+			if(!ValidUtils.notBlank(name)) {
+				log.warn("NO NAME"+link);
+			}
 			String category = getText(doc, cssCategory);
+			if(!ValidUtils.notBlank(category)) {
+				log.warn("NO CATEGORY"+link);
+			}
 			String price = getText(doc, cssPrice);
+			if(!ValidUtils.notBlank(price)) {
+				log.warn("NO PRICE"+link);
+			}
 			String rating = getText(doc, cssRating);
+			if(!ValidUtils.notBlank(rating)) {
+				log.warn("NO RATING"+link);
+			}
 			String image = getAttr(doc, cssImage, "src");
+			if(!ValidUtils.notBlank(image)) {
+				log.warn("NO IMAGE"+link);
+			}
 			Elements elems = getElements(doc, cssRelated);
 			Set<String> related = new HashSet<>(elems.size());
 			Iterator<Element> links = elems.iterator();
@@ -65,7 +81,7 @@ public class JsoupCrawler implements Crawler {
 			}
 			Message m = new Message(name, category, price, rating, link, image);
 			m.getRelated().addAll(related);
-			checkMemory();
+//			checkMemory();
 			return m;
 		} catch (java.net.SocketException tex) {
 			log.error(String.format("Socket exception for link %s", link));

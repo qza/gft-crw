@@ -82,8 +82,8 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Set<String> visited() {
-		return repo.visited();
+	public Set<String> visited(int limit) {
+		return repo.visited(limit);
 	}
 
 	@Override

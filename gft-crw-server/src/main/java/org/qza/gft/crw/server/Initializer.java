@@ -27,14 +27,20 @@ public class Initializer {
 		initQueue();
 		log.info("Server state initialized");
 	}
+	
+	public void initQueue() {
+		log.info("Loading queue ... ");
+		FileUtils.load(context.getProps().getDataFileQueue(),
+				context.getQueue());
+	}
 
-	private void initFromDatabase() {
+	public void initFromDatabase() {
 		System.gc();
 		log.info("Loading collected ... ");
 		Set<String> collectedBase = context.getStoreService().collected();
 		System.gc();
 		log.info("Loading visited ... ");
-		Set<String> visitedBase = context.getStoreService().visited();
+		Set<String> visitedBase = context.getStoreService().visited(500000);
 		System.gc();
 		context.getCollected().addAll(collectedBase);
 		context.getVisited().addAll(visitedBase);
@@ -44,11 +50,13 @@ public class Initializer {
 		System.gc();
 		log.info("Server state initialized");
 	}
-
-	private void initQueue() {
-		log.info("Loading queue ... ");
-		FileUtils.load(context.getProps().getDataFileQueue(),
-				context.getQueue());
+	
+	public void loadCollected() {
+		
+	}
+	
+	public void loadVisited() {
+		
 	}
 
 }
