@@ -10,8 +10,6 @@ import java.util.concurrent.TimeUnit;
 import org.qza.gft.crw.ServerAddress;
 import org.qza.gft.crw.server.report.Reporter;
 import org.qza.gft.crw.server.spawn.NioServer;
-import org.qza.gft.crw.server.spawn.NioServerWorker;
-import org.qza.gft.crw.server.spawn.Server;
 import org.qza.gft.crw.server.store.DbPersister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +49,6 @@ class NioSpawner {
 
 	private void initializeState() {
 		initializer.initServerState();
-//		initializer.initQueue();
 	}
 
 	private void initializeServers() {
@@ -79,11 +76,6 @@ class NioSpawner {
 			scheduler().scheduleWithFixedDelay(reporter, 1, interval,
 					TimeUnit.SECONDS);
 			log.info("Reporter scheduled");
-//			try {
-//				context.execute(new WebSocketServer(context, reporter));
-//			} catch (Exception e) {
-//				log.error("Error starting socket server", e);
-//			}
 		}
 	}
 

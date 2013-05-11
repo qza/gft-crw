@@ -23,8 +23,9 @@ public class Initializer {
 	public void initServerState() {
 		if (context.getStoreService().stats().getRecordCount() > 0) {
 			initFromDatabase();
+		} else {
+			initQueue();
 		}
-		initQueue();
 		log.info("Server state initialized");
 	}
 	
@@ -46,8 +47,13 @@ public class Initializer {
 			System.gc();
 			Thread.sleep(1000);
 			context.getCollected().addAll(collectedBase);
+			log.info("Added collected... ");
 			context.getVisited().addAll(visitedBase);
 			context.getVisited().addAll(collectedBase);
+			log.info("Added visited... ");
+			visitedBase.removeAll(collectedBase);
+			context.getQueue().addAll(visitedBase);
+			log.info("Added queue... ");
 			collectedBase.clear();
 			visitedBase.clear();
 			System.gc();
@@ -64,6 +70,10 @@ public class Initializer {
 	}
 	
 	public void loadVisited() {
+		
+	}
+	
+	public void loadDemoQueue() {
 		
 	}
 
