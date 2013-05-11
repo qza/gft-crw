@@ -58,6 +58,8 @@ public class Initializer {
 			visitedBase.clear();
 			System.gc();
 			Thread.sleep(1000);
+			context.setInitialCollected(context.getCollected().size());
+			context.setInitialVisited(context.getVisited().size());
 			log.info("Server state initialized");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

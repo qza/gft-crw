@@ -37,6 +37,10 @@ public class Context extends ContextBase {
 
 	final private Acceptor acceptor;
 	
+	private Integer initialCollected;
+	
+	private Integer initialVisited;
+	
 	public Context(final Props props, final Set<String> visited,
 			final BlockingQueue<String> queue, final ExecutorService executor,
 			final ScheduledExecutorService scheduler,
@@ -167,6 +171,22 @@ public class Context extends ContextBase {
 
 	public ProductService getStoreService() {
 		return storeService;
+	}
+	
+	public Integer getInitialCollected() {
+		return initialCollected;
+	}
+	
+	public Integer getInitialVisited() {
+		return initialVisited;
+	}
+	
+	public void setInitialCollected(Integer initialCollected) {
+		this.initialCollected = initialCollected;
+	}
+	
+	public void setInitialVisited(Integer initialVisited) {
+		this.initialVisited = initialVisited;
 	}
 
 }
