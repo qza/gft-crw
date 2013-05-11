@@ -46,6 +46,8 @@ public class Props {
 	
 	private Integer dataInitSize;
 	
+	private Integer dataInitOffset;
+	
 	private Integer dataPersistInterval;
 	
 	private Integer dataMemoryMin;
@@ -217,6 +219,14 @@ public class Props {
 	
 	public void setDataInitSize(String dataInitSize) {
 		this.dataInitSize = Integer.valueOf(dataInitSize);
+	}
+	
+	public Integer getDataInitOffset() {
+		return dataInitOffset;
+	}
+	
+	public void setDataInitOffset(String dataInitOffset) {
+		this.dataInitOffset = Integer.valueOf(dataInitOffset);
 	}
 
 }

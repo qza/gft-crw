@@ -69,6 +69,7 @@ public class Config {
 		props.setDataMemoryMin(getProperty("crawler.data.memory.min"));
 		props.setBanCategories(getProperty("crawler.ban.categories"));
 		props.setDataInitSize(getProperty("crawler.data.init.size"));
+		props.setDataInitOffset(getProperty("crawler.data.init.offset"));
 		return props;
 	}
 

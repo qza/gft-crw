@@ -95,10 +95,9 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Set<String> visited(int limit) {
+	public Set<String> visited(int limit, int offset) {
 		Set<String> finalResult = new HashSet<>();
 		int pageSize = 50000;
-		int offset = 0;
 		while(finalResult.size() < limit) {
 			finalResult.addAll(repo.visited(pageSize, offset));
 			offset += pageSize; 

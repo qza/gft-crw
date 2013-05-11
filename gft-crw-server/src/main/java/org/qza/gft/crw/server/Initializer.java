@@ -28,7 +28,7 @@ public class Initializer {
 		}
 		log.info("Server state initialized");
 	}
-	
+
 	public void initQueue() {
 		log.info("Loading queue ... ");
 		FileUtils.load(context.getProps().getDataFileQueue(),
@@ -43,7 +43,9 @@ public class Initializer {
 			System.gc();
 			Thread.sleep(1000);
 			log.info("Loading visited ... ");
-			Set<String> visitedBase = context.getStoreService().visited(context.getProps().getDataInitSize());
+			Set<String> visitedBase = context.getStoreService().visited(
+					context.getProps().getDataInitSize(),
+					context.getProps().getDataInitOffset());
 			System.gc();
 			Thread.sleep(1000);
 			context.getCollected().addAll(collectedBase);
@@ -66,7 +68,7 @@ public class Initializer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void loadDemoSetup() {
 		initFromDatabase();
 		context.getVisited().clear();
