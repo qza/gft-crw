@@ -35,20 +35,28 @@ public class Initializer {
 	}
 
 	public void initFromDatabase() {
-		System.gc();
-		log.info("Loading collected ... ");
-		Set<String> collectedBase = context.getStoreService().collected();
-		System.gc();
-		log.info("Loading visited ... ");
-		Set<String> visitedBase = context.getStoreService().visited(context.getProps().getDataInitSize());
-		System.gc();
-		context.getCollected().addAll(collectedBase);
-		context.getVisited().addAll(visitedBase);
-		context.getVisited().addAll(collectedBase);
-		collectedBase.clear();
-		visitedBase.clear();
-		System.gc();
-		log.info("Server state initialized");
+		try {
+			System.gc();
+			log.info("Loading collected ... ");
+			Set<String> collectedBase = context.getStoreService().collected();
+			System.gc();
+			Thread.sleep(1000);
+			log.info("Loading visited ... ");
+			Set<String> visitedBase = context.getStoreService().visited(context.getProps().getDataInitSize());
+			System.gc();
+			Thread.sleep(1000);
+			context.getCollected().addAll(collectedBase);
+			context.getVisited().addAll(visitedBase);
+			context.getVisited().addAll(collectedBase);
+			collectedBase.clear();
+			visitedBase.clear();
+			System.gc();
+			Thread.sleep(1000);
+			log.info("Server state initialized");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void loadCollected() {
