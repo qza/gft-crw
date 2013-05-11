@@ -1,6 +1,5 @@
 package org.qza.gft.crw.server.spawn;
 
-import java.io.IOException;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,13 +9,14 @@ import org.qza.gft.crw.server.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @author gft
+ */
 public class NioServerWorker implements Runnable {
 
-	final private List<NioChannel> channels;
-
-	final private Context context;
-	
 	final private Logger log;
+	final private Context context;
+	final private List<NioChannel> channels;
 
 	public NioServerWorker(final Context context) {
 		this.channels = new ArrayList<>();
@@ -26,7 +26,7 @@ public class NioServerWorker implements Runnable {
 
 	@Override
 	public void run() {
-		log.info("Starting infinity channel reacting");
+		log.info("Entering infinite reaction cycle");
 		while(true) {
 			synchronized(channels) {
 				for (int i = 0; i < channels.size(); i++) {

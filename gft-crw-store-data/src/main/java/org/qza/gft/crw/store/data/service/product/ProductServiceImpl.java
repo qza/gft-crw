@@ -81,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
 	public Set<String> collected() {
 		Set<String> finalResult = new HashSet<>();
 		long count = repo.count();
-		int pageSize = 20000;
+		int pageSize = 50000;
 		int offset = 0;
 		while(finalResult.size() < count) {
 			Set<String> data = repo.collected(pageSize, offset);
@@ -97,7 +97,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Set<String> visited(int limit) {
 		Set<String> finalResult = new HashSet<>();
-		int pageSize = 20000;
+		int pageSize = 50000;
 		int offset = 0;
 		while(finalResult.size() < limit) {
 			finalResult.addAll(repo.visited(pageSize, offset));

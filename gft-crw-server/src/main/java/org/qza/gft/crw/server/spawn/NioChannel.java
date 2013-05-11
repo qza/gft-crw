@@ -122,9 +122,13 @@ public class NioChannel {
 	}
 
 	private void processData(byte[] data) {
-		Message message = converter.read(data);
-		if (message != null) {
-			context.addMessage(message);
+		try {
+			Message message = converter.read(data);
+			if (message != null) {
+				context.addMessage(message);
+			}
+		} catch(RuntimeException ex) {
+			log.error("Cannot convert message :  \n" + new String(data) + "\n");
 		}
 	}
 

@@ -59,7 +59,7 @@ public class JsoupCrawler implements Crawler {
 			}
 			String category = getText(doc, cssCategory);
 			if(!ValidUtils.notBlank(category)) {
-				log.warn("NO CATEGORY ::: SHOCK :) "+link);
+				log.warn("NO CATEGORY"+link);
 				category = "SHOCK";
 			}
 			String price = getText(doc, cssPrice);
@@ -68,7 +68,8 @@ public class JsoupCrawler implements Crawler {
 			}
 			String rating = getText(doc, cssRating);
 			if(!ValidUtils.notBlank(rating)) {
-				log.warn("NO RATING"+link);
+				// IGNORE
+				// log.warn("NO RATING"+link);
 			}
 			String image = getAttr(doc, cssImage, "src");
 			if(!ValidUtils.notBlank(image)) {
