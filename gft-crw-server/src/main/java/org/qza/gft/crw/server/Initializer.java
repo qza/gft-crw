@@ -70,7 +70,7 @@ public class Initializer {
 	public void loadDemoSetup() {
 		initFromDatabase();
 		context.getVisited().clear();
-		context.getCollected().clear();
+		context.setInitialVisited(0);
 		log.warn("Demo setup");
 	}
 

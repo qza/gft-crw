@@ -35,11 +35,11 @@ class NioSpawner {
 	}
 
 	public void spawn() {
-		context.start();
 		initializeState();
 		initializeServers();
 		initializeReporter();
 		initializeDbPersister();
+		context.start();
 		work(duration, TimeUnit.MINUTES);
 		terminateServers();
 		terminateScheduler();
