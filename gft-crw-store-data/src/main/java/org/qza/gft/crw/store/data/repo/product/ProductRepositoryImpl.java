@@ -57,9 +57,9 @@ public class ProductRepositoryImpl implements ProductRepositoryMain {
 	}
 
 	@Override
-	public Set<String> collected() {
+	public Set<String> collected(int limit, int offset) {
 		Set<String> result = new HashSet<>();
-		String query = "select url from products";
+		String query = "select url from products limit " + limit + " offset " + offset;
 		Query q = em.createNativeQuery(query);
 		Iterator<?> results = q.getResultList().iterator();
 		while (results.hasNext()) {

@@ -8,7 +8,7 @@ public interface ProductRepositoryMain {
 
 	Stats stats();
 	
-	Set<String> collected();
+	Set<String> collected(int limit, int offset);
 	
 	Set<String> visited(int limit, int offset);
 	

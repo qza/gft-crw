@@ -79,7 +79,19 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Set<String> collected() {
-		return repo.collected();
+		Set<String> finalResult = new HashSet<>();
+		long count = repo.count();
+		int pageSize = 20000;
+		int offset = 0;
+		while(finalResult.size() < count) {
+			Set<String> data = repo.collected(pageSize, offset);
+			finalResult.addAll(data);
+			offset += pageSize; 
+			log.info("Collected loaded : " + finalResult.size());
+			log.info("Memory free : " + (Runtime.getRuntime().freeMemory() / (1024*1024)));
+			System.gc();
+		}
+		return finalResult;
 	}
 
 	@Override
@@ -90,7 +102,7 @@ public class ProductServiceImpl implements ProductService {
 		while(finalResult.size() < limit) {
 			finalResult.addAll(repo.visited(pageSize, offset));
 			offset += pageSize; 
-			log.info("Products loaded : " + finalResult.size());
+			log.info("Visited loaded : " + finalResult.size());
 			log.info("Memory free : " + (Runtime.getRuntime().freeMemory() / (1024*1024)));
 			System.gc();
 		}
