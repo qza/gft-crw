@@ -59,7 +59,8 @@ public class JsoupCrawler implements Crawler {
 			}
 			String category = getText(doc, cssCategory);
 			if(!ValidUtils.notBlank(category)) {
-				log.warn("NO CATEGORY"+link);
+				log.warn("NO CATEGORY ::: SHOCK :) "+link);
+				category = "SHOCK";
 			}
 			String price = getText(doc, cssPrice);
 			if(!ValidUtils.notBlank(price)) {
