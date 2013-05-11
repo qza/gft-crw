@@ -1,6 +1,7 @@
 package org.qza.gft.crw.store.data.service.product;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -83,7 +84,16 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Set<String> visited(int limit) {
-		return repo.visited(limit);
+		Set<String> finalResult = new HashSet<>();
+		int pageSize = 10000;
+		int offset = 0;
+		while(finalResult.size() < limit) {
+			finalResult.addAll(repo.visited(pageSize, offset));
+			offset += pageSize; 
+			log.info("Products page @ " + offset);
+			System.gc();
+		}
+		return finalResult;
 	}
 
 	@Override
