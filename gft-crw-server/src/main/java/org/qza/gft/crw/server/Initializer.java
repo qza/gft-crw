@@ -40,7 +40,7 @@ public class Initializer {
 		Set<String> collectedBase = context.getStoreService().collected();
 		System.gc();
 		log.info("Loading visited ... ");
-		Set<String> visitedBase = context.getStoreService().visited(500000);
+		Set<String> visitedBase = context.getStoreService().visited(250000);
 		System.gc();
 		context.getCollected().addAll(collectedBase);
 		context.getVisited().addAll(visitedBase);
