@@ -37,12 +37,8 @@ public class NioServerWorker implements Runnable {
 						log.error(ex.getMessage());
 					}
 				}
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					Thread.interrupted();
-				}
 			}
+			zzz(100);
 		}
 	}
 
@@ -57,6 +53,14 @@ public class NioServerWorker implements Runnable {
 			it.next().shutdown();
 		}
 		channels.clear();
+	}
+	
+	private static void zzz(long time) {
+		try {
+			Thread.sleep(time);
+		} catch (InterruptedException e) {
+			Thread.interrupted();
+		}
 	}
 
 }

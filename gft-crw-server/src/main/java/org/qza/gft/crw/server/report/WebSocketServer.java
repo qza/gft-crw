@@ -61,16 +61,21 @@ public class WebSocketServer implements Runnable {
 			context.getScheduler().scheduleWithFixedDelay(new Runnable() {
 				@Override
 				public void run() {
-					if (ch != null && ch.isActive()) {
-						String report = reporter.makeReport();
-						ch.write(new TextWebSocketFrame(report));
-						ch.flush();
-						log.info("Report sent");
+					if (ch != null){
+						if (ch.isActive()) {
+							String report = reporter.makeReport();
+							ch.write(new TextWebSocketFrame(report));
+							ch.flush();
+							log.info("Report sent");
+						} else {
+							log.warn("Cannot send report on channel (A,O,R) ("
+									+ ch.isActive() + ", " + ch.isOpen() + ", "
+									+ ch.isRegistered() + ")");
+						}
 					} else {
-						log.warn("Cannot send report on channel (A,O,R) ("
-								+ ch.isActive() + ", " + ch.isOpen() + ", "
-								+ ch.isRegistered() + ")");
+						log.error("Channel is null!");
 					}
+					
 				}
 			}, 15, context.getProps().getReportLogInterval(), TimeUnit.SECONDS);
 			log.info("Web socket server started at port " + 8080);

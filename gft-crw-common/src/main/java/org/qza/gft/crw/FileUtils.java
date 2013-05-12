@@ -96,8 +96,8 @@ public class FileUtils {
 			throw new RuntimeException(e);
 		} finally {
 			try {
-				gzip.close();
-				out.close();
+				if(gzip!=null) gzip.close();
+				if(out!=null) out.close();
 			} catch (IOException e) {
 			}
 		}
@@ -124,10 +124,10 @@ public class FileUtils {
 			throw new RuntimeException(e);
 		} finally {
 			try {
-				br.close();
-				sr.close();
-				gzip.close();
-				in.close();
+				if(br!=null) br.close();
+				if(sr!=null) sr.close();
+				if(gzip!=null) gzip.close();
+				if(in!=null) in.close();
 			} catch (IOException e) {
 				// asshole
 			}
