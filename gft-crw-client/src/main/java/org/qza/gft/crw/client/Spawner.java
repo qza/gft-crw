@@ -55,7 +55,7 @@ public class Spawner {
 			connectToServer(it.next(), crawler);
 		}
 		log.info(String.format("%d clients initialized", clients.size()));
-	}
+	} 
 
 	private void connectToServer(ServerAddress address, Crawler crawler) {
 		for (int i = 0; i < perServer; i++) {
