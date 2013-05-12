@@ -52,11 +52,8 @@ public class NioChannel {
 	public synchronized void react() {
 		if (state == State.READ) {
 			doRead();
-			return;
-		} 
-		if(state == State.WRITE) {
+		} else {
 			doWrite();
-			return;
 		}
 	}
 

@@ -68,7 +68,7 @@ public class NioServer implements Runnable {
 
 	@Override
 	public void run() {
-		tpool.execute(worker);
+		context.execute(worker);
 		server.accept(null, handler());
 		try {
 			this.group.awaitTermination(context.getProps().getServerDuration(),
