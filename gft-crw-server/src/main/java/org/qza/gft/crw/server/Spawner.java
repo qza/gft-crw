@@ -53,8 +53,7 @@ public class Spawner {
 	}
 
 	private void initializeState() {
-//		initializer.initServerState();
-		initializer.loadDemoSetup();
+		initializer.initServerState();
 	}
 
 	private void initializeServers() {
