@@ -1,5 +1,6 @@
 package org.qza.gft.crw.server.spawn;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.util.concurrent.ExecutionException;
@@ -7,6 +8,7 @@ import java.util.concurrent.Future;
 
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.MessageConverter;
+import org.qza.gft.crw.ValidUtils;
 import org.qza.gft.crw.server.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,8 +52,11 @@ public class NioChannel {
 	public synchronized void react() {
 		if (state == State.READ) {
 			doRead();
-		} else {
+			return;
+		} 
+		if(state == State.WRITE) {
 			doWrite();
+			return;
 		}
 	}
 
@@ -101,8 +106,13 @@ public class NioChannel {
 		try {
 			readFuture.get();
 			byte[] data = readBuffer.array();
-			processData(data);
-		} catch (InterruptedException | ExecutionException e) {
+			if(data!=null && data.length > 0){
+				processData(data);
+			} else {
+				socket.close();
+				state = State.DISCONNETED;
+			}
+		} catch (InterruptedException | ExecutionException | IOException e) {
 			log.error(e.getMessage());
 		}
 	}
@@ -141,7 +151,7 @@ public class NioChannel {
 	}
 
 	static enum State {
-		READ, WRITE;
+		READ, WRITE, DISCONNETED;
 	}
 
 }
