@@ -54,26 +54,25 @@ public class JsoupCrawler implements Crawler {
 					.maxBodySize(parserMaxbytes).execute();
 			Document doc = Jsoup.parse(res.body());
 			String name = getText(doc, cssName);
-			if(!ValidUtils.notBlank(name)) {
-				log.warn("NO NAME"+link);
+			if (!ValidUtils.notBlank(name)) {
+				log.warn("NO NAME" + link);
 			}
 			String category = getText(doc, cssCategory);
-			if(!ValidUtils.notBlank(category)) {
-				log.warn("NO CATEGORY"+link);
-				category = "SHOCK";
+			if (!ValidUtils.notBlank(category)) {
+				category = "UNKNOWN";
 			}
 			String price = getText(doc, cssPrice);
-			if(!ValidUtils.notBlank(price)) {
-				log.warn("NO PRICE"+link);
+			if (!ValidUtils.notBlank(price)) {
+				log.warn("NO PRICE" + link);
 			}
 			String rating = getText(doc, cssRating);
-			if(!ValidUtils.notBlank(rating)) {
+			if (!ValidUtils.notBlank(rating)) {
 				// IGNORE
 				// log.warn("NO RATING"+link);
 			}
 			String image = getAttr(doc, cssImage, "src");
-			if(!ValidUtils.notBlank(image)) {
-				log.warn("NO IMAGE"+link);
+			if (!ValidUtils.notBlank(image)) {
+				log.warn("NO IMAGE" + link);
 			}
 			Elements elems = getElements(doc, cssRelated);
 			Set<String> related = new HashSet<>(elems.size());
@@ -83,7 +82,7 @@ public class JsoupCrawler implements Crawler {
 			}
 			Message m = new Message(name, category, price, rating, link, image);
 			m.getRelated().addAll(related);
-//			checkMemory();
+			// checkMemory();
 			return m;
 		} catch (java.net.SocketException tex) {
 			log.error(String.format("Socket exception for link %s", link));
@@ -91,14 +90,13 @@ public class JsoupCrawler implements Crawler {
 			log.error(String.format("Timeout for link %s", link));
 		} catch (org.jsoup.HttpStatusException notFound) {
 			log.error(String.format("Link %s not found", link));
-		} catch(java.io.EOFException eof) {
+		} catch (java.io.EOFException eof) {
 			log.error(String.format("Link %s bad format", link));
 		} catch (java.io.IOException ioe) {
 			log.error(String.format("IO issue with link %s", link));
-		} catch ( java.lang.IllegalArgumentException ex) {
+		} catch (java.lang.IllegalArgumentException ex) {
 			log.error(String.format("Illegal link %s", link));
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			log.error(String.format("Problem with link %s", link), e);
 			throw new RuntimeException(e);
 		}
@@ -125,9 +123,11 @@ public class JsoupCrawler implements Crawler {
 		Elements result = new Elements();
 		String[] selectors = selector.split(",");
 		for (int i = 0; i < selectors.length; i++) {
-			Elements elems = doc.select(selectors[i].trim());
+			String s = selectors[i].trim();
+			Elements elems = doc.select(s);
 			if (checkElems(elems)) {
 				result.addAll(elems);
+				break;
 			}
 		}
 		return result;
@@ -135,16 +135,6 @@ public class JsoupCrawler implements Crawler {
 
 	private boolean checkElems(Elements elems) {
 		return (elems != null && elems.size() > 0);
-	}
-	
-	private void checkMemory(){
-		long free = Runtime.getRuntime().freeMemory() / (1024*1024);
-		if(free < 128) {
-			System.gc();
-		}
-		if(free < 64) {
-			log.warn("Memory : " + free);
-		}
 	}
 
 }

@@ -23,17 +23,27 @@ import org.slf4j.LoggerFactory;
  */
 public class Connection {
 
-	final private Logger log;
+	private Logger log;
 
-	final private ServerAddress address;
+	private ServerAddress address;
 
-	final private Future<Void> connectFuture;
+	private Future<Void> connectFuture;
 
-	final private AsynchronousSocketChannel socket;
+	private AsynchronousSocketChannel socket;
 
 	public Connection(final Context context, final ServerAddress address) {
 		this.log = LoggerFactory.getLogger(Connection.class);
 		this.address = address;
+		connect();
+	}
+
+	public void reconnect() {
+		shutdown();
+		connect();
+		check();
+	}
+
+	private void connect() {
 		try {
 			socket = AsynchronousSocketChannel.open();
 			connectFuture = socket.connect(new InetSocketAddress(address

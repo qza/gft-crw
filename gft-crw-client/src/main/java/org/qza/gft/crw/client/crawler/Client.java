@@ -18,15 +18,15 @@ import org.slf4j.LoggerFactory;
  */
 public class Client implements Runnable {
 
-	final private Logger log;
+	private Logger log;
 
-	final private Crawler crawler;
+	private Crawler crawler;
 
-	final private Connection connection;
+	private Connection connection;
 
-	final private MessageConverter converter;
-	
-	final private AtomicInteger badLinks;
+	private MessageConverter converter;
+
+	private AtomicInteger badLinks;
 
 	public Client(String name, final Context context,
 			final ServerAddress address, final Crawler crawler) {
@@ -34,13 +34,14 @@ public class Client implements Runnable {
 		this.connection = new Connection(context, address);
 		this.log = LoggerFactory.getLogger(name);
 		this.converter = new MessageConverter();
-		this.badLinks= new AtomicInteger();
+		this.badLinks = new AtomicInteger();
 	}
 
 	@Override
 	public void run() {
 		if (connection.check()) {
 			work();
+			shutdown();
 		}
 	}
 
@@ -77,8 +78,8 @@ public class Client implements Runnable {
 			}
 		} else {
 			int blcount = badLinks.incrementAndGet();
-			log.warn(String.format("Bad link # %s :::  %s", blcount , link));
-			if(blcount > 3) {
+			log.warn(String.format("Bad link # %s :::  %s", blcount, link));
+			if (blcount > 3) {
 				log.error("Too many bad links, shutting down.");
 				throw new InterruptedException();
 			}

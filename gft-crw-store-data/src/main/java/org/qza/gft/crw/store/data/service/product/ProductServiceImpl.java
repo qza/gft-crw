@@ -81,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
 	public Set<String> collected() {
 		Set<String> finalResult = new HashSet<>();
 		long count = repo.count();
-		int pageSize = 50000;
+		int pageSize = 100000;
 		int offset = 0;
 		while(finalResult.size() < count) {
 			Set<String> data = repo.collected(pageSize, offset);
