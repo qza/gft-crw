@@ -84,7 +84,7 @@ public class JsoupCrawler implements Crawler {
 				related.add(links.next().attr("href"));
 			}
 			Message m = new Message(name, category, price, rating, link, image);
-			m.getRelated().addAll(related);
+			m.addRelated(related);
 			// checkMemory();
 			return m;
 		} catch (java.net.SocketException tex) {
