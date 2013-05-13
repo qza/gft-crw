@@ -40,7 +40,7 @@ public class Message2Product {
 		String price = message.getPrice();
 		String rating = message.getRating();
 		String url = message.getUrl();
-		Set<String> related = message.getRelated();
+		Set<String> related = new HashSet<>(message.getRelated());
 		if (ValidUtils.notBlank(name, category, image, url)) {
 			product.setName(name.trim());
 			product.setCategory(category.trim());
