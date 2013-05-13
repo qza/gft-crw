@@ -37,9 +37,9 @@ public class Context extends ContextBase {
 
 	final private Acceptor acceptor;
 	
-	private Integer initialCollected;
+	private Integer initialCollected = 0;
 	
-	private Integer initialVisited;
+	private Integer initialVisited = 0;
 	
 	public Context(final Props props, final Set<String> visited,
 			final BlockingQueue<String> queue, final ExecutorService executor,
