@@ -8,7 +8,6 @@ import java.util.concurrent.Future;
 
 import org.qza.gft.crw.Message;
 import org.qza.gft.crw.MessageConverter;
-import org.qza.gft.crw.ValidUtils;
 import org.qza.gft.crw.server.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

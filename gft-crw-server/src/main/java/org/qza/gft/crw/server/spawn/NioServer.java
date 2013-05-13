@@ -74,8 +74,7 @@ public class NioServer implements Runnable {
 			this.group.awaitTermination(context.getProps().getServerDuration(),
 					TimeUnit.MINUTES);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Thread.interrupted();
 		}
 	}
 
@@ -109,7 +108,7 @@ public class NioServer implements Runnable {
 			@Override
 			public Thread newThread(Runnable r) {
 				Thread t = new Thread(r);
-				String name = String.format("Server %s deamon",
+				String name = String.format("nio pool deamon %s",
 						address.getPort());
 				t.setName(name);
 				t.setDaemon(true);

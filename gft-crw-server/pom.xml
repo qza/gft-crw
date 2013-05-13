@@ -28,10 +28,12 @@
 			            <argument>-Dcom.sun.management.jmxremote.authenticate=false</argument>
             			<argument>-Dcom.sun.management.jmxremote.ssl=false</argument>
             			<argument>-Dcom.sun.management.jmxremote.local.only=false</argument>
-            			<argument>-Djava.rmi.server.hostname=127.0.0.0</argument>
+            			<argument>-Djava.rmi.server.hostname=50.116.0.240</argument>
             			<argument>-Dcom.sun.management.jmxremote.port=6002</argument>
+            			<argument>-XX:+PrintTenuringDistribution</argument>
 						<argument>-XX:+PrintGCDetails</argument>
 						<argument>-XX:+PrintGCTimeStamps</argument>
+						<argument>-XX:NewRatio=4</argument>
 						<argument>-Xss256k</argument>
 						<argument>-Xms1024m</argument>
 						<argument>-Xmx1024m</argument>
