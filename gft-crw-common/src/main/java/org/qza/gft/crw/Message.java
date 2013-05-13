@@ -28,10 +28,10 @@ public class Message {
 		this.category = category;
 		this.price = price;
 		this.rating = rating;
-		this.url = extractUrl(url);
+		this.url = url;
 		this.image = extractImage(image);
 		this.related = new ArrayList<String>();
-		this.code = extractCode(this.url);
+		this.code = extractCode(url);
 	}
 
 	public String getName() {
