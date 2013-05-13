@@ -45,6 +45,7 @@ public class Config {
 		props.setParserCssRating(env.getProperty("crawler.parser.css.rating"));
 		props.setParserCssRelated(env.getProperty("crawler.parser.css.related"));
 		props.setParserCssImage(env.getProperty("crawler.parser.css.image"));
+		props.setCrawlerRootDomain(env.getProperty("crawler.root.domain"));
 		return props;
 	}
 

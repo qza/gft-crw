@@ -34,6 +34,8 @@ public class JsoupCrawler implements Crawler {
 
 	final private Integer parserTimeout;
 	final private Integer parserMaxbytes;
+	
+	final private String domain;
 
 	public JsoupCrawler(final Context context) {
 		this.log = LoggerFactory.getLogger(JsoupCrawler.class);
@@ -45,12 +47,13 @@ public class JsoupCrawler implements Crawler {
 		this.parserTimeout = context.getProps().getParserTimeout();
 		this.parserMaxbytes = context.getProps().getParserMaxbytes();
 		this.cssImage = context.getProps().getParserCssImage();
+		this.domain = context.getProps().getCrawlerRootDomain();
 	}
 
 	@Override
 	public Message crawlResults(String link) {
 		try {
-			Response res = Jsoup.connect(link).timeout(parserTimeout)
+			Response res = Jsoup.connect(domain+link).timeout(parserTimeout)
 					.maxBodySize(parserMaxbytes).execute();
 			Document doc = Jsoup.parse(res.body());
 			String name = getText(doc, cssName);

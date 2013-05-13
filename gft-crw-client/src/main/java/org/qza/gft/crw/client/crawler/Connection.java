@@ -90,7 +90,7 @@ public class Connection {
 
 	public String readMessage() throws InterruptedException,
 			ExecutionException, TimeoutException {
-		String message = getText(readData(128));
+		String message = getText(readData(256));
 		return message;
 	}
 

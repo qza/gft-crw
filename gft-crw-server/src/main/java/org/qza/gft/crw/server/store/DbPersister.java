@@ -53,11 +53,8 @@ public class DbPersister implements Runnable {
 
 	private void checkMemory() {
 		long free = Runtime.getRuntime().freeMemory() / mb;
-		if (free < memoryMin / 2) {
+		if (free < memoryMin ) {
 			log.warn("\n Running out of memory!!!\n");
-		}
-		if (free < memoryMin) {
-			System.gc();
 		}
 	}
 

@@ -70,9 +70,13 @@ public class Initializer {
 	}
 
 	public void loadDemoSetup() {
-		initFromDatabase();
-		context.getVisited().clear();
-		context.setInitialVisited(0);
+		if (context.getStoreService().stats().getRecordCount() > 0) {
+			initFromDatabase();
+			context.getVisited().clear();
+			context.setInitialVisited(0);
+		} else {
+			initQueue();
+		}
 		log.warn("Demo setup");
 	}
 

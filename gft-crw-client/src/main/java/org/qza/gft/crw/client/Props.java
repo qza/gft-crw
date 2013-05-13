@@ -39,7 +39,9 @@ public class Props {
 	private String parserCssRelated;
 	
 	private String parserCssImage;
-
+	
+	private String crawlerRootDomain;
+	
 	public Boolean getLogTime() {
 		return logTime;
 	}
@@ -158,6 +160,14 @@ public class Props {
 	
 	public void setParserCssImage(String parserCssImage) {
 		this.parserCssImage = parserCssImage;
+	}
+	
+	public String getCrawlerRootDomain() {
+		return crawlerRootDomain;
+	}
+	
+	public void setCrawlerRootDomain(String crawlerRootDomain) {
+		this.crawlerRootDomain = crawlerRootDomain;
 	}
 
 }

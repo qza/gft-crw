@@ -88,8 +88,6 @@ public class ProductServiceImpl implements ProductService {
 			finalResult.addAll(data);
 			offset += pageSize; 
 			log.info("Collected loaded : " + finalResult.size());
-			log.info("Memory free : " + (Runtime.getRuntime().freeMemory() / (1024*1024)));
-			System.gc();
 		}
 		return finalResult;
 	}
@@ -102,8 +100,6 @@ public class ProductServiceImpl implements ProductService {
 			finalResult.addAll(repo.visited(pageSize, offset));
 			offset += pageSize; 
 			log.info("Visited loaded : " + finalResult.size());
-			log.info("Memory free : " + (Runtime.getRuntime().freeMemory() / (1024*1024)));
-			System.gc();
 		}
 		return finalResult;
 	}

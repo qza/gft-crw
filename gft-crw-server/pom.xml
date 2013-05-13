@@ -33,10 +33,10 @@
             			<argument>-XX:+PrintTenuringDistribution</argument>
 						<argument>-XX:+PrintGCDetails</argument>
 						<argument>-XX:+PrintGCTimeStamps</argument>
-						<argument>-XX:NewRatio=4</argument>
+						<argument>-XX:NewRatio=5</argument>
 						<argument>-Xss256k</argument>
-						<argument>-Xms1024m</argument>
-						<argument>-Xmx1024m</argument>
+						<argument>-Xms1088m</argument>
+						<argument>-Xmx1088m</argument>
 						<argument>-classpath</argument>
 						<classpath />
 						<argument>org.qza.gft.crw.server.Runner</argument>

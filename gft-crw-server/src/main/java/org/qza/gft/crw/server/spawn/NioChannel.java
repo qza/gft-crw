@@ -41,7 +41,7 @@ public class NioChannel {
 		this.socket = socket;
 		this.converter = new MessageConverter();
 		this.log = LoggerFactory.getLogger(NioChannel.class);
-		this.readBuffer = ByteBuffer.allocate(4096);
+		this.readBuffer = ByteBuffer.allocate(2048);
 	}
 
 	public void shutdown() {
@@ -102,7 +102,7 @@ public class NioChannel {
 		try {
 			readFuture.get();
 			byte[] data = readBuffer.array();
-			if(data!=null && data.length > 0){
+			if (data != null && data.length > 0) {
 				processData(data);
 			} else {
 				socket.close();
@@ -133,16 +133,14 @@ public class NioChannel {
 			if (message != null) {
 				context.addMessage(message);
 			}
-		} catch(RuntimeException ex) {
+		} catch (RuntimeException ex) {
 			log.error("Cannot convert message :  \n" + new String(data) + "\n");
 		}
 	}
 
 	private void writeMessage() {
-		byte[] databytes = message.getBytes();
-		ByteBuffer data = ByteBuffer.wrap(databytes);
 		if (socket.isOpen()) {
-			writeFuture = socket.write(data);
+			writeFuture = socket.write(ByteBuffer.wrap(message.getBytes()));
 		}
 	}
 

@@ -1,17 +1,23 @@
 package org.qza.gft.crw;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
+/**
+ * @author gft
+ */
 public class Message {
 
+	private String code;
 	private String name;
 	private String category;
 	private String price;
 	private String rating;
 	private String url;
 	private String image;
-	private Set<String> related;
+	private List<String> related;
 
 	public Message() {
 	}
@@ -22,9 +28,10 @@ public class Message {
 		this.category = category;
 		this.price = price;
 		this.rating = rating;
-		this.url = url;
-		this.image = image;
-		this.related = new HashSet<String>();
+		this.url = extractUrl(url);
+		this.image = extractImage(image);
+		this.related = new ArrayList<String>();
+		this.code = extractCode(this.url);
 	}
 
 	public String getName() {
@@ -47,12 +54,21 @@ public class Message {
 		return url;
 	}
 
-	public Set<String> getRelated() {
+	/*
+	 *  don't use directly, just to please object mapper
+	 */
+	public List<String> getRelated() {
 		return related;
 	}
 
 	public void addRelated(Set<String> related) {
-		this.related.addAll(related);
+		for (Iterator<String> iterator = related.iterator(); iterator.hasNext();) {
+			this.addRelated(iterator.next());
+		}
+	}
+
+	public void addRelated(String related) {
+		this.related.add(extractUrl(related));
 	}
 
 	public void setName(String name) {
@@ -64,62 +80,67 @@ public class Message {
 	}
 
 	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public void setPrice(String price) {
-		this.price = price;
-	}
-
-	public void setRating(String rating) {
-		this.rating = rating;
-	}
-
-	public void setRelated(Set<String> related) {
-		this.related = related;
+		this.url = extractUrl(url);
+		this.code = extractCode(url);
 	}
 
 	public String getImage() {
 		return image;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public String getCode() {
+		return code;
 	}
 
 	@Override
 	public int hashCode() {
-		return this.url.hashCode();
+		return this.code.hashCode();
 	}
 
 	@Override
-	public boolean equals(Object arg0) {
-		if (arg0 != null && arg0 instanceof Message) {
-			if (((Message) arg0).url.equals(this.url)) {
+	public boolean equals(Object arg) {
+		if (arg != null && arg instanceof Message) {
+			if (((Message) arg).code.equals(this.code)) {
 				return true;
 			} else {
 				return false;
 			}
 		}
-		return super.equals(arg0);
+		return super.equals(arg);
 	}
 
 	@Override
 	public String toString() {
-		return String.format("name: %s category: %s image: %s url: %s", name,
+		return String.format(
+				"code: %s name: %s category: %s image: %s url: %s", code, name,
 				category, image, url);
 	}
+
+	public static String extractCode(String urlParameter) {
+		int l = urlParameter.lastIndexOf("/dp/");
+		if(l > 0) {
+			// create new to release big
+			return new String(urlParameter.substring(l+4));
+		}
+		return null;
+	}
 	
+	public static String extractUrl(String urlParameter) {
+		int l = urlParameter.indexOf("com/");
+		if(l > 0) {
+			// create new to release big
+			return new String(urlParameter.substring(l+4));
+		}
+		return null;
+	}
 	
-	public static void main(String[] args) {
-		Message m1 = new Message();
-		m1.setUrl("http://www.amazon.com/BLABLA");
-		m1.setName("AAA");
-		Message m2 = new Message();
-		m2.setUrl("http://www.amazon.com/BLABLA");
-		m2.setName("BBB");
-		System.out.println(m1.equals(m2));
-		System.out.println(m1.hashCode() == m2.hashCode());
+	public static String extractImage(String imageUrl) {
+		int l = imageUrl.indexOf("/images/");
+		if(l > 0) {
+			// create new to release big
+			return new String(imageUrl.substring(l+8));
+		}
+		return null;
 	}
 
 }
