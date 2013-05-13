@@ -118,7 +118,7 @@ public class Message {
 
 	public static String extractCode(String urlParameter) {
 		int l = urlParameter.lastIndexOf("/dp/");
-		if(l > 0) {
+		if(l >= 0) {
 			// create new to release big
 			return new String(urlParameter.substring(l+4));
 		}
