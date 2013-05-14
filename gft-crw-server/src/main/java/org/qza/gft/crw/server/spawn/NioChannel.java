@@ -70,8 +70,9 @@ public class NioChannel {
 
 	private void doWrite() {
 		if (writeFuture == null) {
-			takeMessage();
-			writeMessage();
+			if(takeMessage()){
+				writeMessage();
+			}
 		} else {
 			if (doneWrite()) {
 				cleanWrite();
@@ -90,12 +91,9 @@ public class NioChannel {
 		this.writeFuture = null;
 	}
 
-	private void takeMessage() {
-		try {
-			message = context.getQueue().take();
-		} catch (InterruptedException e) {
-			log.warn("Can't read queue");
-		}
+	private boolean takeMessage() {
+		message = context.getQueue().poll();
+		return message != null;
 	}
 
 	public void process() {
