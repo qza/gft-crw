@@ -80,7 +80,7 @@ public class Message {
 	}
 
 	public void setUrl(String url) {
-		this.url = extractUrl(url);
+		this.url = url;
 		this.code = extractCode(url);
 	}
 
