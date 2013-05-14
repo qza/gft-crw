@@ -61,14 +61,9 @@ public class Context extends ContextBase {
 	}
 
 	public synchronized void addMessage(Message message) {
-		System.out.println("na = " + message.getName());
-		System.out.println("ca = " + message.getCategory());
-		System.out.println("co = " + message.getCode());
-		System.out.println("im = " + message.getImage());
-		System.out.println("ur = " + message.getUrl());
 		messageCounter.getAndIncrement();
 		if (acceptor.accept(message)) {
-			if (collected.add(message.getCode())) {
+			if (collected.add(message.getUrl())) {
 				productData.add(message);
 			}
 		} else {

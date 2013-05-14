@@ -41,7 +41,7 @@ public class NioChannel {
 		this.socket = socket;
 		this.converter = new MessageConverter();
 		this.log = LoggerFactory.getLogger(NioChannel.class);
-		this.readBuffer = ByteBuffer.allocate(2048);
+		this.readBuffer = ByteBuffer.allocate(1024);
 	}
 
 	public void shutdown() {
