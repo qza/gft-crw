@@ -67,7 +67,7 @@ public class Context extends ContextBase {
 				productData.add(message);
 			}
 		} else {
-			System.out.println("NOT ACCEPTED");
+			// TODO
 		}
 		for (Iterator<String> iterator = message.getRelated().iterator(); iterator
 				.hasNext();) {
