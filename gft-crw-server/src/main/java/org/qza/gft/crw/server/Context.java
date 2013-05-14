@@ -8,6 +8,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.qza.gft.crw.ContextBase;
 import org.qza.gft.crw.Message;
@@ -41,6 +42,8 @@ public class Context extends ContextBase {
 	
 	private Integer initialVisited = 0;
 	
+	private final AtomicInteger messageCounter = new AtomicInteger();
+	
 	public Context(final Props props, final Set<String> visited,
 			final BlockingQueue<String> queue, final ExecutorService executor,
 			final ScheduledExecutorService scheduler,
@@ -58,10 +61,13 @@ public class Context extends ContextBase {
 	}
 
 	public synchronized void addMessage(Message message) {
+		messageCounter.getAndIncrement();
 		if (acceptor.accept(message)) {
 			if (collected.add(message.getCode())) {
 				productData.add(message);
 			}
+		} else {
+			System.out.println("NOT ACCEPTED");
 		}
 		for (Iterator<String> iterator = message.getRelated().iterator(); iterator
 				.hasNext();) {
@@ -187,6 +193,10 @@ public class Context extends ContextBase {
 	
 	public void setInitialVisited(Integer initialVisited) {
 		this.initialVisited = initialVisited;
+	}
+	
+	public int getMessageCount() {
+		return messageCounter.get();
 	}
 
 }

@@ -25,6 +25,7 @@ public class Builder {
 		t.padText("Duration");
 		t.padText("Completed tasks");
 		t.padNumber("Remained tasks");
+		t.padNumber("Message count");
 		t.padNumber("Remained in queue");
 		t.padNumber("Visited");
 		t.padNumber("Collected");

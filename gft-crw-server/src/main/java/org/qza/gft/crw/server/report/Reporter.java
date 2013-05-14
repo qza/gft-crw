@@ -42,6 +42,7 @@ public class Reporter implements Runnable {
 		int vSize = context.visitedSize();
 		int cSize = context.collectedSize();
 		int pSize = context.productsSize();
+		int mCount = context.getMessageCount();
 		int remainedTasks = context.activeTasksCount();
 		int freeMemory = (int) Runtime.getRuntime().freeMemory()
 				/ (1024 * 1024);
@@ -51,7 +52,7 @@ public class Reporter implements Runnable {
 		String collectedInSecond = StatsUtils.formatPerSecond(cSize - context.getInitialCollected(), duration);
 		String template = new Builder(new Template()).build();
 		String report = String.format(template, queueMax, poolInit, poolMax,
-				durationStr, completedTasks, remainedTasks, qSize, vSize,
+				durationStr, completedTasks, remainedTasks, mCount, qSize, vSize,
 				cSize, pSize, visitedInSecond, collectedInSecond, freeMemory);
 		return report;
 	}
