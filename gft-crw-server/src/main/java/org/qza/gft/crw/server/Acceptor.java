@@ -21,8 +21,7 @@ public class Acceptor {
 	}
 
 	public boolean accept(Message message) {
-		return checkBlanks(message);
-//		return checkBlanks(message) && acceptCategory(message.getCategory());
+		return checkBlanks(message) && acceptCategory(message.getCategory());
 	}
 
 	private boolean acceptCategory(String category) {
