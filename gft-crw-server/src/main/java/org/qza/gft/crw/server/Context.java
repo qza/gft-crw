@@ -63,7 +63,7 @@ public class Context extends ContextBase {
 	public synchronized void addMessage(Message message) {
 		messageCounter.getAndIncrement();
 		if (acceptor.accept(message)) {
-			if (collected.add(message.getUrl())) {
+			if (collected.add(message.getCode())) {
 				productData.add(message);
 			}
 		} else {

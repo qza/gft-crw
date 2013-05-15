@@ -8,6 +8,9 @@ import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -24,7 +27,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author gft
  */
-public class NioServer implements Runnable {
+public class CopyOfNioServer implements Runnable {
 
 	final private Logger log;
 
@@ -38,11 +41,12 @@ public class NioServer implements Runnable {
 
 	final private AsynchronousServerSocketChannel server;
 
-	final private NioServerWorker worker;
+	final private List<NioChannel> channels;
 
-	public NioServer(final Context context, final ServerAddress address) {
+	public CopyOfNioServer(final Context context, final ServerAddress address) {
 		this.context = context;
 		this.address = address;
+		this.channels = new ArrayList<>();
 		this.log = LoggerFactory.getLogger(Server.class);
 		Integer initSize = context.getProps().getServerMaxclients();
 		Integer maxSize = context.getProps().getServerMaxclients();
@@ -56,7 +60,6 @@ public class NioServer implements Runnable {
 			this.group = AsynchronousChannelGroup.withThreadPool(this.tpool);
 			this.server = AsynchronousServerSocketChannel.open(group).bind(
 					sAddress);
-			this.worker = new NioServerWorker(context);
 			log.info(String.format("Started @ %s : %d", address.getHost(),
 					address.getPort()));
 		} catch (Exception ex) {
@@ -65,27 +68,36 @@ public class NioServer implements Runnable {
 			throw new RuntimeException(ex);
 		}
 	}
+	
+	public void addChannel(AsynchronousSocketChannel channel) {
+		NioChannel ch = new NioChannel(context, channel);
+		channels.add(ch);
+	}
 
 	@Override
 	public void run() {
-		context.execute(worker);
 		server.accept(null, handler());
-		try {
-			this.group.awaitTermination(context.getProps().getServerDuration(),
-					TimeUnit.MINUTES);
-		} catch (InterruptedException e) {
-			Thread.interrupted();
+		while(true) {
+			synchronized(channels) {
+				for (int i = 0; i < channels.size(); i++) {
+					try {
+						channels.get(i).react();
+					}
+					catch(Exception ex) {
+						log.error(ex.getMessage());
+					}
+				}
+			}
 		}
 	}
-
+	
 	public CompletionHandler<AsynchronousSocketChannel, Void> handler() {
 		return new CompletionHandler<AsynchronousSocketChannel, Void>() {
 			public void completed(AsynchronousSocketChannel ch, Void att) {
 				server.accept(null, this);
+				addChannel(ch);
 				log.info("Connection established");
-				worker.addChannel(ch);
 			}
-
 			public void failed(Throwable th, Void att) {
 				log.warn("Unexpected connection termination : "
 						+ th.getMessage());
@@ -94,6 +106,19 @@ public class NioServer implements Runnable {
 	}
 
 	public void shutdown() {
+		closeChannels();
+		closeServer();
+	}
+	
+	public void closeChannels() {
+		Iterator<NioChannel> it = channels.iterator();
+		while (it.hasNext()) {
+			it.next().shutdown();
+		}
+		channels.clear();
+	}
+	
+	public void closeServer() {
 		try {
 			server.close();
 			tpool.shutdownNow();
@@ -116,5 +141,5 @@ public class NioServer implements Runnable {
 			}
 		};
 	}
-
+	
 }

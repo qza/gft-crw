@@ -10,6 +10,7 @@ import java.util.Set;
  */
 public class Message {
 
+	private String code;
 	private String name;
 	private String category;
 	private String price;
@@ -30,6 +31,7 @@ public class Message {
 		this.url = url;
 		this.image = extractImage(image);
 		this.related = new ArrayList<String>();
+		this.code = extractCode(url);
 	}
 
 	public String getName() {
@@ -66,8 +68,7 @@ public class Message {
 	}
 
 	public void addRelated(String related) {
-		String rel = extractCode(related);
-		this.related.add(rel);
+		this.related.add(extractUrl(related));
 	}
 
 	public void setName(String name) {
@@ -80,21 +81,26 @@ public class Message {
 
 	public void setUrl(String url) {
 		this.url = url;
+		this.code = extractCode(url);
 	}
 
 	public String getImage() {
 		return image;
 	}
 
+	public String getCode() {
+		return code;
+	}
+
 	@Override
 	public int hashCode() {
-		return this.url.hashCode();
+		return this.code.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object arg) {
 		if (arg != null && arg instanceof Message) {
-			if (((Message) arg).url.equals(this.url)) {
+			if (((Message) arg).code.equals(this.code)) {
 				return true;
 			} else {
 				return false;
@@ -106,7 +112,7 @@ public class Message {
 	@Override
 	public String toString() {
 		return String.format(
-				"name: %s category: %s image: %s url: %s", name,
+				"code: %s name: %s category: %s image: %s url: %s", code, name,
 				category, image, url);
 	}
 
