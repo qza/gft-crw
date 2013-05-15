@@ -225,7 +225,7 @@ function ProductsView(props) {
 		row += '<p>' + product.rating + '</p>';
 		row += '</td>';
 		if (product.image) {
-			row += '<td><img src="' + product.image + '"/>' + '</td>';
+			row += '<td><img src="' + 'http://ecx.images-amazon.com/images/' + product.image + '"/>' + '</td>';
 		}
 		row += '</tr>';
 		table.append(row);
