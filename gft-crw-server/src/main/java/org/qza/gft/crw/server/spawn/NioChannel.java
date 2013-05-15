@@ -34,6 +34,8 @@ public class NioChannel {
 	final private MessageConverter converter;
 
 	final private AsynchronousSocketChannel socket;
+	
+	static final int BUFFER_SIZE = 2048;
 
 	public NioChannel(final Context context,
 			final AsynchronousSocketChannel socket) {
@@ -41,7 +43,7 @@ public class NioChannel {
 		this.socket = socket;
 		this.converter = new MessageConverter();
 		this.log = LoggerFactory.getLogger(NioChannel.class);
-		this.readBuffer = ByteBuffer.allocate(1024);
+		this.readBuffer = ByteBuffer.allocate(BUFFER_SIZE);
 	}
 
 	public void shutdown() {

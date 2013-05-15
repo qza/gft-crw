@@ -30,6 +30,8 @@ public class Connection {
 	private Future<Void> connectFuture;
 
 	private AsynchronousSocketChannel socket;
+	
+	static final int URL_MAX_BYTES = 256;
 
 	public Connection(final Context context, final ServerAddress address) {
 		this.log = LoggerFactory.getLogger(Connection.class);
@@ -90,7 +92,7 @@ public class Connection {
 
 	public String readMessage() throws InterruptedException,
 			ExecutionException, TimeoutException {
-		String message = getText(readData(256));
+		String message = getText(readData(URL_MAX_BYTES));
 		return message;
 	}
 
