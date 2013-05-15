@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.qza.gft.crw.Message;
+import org.qza.gft.crw.ValidUtils;
 import org.qza.gft.crw.store.data.entity.Product;
 import org.qza.gft.crw.store.data.repo.model.Stats;
 import org.qza.gft.crw.store.data.repo.product.ProductRepository;
@@ -97,9 +98,14 @@ public class ProductServiceImpl implements ProductService {
 		Set<String> finalResult = new HashSet<>();
 		int pageSize = 50000;
 		while(finalResult.size() < limit) {
-			finalResult.addAll(repo.visited(pageSize, offset));
-			offset += pageSize; 
-			log.info("Visited loaded : " + finalResult.size());
+			Set<String> v = repo.visited(pageSize, offset);
+			if(ValidUtils.notBlank(v)) {
+				finalResult.addAll(v);
+				offset += pageSize; 
+				log.info("Visited loaded : " + finalResult.size());
+			} else {
+				break;
+			}
 		}
 		return finalResult;
 	}
