@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.qza.gft.crw.ServerAddress;
 import org.qza.gft.crw.server.report.Reporter;
-import org.qza.gft.crw.server.spawn.NioServer;
+import org.qza.gft.crw.server.spawn.NioServerWithWorker;
 import org.qza.gft.crw.server.store.DbPersister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ class NioSpawner {
 
 	final private Integer duration;
 
-	final private Map<ServerAddress, NioServer> serverMap;
+	final private Map<ServerAddress, NioServerWithWorker> serverMap;
 
 	public NioSpawner(final Context context, final Initializer initializer) {
 		this.log = LoggerFactory.getLogger(Spawner.class);
@@ -48,15 +48,15 @@ class NioSpawner {
 	}
 
 	private void initializeState() {
-//		initializer.initServerState();
-		initializer.loadDemoSetup();
+		initializer.initServerState();
+//		initializer.loadDemoSetup();
 	}
 
 	private void initializeServers() {
 		for (Iterator<ServerAddress> iterator = context.getServerList()
 				.iterator(); iterator.hasNext();) {
 			ServerAddress serverAddress = iterator.next();
-			NioServer server = new NioServer(context, serverAddress);
+			NioServerWithWorker server = new NioServerWithWorker(context, serverAddress);
 			serverMap.put(serverAddress, server);
 			context.execute(server);
 		}
@@ -95,7 +95,7 @@ class NioSpawner {
 
 	private void terminateServers() {
 		try {
-			Iterator<NioServer> servers = serverMap.values().iterator();
+			Iterator<NioServerWithWorker> servers = serverMap.values().iterator();
 			while (servers.hasNext()) {
 				servers.next().shutdown();
 			}

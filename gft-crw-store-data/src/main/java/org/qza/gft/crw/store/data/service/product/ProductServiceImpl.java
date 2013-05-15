@@ -86,9 +86,13 @@ public class ProductServiceImpl implements ProductService {
 		int offset = 0;
 		while(finalResult.size() < count) {
 			Set<String> data = repo.collected(pageSize, offset);
-			finalResult.addAll(data);
-			offset += pageSize; 
-			log.info("Collected loaded : " + finalResult.size());
+			if(ValidUtils.notBlank(data)) {
+				finalResult.addAll(data);
+				offset += pageSize; 
+				log.info("Collected loaded : " + finalResult.size());
+			} else {
+				break;
+			}
 		}
 		return finalResult;
 	}
