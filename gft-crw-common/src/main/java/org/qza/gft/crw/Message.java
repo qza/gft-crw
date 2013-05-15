@@ -66,7 +66,7 @@ public class Message {
 	}
 
 	public void addRelated(String related) {
-		this.related.add(related);
+		this.related.add(extractUrl(related));
 	}
 
 	public void setName(String name) {
@@ -112,6 +112,15 @@ public class Message {
 	public static String extractCode(String urlParameter) {
 		int l = urlParameter.lastIndexOf("/dp/");
 		if(l >= 0) {
+			// create new to release big
+			return new String(urlParameter.substring(l+4));
+		}
+		return null;
+	}
+	
+	public static String extractUrl(String urlParameter) {
+		int l = urlParameter.indexOf("com/");
+		if(l > 0) {
 			// create new to release big
 			return new String(urlParameter.substring(l+4));
 		}
