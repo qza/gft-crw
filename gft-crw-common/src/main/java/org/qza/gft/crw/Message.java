@@ -1,8 +1,7 @@
 package org.qza.gft.crw;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,7 +15,7 @@ public class Message {
 	private String rating;
 	private String url;
 	private String image;
-	private List<String> related;
+	private Set<String> related;
 
 	public Message() {
 	}
@@ -29,7 +28,7 @@ public class Message {
 		this.rating = rating;
 		this.url = url;
 		this.image = extractImage(image);
-		this.related = new ArrayList<String>();
+		this.related = new HashSet<String>();
 	}
 
 	public String getName() {
@@ -55,7 +54,7 @@ public class Message {
 	/*
 	 *  don't use directly, just to please object mapper
 	 */
-	public List<String> getRelated() {
+	public Set<String> getRelated() {
 		return related;
 	}
 

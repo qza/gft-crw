@@ -53,6 +53,8 @@ public class JsoupCrawler implements Crawler {
 	@Override
 	public Message crawlResults(String link) {
 		try {
+			// TODO FCK FInd bug
+			link = link.replaceAll("\\(", "").replaceAll("\\)","");
 			Response res = Jsoup.connect(domain + link).timeout(parserTimeout)
 					.maxBodySize(parserMaxbytes).execute();
 			Document doc = Jsoup.parse(res.body());
