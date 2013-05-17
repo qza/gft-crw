@@ -55,9 +55,11 @@
 		</div>
 
 		<form id="product_form" style="display: none">
+			<span style="padding-left: 20px;">
+				Jump to page: <input id="page_number" type="text" name="pageNumber" value="0" style="width: 30px;"/>
+			</span>
 			<table id="products_table"></table>
-			<input id="category" type="hidden" name="category" value="" /> <input
-				id="page_number" type="hidden" name="pageNumber" value="0" />
+			<input id="category" type="hidden" name="category" value="" />
 		</form>
 
 		<div id="progress_bar">
